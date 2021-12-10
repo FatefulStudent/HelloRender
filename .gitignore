@@ -1,0 +1,9 @@
+.*
+!.gitignore
+
+build/*
+
+libs/*
+!libs/glew-2.1.0*
+!libs/glfw-3.3.5*
+!libs/CMakeLists.txt
