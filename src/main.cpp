@@ -168,42 +168,36 @@ int main(void)
     //     0, 3, 4 // second triangle
     // };
 
-    unsigned int VAO1;
-    unsigned int VBO1;
+    unsigned int VAOs[2];
+    unsigned int VBOs[2];
     {
-        glGenVertexArrays(1, &VAO1);
+        glGenVertexArrays(2, VAOs);
 
-        // ..:: Initialization code (done once (unless your object frequently changes)) :: ..
-        // 1. bind Vertex Array Object ???????
-        glBindVertexArray(VAO1);
+        {
+            // ..:: Initialization code (done once (unless your object frequently changes)) :: ..
+            // 1. bind Vertex Array Object ???????
+            glBindVertexArray(VAOs[0]);
 
-        glGenBuffers(1, &VBO1);
+            glGenBuffers(2, VBOs);
 
-        // 0. copy our vertices array in a buffer for OpenGL to use
-        glBindBuffer(GL_ARRAY_BUFFER, VBO1);
-        glBufferData(GL_ARRAY_BUFFER, sizeof(vertices1), vertices1, GL_STATIC_DRAW);
-        // 1. then set the vertex attributes pointers
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-        glEnableVertexAttribArray(0);
-    }
+            // 0. copy our vertices array in a buffer for OpenGL to use
+            glBindBuffer(GL_ARRAY_BUFFER, VBOs[0]);
+            glBufferData(GL_ARRAY_BUFFER, sizeof(vertices1), vertices1, GL_STATIC_DRAW);
+            // 1. then set the vertex attributes pointers
+            glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+            glEnableVertexAttribArray(0);
+        }
 
-    unsigned int VAO2;
-    unsigned int VBO2;
-    {
-        glGenVertexArrays(1, &VAO2);
+        {
+            glBindVertexArray(VAOs[1]);
 
-        // ..:: Initialization code (done once (unless your object frequently changes)) :: ..
-        // 1. bind Vertex Array Object ???????
-        glBindVertexArray(VAO2);
-
-        glGenBuffers(1, &VBO2);
-
-        // 0. copy our vertices array in a buffer for OpenGL to use
-        glBindBuffer(GL_ARRAY_BUFFER, VBO2);
-        glBufferData(GL_ARRAY_BUFFER, sizeof(vertices2), vertices2, GL_STATIC_DRAW);
-        // 1. then set the vertex attributes pointers
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-        glEnableVertexAttribArray(0);
+            // 0. copy our vertices array in a buffer for OpenGL to use
+            glBindBuffer(GL_ARRAY_BUFFER, VBOs[1]);
+            glBufferData(GL_ARRAY_BUFFER, sizeof(vertices2), vertices2, GL_STATIC_DRAW);
+            // 1. then set the vertex attributes pointers
+            glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+            glEnableVertexAttribArray(0);
+        }
     }
 
     // unsigned int EBO;
@@ -223,11 +217,11 @@ int main(void)
         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        glBindVertexArray(VAO1);
+        glBindVertexArray(VAOs[0]);
         glDrawArrays(GL_TRIANGLES, 0, 3);
         // glDrawElements(GL_TRIANGLES, sizeof(indices), GL_UNSIGNED_INT, 0);
 
-        glBindVertexArray(VAO2);
+        glBindVertexArray(VAOs[1]);
         glDrawArrays(GL_TRIANGLES, 0, 3);
 
         glBindVertexArray(0);
