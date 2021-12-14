@@ -149,17 +149,21 @@ int main(void)
         return -1;
 
     float vertices[] = {
-        0.5f, 0.5f, 0.0f,   // top right
+        // first triangle
+        0.5f, 0.5f, 0.0f,  // top right
+        0.5f, -0.5f, 0.0f, // bottom right
+        -0.5f, 0.5f, 0.0f, // top left
+        // second triangle
         0.5f, -0.5f, 0.0f,  // bottom right
         -0.5f, -0.5f, 0.0f, // bottom left
-        -0.5f, 0.5f, 0.0f,  // top left
-        0.0f, 0.7f, 0.0f    // central up
+        -0.5f, 0.5f, 0.0f   // top left
     };
-    unsigned int indices[] = {
-        0, 1, 2, // first triangle
-        1, 2, 3,
-        0, 3, 4 // second triangle
-    };
+
+    // unsigned int indices[] = {
+    //     0, 1, 2, // first triangle
+    //     1, 2, 3,
+    //     0, 3, 4 // second triangle
+    // };
 
     unsigned int VAO;
     {
@@ -182,12 +186,12 @@ int main(void)
         glEnableVertexAttribArray(0);
     }
 
-    unsigned int EBO;
-    {
-        glGenBuffers(1, &EBO);
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-    }
+    // unsigned int EBO;
+    // {
+    //     glGenBuffers(1, &EBO);
+    //     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+    //     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+    // }
 
     // 2. use our shader program when we want to render an object
     glUseProgram(shaderProgram);
@@ -200,7 +204,8 @@ int main(void)
         glClear(GL_COLOR_BUFFER_BIT);
 
         glBindVertexArray(VAO);
-        glDrawElements(GL_TRIANGLES, sizeof(indices), GL_UNSIGNED_INT, 0);
+        glDrawArrays(GL_TRIANGLES, 0, 6);
+        // glDrawElements(GL_TRIANGLES, sizeof(indices), GL_UNSIGNED_INT, 0);
         glBindVertexArray(0);
 
         glfwSwapBuffers(window);
