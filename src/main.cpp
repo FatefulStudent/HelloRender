@@ -46,16 +46,28 @@ bool CreateVertexShader(unsigned int& vertexShader)
     return CreateShader(vertexShaderSource, GL_VERTEX_SHADER, "VERTEX", vertexShader);
 }
 
-bool CreateFragmentShader(unsigned int& fragmentShader)
+bool CreateFragmentShader1(unsigned int& fragmentShader1)
 {
-    const char* fragmentShaderSource = "#version 330 core\n"
-                                       "out vec4 FragColor;\n"
-                                       "void main()\n"
-                                       "{\n"
-                                       "FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
-                                       "}\0;";
+    const char* fragmentShader1Source = "#version 330 core\n"
+                                        "out vec4 FragColor;\n"
+                                        "void main()\n"
+                                        "{\n"
+                                        "FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
+                                        "}\0;";
 
-    return CreateShader(fragmentShaderSource, GL_FRAGMENT_SHADER, "FRAGMENT", fragmentShader);
+    return CreateShader(fragmentShader1Source, GL_FRAGMENT_SHADER, "FRAGMENT", fragmentShader1);
+}
+
+bool CreateFragmentShader2(unsigned int& fragmentShader2)
+{
+    const char* fragmentShader2Source = "#version 330 core\n"
+                                        "out vec4 FragColor;\n"
+                                        "void main()\n"
+                                        "{\n"
+                                        "FragColor = vec4(1.0f, 1.0f, 0.f, 1.0f);\n"
+                                        "}\0;";
+
+    return CreateShader(fragmentShader2Source, GL_FRAGMENT_SHADER, "FRAGMENT", fragmentShader2);
 }
 
 GLFWwindow* CreateWindow()
@@ -138,14 +150,24 @@ int main(void)
     if (!CreateVertexShader(vertexShader))
         return -1;
 
-    unsigned int fragmentShader;
-    if (!CreateFragmentShader(fragmentShader))
+    unsigned int fragmentShader1;
+    if (!CreateFragmentShader1(fragmentShader1))
         return -1;
 
-    unsigned int shaderProgram;
-    shaderProgram = glCreateProgram();
+    unsigned int fragmentShader2;
+    if (!CreateFragmentShader2(fragmentShader2))
+        return -1;
 
-    if (!LinkShadersToProgram(shaderProgram, vertexShader, fragmentShader))
+    unsigned int shaderProgram1;
+    shaderProgram1 = glCreateProgram();
+
+    if (!LinkShadersToProgram(shaderProgram1, vertexShader, fragmentShader1))
+        return -1;
+
+    unsigned int shaderProgram2;
+    shaderProgram2 = glCreateProgram();
+
+    if (!LinkShadersToProgram(shaderProgram2, vertexShader, fragmentShader2))
         return -1;
 
     float vertices1[] = {
@@ -208,19 +230,20 @@ int main(void)
     // }
 
     // 2. use our shader program when we want to render an object
-    glUseProgram(shaderProgram);
 
-    glClearColor(0.f, 0.f, 1.0f, 1.0f);
+    glClearColor(0.f, 0.f, 0.0f, 1.0f);
 
     while (!ShouldCloseWindow(window))
     {
-        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
         glClear(GL_COLOR_BUFFER_BIT);
 
+        glUseProgram(shaderProgram1);
         glBindVertexArray(VAOs[0]);
         glDrawArrays(GL_TRIANGLES, 0, 3);
         // glDrawElements(GL_TRIANGLES, sizeof(indices), GL_UNSIGNED_INT, 0);
 
+        glUseProgram(shaderProgram2);
         glBindVertexArray(VAOs[1]);
         glDrawArrays(GL_TRIANGLES, 0, 3);
 
