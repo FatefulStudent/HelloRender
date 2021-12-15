@@ -1,3 +1,4 @@
+#include <cmath>
 #include <cstdlib>
 #include <iostream>
 
@@ -37,10 +38,12 @@ bool CreateShader(const char* shaderSource, int shaderType, const char* shaderTy
 bool CreateVertexShader(unsigned int& vertexShader)
 {
     const char* vertexShaderSource = "#version 420 core\n"
+                                     "out vec3 Location;"
                                      "layout (location = 0) in vec3 aPos;\n"
                                      "void main()\n"
                                      "{\n"
                                      "   gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
+                                     "   Location = aPos;"
                                      "}\0";
 
     return CreateShader(vertexShaderSource, GL_VERTEX_SHADER, "VERTEX", vertexShader);
@@ -49,10 +52,12 @@ bool CreateVertexShader(unsigned int& vertexShader)
 bool CreateFragmentShader1(unsigned int& fragmentShader1)
 {
     const char* fragmentShader1Source = "#version 330 core\n"
+                                        "in vec3 Location;"
+                                        "uniform float BlueColor;"
                                         "out vec4 FragColor;\n"
                                         "void main()\n"
                                         "{\n"
-                                        "FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
+                                        "FragColor = vec4(Location.xy, BlueColor, 1.0f);\n"
                                         "}\0;";
 
     return CreateShader(fragmentShader1Source, GL_FRAGMENT_SHADER, "FRAGMENT", fragmentShader1);
@@ -61,10 +66,11 @@ bool CreateFragmentShader1(unsigned int& fragmentShader1)
 bool CreateFragmentShader2(unsigned int& fragmentShader2)
 {
     const char* fragmentShader2Source = "#version 330 core\n"
+                                        "in vec3 Location;"
                                         "out vec4 FragColor;\n"
                                         "void main()\n"
                                         "{\n"
-                                        "FragColor = vec4(1.0f, 1.0f, 0.f, 1.0f);\n"
+                                        "FragColor = vec4(-Location, 1.0f);\n"
                                         "}\0;";
 
     return CreateShader(fragmentShader2Source, GL_FRAGMENT_SHADER, "FRAGMENT", fragmentShader2);
@@ -194,29 +200,24 @@ int main(void)
     unsigned int VBOs[2];
     {
         glGenVertexArrays(2, VAOs);
+        glGenBuffers(2, VBOs);
 
         {
-            // ..:: Initialization code (done once (unless your object frequently changes)) :: ..
-            // 1. bind Vertex Array Object ???????
-            glBindVertexArray(VAOs[0]);
-
-            glGenBuffers(2, VBOs);
-
-            // 0. copy our vertices array in a buffer for OpenGL to use
             glBindBuffer(GL_ARRAY_BUFFER, VBOs[0]);
             glBufferData(GL_ARRAY_BUFFER, sizeof(vertices1), vertices1, GL_STATIC_DRAW);
-            // 1. then set the vertex attributes pointers
+
+            glBindVertexArray(VAOs[0]);
+
             glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
             glEnableVertexAttribArray(0);
         }
 
         {
-            glBindVertexArray(VAOs[1]);
-
-            // 0. copy our vertices array in a buffer for OpenGL to use
             glBindBuffer(GL_ARRAY_BUFFER, VBOs[1]);
             glBufferData(GL_ARRAY_BUFFER, sizeof(vertices2), vertices2, GL_STATIC_DRAW);
-            // 1. then set the vertex attributes pointers
+
+            glBindVertexArray(VAOs[1]);
+
             glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
             glEnableVertexAttribArray(0);
         }
@@ -239,6 +240,12 @@ int main(void)
         glClear(GL_COLOR_BUFFER_BIT);
 
         glUseProgram(shaderProgram1);
+        // update the uniform color
+        float timeValue = glfwGetTime();
+        float greenValue = sin(timeValue) / 2.0f + 0.5f;
+        int vertexColorLocation = glGetUniformLocation(shaderProgram1, "BlueColor");
+        glUniform1f(vertexColorLocation, greenValue);
+
         glBindVertexArray(VAOs[0]);
         glDrawArrays(GL_TRIANGLES, 0, 3);
         // glDrawElements(GL_TRIANGLES, sizeof(indices), GL_UNSIGNED_INT, 0);
