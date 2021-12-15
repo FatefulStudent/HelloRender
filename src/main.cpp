@@ -1,9 +1,23 @@
 #include <cmath>
 #include <cstdlib>
 #include <iostream>
+#include <vector>
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
+
+struct Vector3
+{
+    float x = 0.0f;
+    float y = 0.0f;
+    float z = 0.0f;
+};
+
+struct VertexData
+{
+    Vector3 Location{};
+    Vector3 Color{};
+};
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
@@ -38,42 +52,46 @@ bool CreateShader(const char* shaderSource, int shaderType, const char* shaderTy
 bool CreateVertexShader(unsigned int& vertexShader)
 {
     const char* vertexShaderSource = "#version 420 core\n"
-                                     "out vec3 Location;"
-                                     "layout (location = 0) in vec3 aPos;\n"
+                                     "out vec3 Position;"
+                                     "out vec3 Color;"
+                                     "layout (location = 0) in vec3 aPosition;\n"
+                                     "layout (location = 1) in vec3 aColor;\n"
                                      "void main()\n"
                                      "{\n"
-                                     "   gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
-                                     "   Location = aPos;"
+                                     "   gl_Position = vec4(aPosition, 1.0);\n"
+                                     "   Position = aPosition;"
+                                     "   Color = aColor;"
                                      "}\0";
 
     return CreateShader(vertexShaderSource, GL_VERTEX_SHADER, "VERTEX", vertexShader);
 }
 
-bool CreateFragmentShader1(unsigned int& fragmentShader1)
+bool CreateFragmentShader1(unsigned int& fragmentShader2)
+{
+    const char* fragmentShader2Source = "#version 330 core\n"
+                                        "in vec3 Position;"
+                                        "in vec3 Color;"
+                                        "out vec4 FragColor;\n"
+                                        "void main()\n"
+                                        "{\n"
+                                        "FragColor = vec4(Color, 1.0f);\n"
+                                        "}\0;";
+
+    return CreateShader(fragmentShader2Source, GL_FRAGMENT_SHADER, "FRAGMENT", fragmentShader2);
+}
+
+bool CreateFragmentShader2(unsigned int& fragmentShader1)
 {
     const char* fragmentShader1Source = "#version 330 core\n"
-                                        "in vec3 Location;"
+                                        "in vec3 Position;"
                                         "uniform float BlueColor;"
                                         "out vec4 FragColor;\n"
                                         "void main()\n"
                                         "{\n"
-                                        "FragColor = vec4(Location.xy, BlueColor, 1.0f);\n"
+                                        "FragColor = vec4(-Position.xy, BlueColor, 1.0f);\n"
                                         "}\0;";
 
     return CreateShader(fragmentShader1Source, GL_FRAGMENT_SHADER, "FRAGMENT", fragmentShader1);
-}
-
-bool CreateFragmentShader2(unsigned int& fragmentShader2)
-{
-    const char* fragmentShader2Source = "#version 330 core\n"
-                                        "in vec3 Location;"
-                                        "out vec4 FragColor;\n"
-                                        "void main()\n"
-                                        "{\n"
-                                        "FragColor = vec4(-Location, 1.0f);\n"
-                                        "}\0;";
-
-    return CreateShader(fragmentShader2Source, GL_FRAGMENT_SHADER, "FRAGMENT", fragmentShader2);
 }
 
 GLFWwindow* CreateWindow()
@@ -176,25 +194,18 @@ int main(void)
     if (!LinkShadersToProgram(shaderProgram2, vertexShader, fragmentShader2))
         return -1;
 
-    float vertices1[] = {
-        // first triangle
-        0.5f, 0.5f, 0.0f,  // top right
-        0.5f, -0.5f, 0.0f, // bottom right
-        -0.5f, 0.5f, 0.0f, // top left
+    std::vector<VertexData> Vertices1 = {
+        // location          colour
+        {{0.5f, 0.5f, 0.0f}, {1.0f, 0.0f, 0.0f}},  // top right
+        {{0.5f, -0.5f, 0.0f}, {0.0f, 1.0f, 0.0f}}, // bottom right
+        {{-0.5f, 0.5f, 0.0f}, {0.0f, 0.0f, 1.0f}}, // top left
     };
 
-    float vertices2[] = {
-        // second triangle
-        0.5f, -0.5f, 0.0f,  // bottom right
-        -0.5f, -0.5f, 0.0f, // bottom left
-        -0.5f, 0.5f, 0.0f   // top left
+    std::vector<Vector3> Vertices2 = {
+        {0.5f, -0.5f, 0.0f},  // bottom right
+        {-0.5f, -0.5f, 0.0f}, // bottom left
+        {-0.5f, 0.5f, 0.0f},  // top left
     };
-
-    // unsigned int indices[] = {
-    //     0, 1, 2, // first triangle
-    //     1, 2, 3,
-    //     0, 3, 4 // second triangle
-    // };
 
     unsigned int VAOs[2];
     unsigned int VBOs[2];
@@ -204,33 +215,27 @@ int main(void)
 
         {
             glBindBuffer(GL_ARRAY_BUFFER, VBOs[0]);
-            glBufferData(GL_ARRAY_BUFFER, sizeof(vertices1), vertices1, GL_STATIC_DRAW);
+            glBufferData(GL_ARRAY_BUFFER, Vertices1.size() * sizeof(VertexData), Vertices1.data(), GL_STATIC_DRAW);
 
             glBindVertexArray(VAOs[0]);
 
-            glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+            glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(VertexData), (void*)0);
             glEnableVertexAttribArray(0);
+
+            glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(VertexData), (void*)sizeof(Vector3));
+            glEnableVertexAttribArray(1);
         }
 
         {
             glBindBuffer(GL_ARRAY_BUFFER, VBOs[1]);
-            glBufferData(GL_ARRAY_BUFFER, sizeof(vertices2), vertices2, GL_STATIC_DRAW);
+            glBufferData(GL_ARRAY_BUFFER, Vertices2.size() * sizeof(Vector3), Vertices2.data(), GL_STATIC_DRAW);
 
             glBindVertexArray(VAOs[1]);
 
-            glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+            glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vector3), (void*)0);
             glEnableVertexAttribArray(0);
         }
     }
-
-    // unsigned int EBO;
-    // {
-    //     glGenBuffers(1, &EBO);
-    //     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-    //     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-    // }
-
-    // 2. use our shader program when we want to render an object
 
     glClearColor(0.f, 0.f, 0.0f, 1.0f);
 
@@ -240,17 +245,15 @@ int main(void)
         glClear(GL_COLOR_BUFFER_BIT);
 
         glUseProgram(shaderProgram1);
-        // update the uniform color
-        float timeValue = glfwGetTime();
-        float greenValue = sin(timeValue) / 2.0f + 0.5f;
-        int vertexColorLocation = glGetUniformLocation(shaderProgram1, "BlueColor");
-        glUniform1f(vertexColorLocation, greenValue);
-
         glBindVertexArray(VAOs[0]);
         glDrawArrays(GL_TRIANGLES, 0, 3);
-        // glDrawElements(GL_TRIANGLES, sizeof(indices), GL_UNSIGNED_INT, 0);
 
         glUseProgram(shaderProgram2);
+        // update the uniform color
+        float timeValue = glfwGetTime();
+        float blueValue = sin(timeValue) / 2.0f + 0.5f;
+        int vertexColorLocation = glGetUniformLocation(shaderProgram2, "BlueColor");
+        glUniform1f(vertexColorLocation, blueValue);
         glBindVertexArray(VAOs[1]);
         glDrawArrays(GL_TRIANGLES, 0, 3);
 
