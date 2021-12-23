@@ -13,6 +13,7 @@ const std::map<EShaderType, int> ShaderInstance::ShaderTypeToGLShaderType =
 
 ShaderInstance::ShaderInstance(EShaderType shaderType,
                                const char* shaderSource) {
+    static char infoLog[512];
     if (shaderType == EShaderType::Undefined) {
         std::cerr << "ERROR::SHADER::INSTANCE ShaderType is Undefined.\n"
                   << std::endl;

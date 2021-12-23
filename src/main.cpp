@@ -1,12 +1,14 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
+#include <cassert>
 #include <cmath>
 #include <cstdlib>
 #include <iostream>
 #include <vector>
 
 #include "shaderInstance.h"
+#include "shaderProgram.h"
 
 struct Vector3 {
     float x = 0.0f;
@@ -27,23 +29,7 @@ void error_callback(int error, const char* description) {
     fprintf(stderr, "Error: %s\n", description);
 }
 
-bool CreateShader(const char* shaderSource,
-                  EShaderType shaderType,
-                  unsigned int& outShader) {
-    try {
-        ShaderInstance* shaderInstance =
-            new ShaderInstance(shaderType, shaderSource);
-
-        outShader = shaderInstance->GetShaderID();
-
-        delete shaderInstance;
-        return true;
-    } catch (int) {
-        return false;
-    }
-}
-
-bool CreateVertexShader(unsigned int& vertexShader) {
+ShaderInstance* CreateVertexShader() {
     const char* vertexShaderSource =
         "#version 420 core\n"
         "out vec3 Position;"
@@ -57,12 +43,11 @@ bool CreateVertexShader(unsigned int& vertexShader) {
         "   Color = aColor;"
         "}\0";
 
-    return CreateShader(vertexShaderSource, EShaderType::Vertex,
-                        vertexShader);
+    return new ShaderInstance(EShaderType::Vertex, vertexShaderSource);
 }
 
-bool CreateFragmentShader1(unsigned int& fragmentShader2) {
-    const char* fragmentShader2Source =
+ShaderInstance* CreateFragmentShader1() {
+    const char* fragmentShader1Source =
         "#version 420 core\n"
         "in vec3 Position;"
         "in vec3 Color;"
@@ -72,12 +57,12 @@ bool CreateFragmentShader1(unsigned int& fragmentShader2) {
         "    FragColor = vec4(Color, 1.0f);\n"
         "}\0;";
 
-    return CreateShader(fragmentShader2Source, EShaderType::Fragment,
-                        fragmentShader2);
+    return new ShaderInstance(EShaderType::Fragment,
+                              fragmentShader1Source);
 }
 
-bool CreateFragmentShader2(unsigned int& fragmentShader1) {
-    const char* fragmentShader1Source =
+ShaderInstance* CreateFragmentShader2() {
+    const char* fragmentShader2Source =
         "#version 420 core\n"
         "in vec3 Position;"
         "uniform float BlueColor;"
@@ -87,8 +72,8 @@ bool CreateFragmentShader2(unsigned int& fragmentShader1) {
         "    FragColor = vec4(-Position.xy, BlueColor, 1.0f);\n"
         "}\0;";
 
-    return CreateShader(fragmentShader1Source, EShaderType::Fragment,
-                        fragmentShader1);
+    return new ShaderInstance(EShaderType::Fragment,
+                              fragmentShader2Source);
 }
 
 GLFWwindow* CreateWindow() {
@@ -121,30 +106,6 @@ GLFWwindow* CreateWindow() {
     return window;
 }
 
-bool LinkShadersToProgram(unsigned int shaderProgram,
-                          unsigned int vertexShader,
-                          unsigned int fragmentShader) {
-    glAttachShader(shaderProgram, vertexShader);
-    glAttachShader(shaderProgram, fragmentShader);
-    glLinkProgram(shaderProgram);
-
-    int success;
-    glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
-
-    if (!success) {
-        static char infoLog[512];
-        glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
-        std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n"
-                  << infoLog << std::endl;
-        return false;
-    }
-
-    glDeleteShader(vertexShader);
-    glDeleteShader(fragmentShader);
-
-    return true;
-}
-
 bool ShouldCloseWindow(GLFWwindow* window) {
     return glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS ||
            glfwWindowShouldClose(window) == 1;
@@ -163,31 +124,22 @@ int main(void) {
         return -1;
     }
 
-    unsigned int vertexShader;
-    if (!CreateVertexShader(vertexShader))
-        return -1;
+    ShaderProgram* shaderProgram1;
+    {
+        ShaderInstance* vertexShaderInstance = CreateVertexShader();
+        ShaderInstance* fragmentShaderInstance1 = CreateFragmentShader1();
+        shaderProgram1 = new ShaderProgram(
+            vertexShaderInstance, fragmentShaderInstance1);
+    }
 
-    unsigned int fragmentShader1;
-    if (!CreateFragmentShader1(fragmentShader1))
-        return -1;
+    ShaderProgram* shaderProgram2;
+    {
+        ShaderInstance* vertexShaderInstance = CreateVertexShader();
+        ShaderInstance* fragmentShaderInstance2 = CreateFragmentShader2();
 
-    unsigned int fragmentShader2;
-    if (!CreateFragmentShader2(fragmentShader2))
-        return -1;
-
-    unsigned int shaderProgram1;
-    shaderProgram1 = glCreateProgram();
-
-    if (!LinkShadersToProgram(shaderProgram1, vertexShader,
-                              fragmentShader1))
-        return -1;
-
-    unsigned int shaderProgram2;
-    shaderProgram2 = glCreateProgram();
-
-    if (!LinkShadersToProgram(shaderProgram2, vertexShader,
-                              fragmentShader2))
-        return -1;
+        shaderProgram2 = new ShaderProgram(
+            vertexShaderInstance, fragmentShaderInstance2);
+    }
 
     std::vector<VertexData> Vertices1 = {
         // location          colour
@@ -246,25 +198,29 @@ int main(void) {
         glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        glUseProgram(shaderProgram1);
-        glBindVertexArray(VAOs[0]);
-        glDrawArrays(GL_TRIANGLES, 0, 3);
+        {
+            shaderProgram1->use();
+            glBindVertexArray(VAOs[0]);
+            glDrawArrays(GL_TRIANGLES, 0, 3);
+        }
 
-        glUseProgram(shaderProgram2);
-        // update the uniform color
-        float timeValue = glfwGetTime();
-        float blueValue = sin(timeValue) / 2.0f + 0.5f;
-        int vertexColorLocation =
-            glGetUniformLocation(shaderProgram2, "BlueColor");
-        glUniform1f(vertexColorLocation, blueValue);
-        glBindVertexArray(VAOs[1]);
-        glDrawArrays(GL_TRIANGLES, 0, 3);
+        {
+            shaderProgram2->use();
+            float timeValue = glfwGetTime();
+            float blueValue = sin(timeValue) / 2.0f + 0.5f;
+            shaderProgram2->setFloat("BlueColor", blueValue);
+            glBindVertexArray(VAOs[1]);
+            glDrawArrays(GL_TRIANGLES, 0, 3);
+        }
 
         glBindVertexArray(0);
 
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
+    
+    delete shaderProgram1;
+    delete shaderProgram2;
 
     glfwTerminate();
     return 0;
