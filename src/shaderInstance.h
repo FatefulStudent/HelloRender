@@ -2,17 +2,12 @@
 #define SHADER_INSTANCE_H
 
 #include <GL/glew.h>
+
 #include <map>
 
-enum EShaderType
-{
-    Undefined,
-    Vertex,
-    Fragment
-};
+enum EShaderType { Undefined, Vertex, Fragment };
 
-class ShaderInstance
-{
+class ShaderInstance {
 private:
     static const std::map<EShaderType, int> ShaderTypeToGLShaderType;
     static char infoLog[512];
