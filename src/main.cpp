@@ -6,6 +6,8 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
+#include "shaderInstance.h"
+
 struct Vector3
 {
     float x = 0.0f;
@@ -29,24 +31,23 @@ void error_callback(int error, const char* description)
     fprintf(stderr, "Error: %s\n", description);
 }
 
-bool CreateShader(const char* shaderSource, int shaderType, const char* shaderTypeForLog, unsigned int& outShader)
+bool CreateShader(const char* shaderSource, EShaderType shaderType,
+    unsigned int& outShader)
 {
-    outShader = glCreateShader(shaderType);
-    glShaderSource(outShader, 1, &shaderSource, NULL);
-    glCompileShader(outShader);
-
-    int success;
-    glGetShaderiv(outShader, GL_COMPILE_STATUS, &success);
-
-    if (!success)
+    try
     {
-        static char infoLog[512];
-        glGetShaderInfoLog(outShader, 512, NULL, infoLog);
-        std::cout << "ERROR::SHADER::" << *shaderTypeForLog << "::COMPILATION_FAILED\n"
-                  << infoLog << std::endl;
+        ShaderInstance* shaderInstance =
+            new ShaderInstance(shaderType, shaderSource);
+
+        outShader = shaderInstance->GetShaderID();
+
+        delete shaderInstance;
+        return true;
+    }
+    catch (int)
+    {
         return false;
     }
-    return true;
 }
 
 bool CreateVertexShader(unsigned int& vertexShader)
@@ -63,7 +64,8 @@ bool CreateVertexShader(unsigned int& vertexShader)
                                      "   Color = aColor;"
                                      "}\0";
 
-    return CreateShader(vertexShaderSource, GL_VERTEX_SHADER, "VERTEX", vertexShader);
+    return CreateShader(
+        vertexShaderSource, EShaderType::Vertex, vertexShader);
 }
 
 bool CreateFragmentShader1(unsigned int& fragmentShader2)
@@ -77,7 +79,8 @@ bool CreateFragmentShader1(unsigned int& fragmentShader2)
                                         "FragColor = vec4(Color, 1.0f);\n"
                                         "}\0;";
 
-    return CreateShader(fragmentShader2Source, GL_FRAGMENT_SHADER, "FRAGMENT", fragmentShader2);
+    return CreateShader(
+        fragmentShader2Source, EShaderType::Fragment, fragmentShader2);
 }
 
 bool CreateFragmentShader2(unsigned int& fragmentShader1)
@@ -91,7 +94,8 @@ bool CreateFragmentShader2(unsigned int& fragmentShader1)
                                         "FragColor = vec4(-Position.xy, BlueColor, 1.0f);\n"
                                         "}\0;";
 
-    return CreateShader(fragmentShader1Source, GL_FRAGMENT_SHADER, "FRAGMENT", fragmentShader1);
+    return CreateShader(
+        fragmentShader1Source, EShaderType::Fragment, fragmentShader1);
 }
 
 GLFWwindow* CreateWindow()
