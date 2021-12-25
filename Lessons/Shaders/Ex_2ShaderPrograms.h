@@ -1,7 +1,7 @@
 #ifndef TEST_2_SHADER_PROGRAM_H
 #define TEST_2_SHADER_PROGRAM_H
 
-#include "Lessons/BaseExcercise.h"
+#include "../../Lessons/BaseExcercise.h"
 
 #include "Helper/VertexData.h"
 

@@ -1,7 +1,7 @@
 #ifndef EX_SIMPLE_TRIANGLE_H
 #define EX_SIMPLE_TRIANGLE_H
 
-#include "Lessons/BaseExcercise.h"
+#include "../../Lessons/BaseExcercise.h"
 
 #include "Helper/VertexData.h"
 

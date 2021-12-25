@@ -11,12 +11,13 @@ include_directories(
 	libs/glew-2.1.0/include/
 	libs/glfw-3.3.5/include/
 	src/
+	Lessons/
 )
 
 add_executable(HelloRender 
-	./src/Lessons/BaseExcercise.h
-	./src/Lessons/HelloTriangle/Ex_SimpleTriangle.h
-	./src/Lessons/Shaders/Ex_2ShaderPrograms.h
+	./Lessons/BaseExcercise.h
+	./Lessons/HelloTriangle/Ex_SimpleTriangle.h
+	./Lessons/Shaders/Ex_2ShaderPrograms.h
 	./src/Helper/ApplicationHelper.h
 	./src/Helper/VertexData.h
 	./src/shaderInstance.h
@@ -24,9 +25,9 @@ add_executable(HelloRender
 
 	./src/main.cpp
 
-	./src/Lessons/BaseExcercise.cpp
-	./src/Lessons/HelloTriangle/Ex_SimpleTriangle.cpp
-	./src/Lessons/Shaders/Ex_2ShaderPrograms.cpp
+	./Lessons/BaseExcercise.cpp
+	./Lessons/HelloTriangle/Ex_SimpleTriangle.cpp
+	./Lessons/Shaders/Ex_2ShaderPrograms.cpp
 	./src/Helper/ApplicationHelper.cpp
 	./src/shaderInstance.cpp
 	./src/shaderProgram.cpp

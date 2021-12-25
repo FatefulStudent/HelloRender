@@ -17,9 +17,9 @@ namespace SimpleTriangleLocal {
 
 ShaderProgram* CreateShaderProgram() {
     const char* vertexShaderPath =
-        "src/Lessons/HelloTriangle/shaders/simpleShader.vert";
+        "Lessons/HelloTriangle/shaders/simpleShader.vert";
     const char* fragmentShaderPath =
-        "src/Lessons/HelloTriangle/shaders/simpleShader.frag";
+        "Lessons/HelloTriangle/shaders/simpleShader.frag";
 
     return new ShaderProgram(vertexShaderPath, fragmentShaderPath);
 }

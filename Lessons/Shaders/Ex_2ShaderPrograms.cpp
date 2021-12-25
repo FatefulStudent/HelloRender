@@ -17,18 +17,18 @@ namespace Ex_2ShaderProgramsLocal {
 
 ShaderProgram* CreateShaderProgramWithColorInVertexData() {
     const char* vertexPath =
-        "src/Lessons/Shaders/shaders/shaderWithPositionAndColor.vert";
+        "Lessons/Shaders/shaders/shaderWithPositionAndColor.vert";
     const char* fragmentPath =
-        "src/Lessons/Shaders/shaders/shaderThatUsesInColor.frag";
+        "Lessons/Shaders/shaders/shaderThatUsesInColor.frag";
 
     return new ShaderProgram(vertexPath, fragmentPath);
 }
 
 ShaderProgram* CreateShaderProgramWithUniformColor() {
     const char* vertexPath =
-        "src/Lessons/Shaders/shaders/shaderWithPositionAndColor.vert";
+        "Lessons/Shaders/shaders/shaderWithPositionAndColor.vert";
     const char* fragmentPath =
-        "src/Lessons/Shaders/shaders/shaderWithUniformBlueColor.frag";
+        "Lessons/Shaders/shaders/shaderWithUniformBlueColor.frag";
 
     return new ShaderProgram(vertexPath, fragmentPath);
 }
