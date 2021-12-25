@@ -1,7 +1,6 @@
 #include "Test_SimpleTriangle.h"
 
 #include "Helper/ApplicationHelper.h"
-#include "Helper/ShaderHelper.h"
 #include "Helper/VertexData.h"
 #include "shaderInstance.h"
 #include "shaderProgram.h"
@@ -14,10 +13,48 @@
 #include <iostream>
 #include <vector>
 
+namespace SimpleTriangleLocal {
+
+// @TODO: move to separate shader files
+ShaderInstance* CreateVertexShader() {
+    const char* vertexShaderSource =
+        "#version 420 core\n"
+        "out vec3 Position;"
+        "layout (location = 0) in vec3 aPosition;\n"
+        "void main()\n"
+        "{\n"
+        "   gl_Position = vec4(aPosition, 1.0);\n"
+        "   Position = aPosition;"
+        "}\0";
+
+    return new ShaderInstance(EShaderType::Vertex, vertexShaderSource);
+}
+
+ShaderInstance* CreateFragmentShader() {
+    const char* fragmentShaderSource =
+        "#version 420 core\n"
+        "in vec3 Position;"
+        "out vec4 FragColor;\n"
+        "void main()\n"
+        "{\n"
+        "    FragColor = vec4(Position, 0.0f);\n"
+        "}\0;";
+
+    return new ShaderInstance(EShaderType::Fragment, fragmentShaderSource);
+}
+
+ShaderProgram* CreateShaderProgram() {
+    ShaderInstance* vertexShaderInstance = CreateVertexShader();
+    ShaderInstance* fragmentShaderInstance1 = CreateFragmentShader();
+    return new ShaderProgram(vertexShaderInstance,
+                             fragmentShaderInstance1);
+}
+}  // namespace SimpleTriangleLocal
+
 void Test_SimpleTriangle::Initialize() {
     BaseTest::Initialize();
 
-    m_shaderProgram = ShaderHelper::CreateShaderProgram2();
+    m_shaderProgram = SimpleTriangleLocal::CreateShaderProgram();
 
     m_vertices = {
         {0.5f, -0.5f, 0.0f},   // bottom right
