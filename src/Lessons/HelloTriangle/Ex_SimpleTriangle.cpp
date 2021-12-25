@@ -1,4 +1,4 @@
-#include "Test_SimpleTriangle.h"
+#include "Ex_SimpleTriangle.h"
 
 #include "Helper/ApplicationHelper.h"
 #include "Helper/VertexData.h"
@@ -16,32 +16,17 @@
 namespace SimpleTriangleLocal {
 
 ShaderProgram* CreateShaderProgram() {
-    // @TODO: move to separate shader files
-    const char* vertexShaderSource =
-        "#version 420 core\n"
-        "out vec3 Position;"
-        "layout (location = 0) in vec3 aPosition;\n"
-        "void main()\n"
-        "{\n"
-        "   gl_Position = vec4(aPosition, 1.0);\n"
-        "   Position = aPosition;"
-        "}\0";
+    const char* vertexShaderPath =
+        "src/Lessons/HelloTriangle/shaders/simpleShader.vert";
+    const char* fragmentShaderPath =
+        "src/Lessons/HelloTriangle/shaders/simpleShader.frag";
 
-    const char* fragmentShaderSource =
-        "#version 420 core\n"
-        "in vec3 Position;"
-        "out vec4 FragColor;\n"
-        "void main()\n"
-        "{\n"
-        "    FragColor = vec4(Position, 0.0f);\n"
-        "}\0;";
-
-    return new ShaderProgram(vertexShaderSource, fragmentShaderSource);
+    return new ShaderProgram(vertexShaderPath, fragmentShaderPath);
 }
 }  // namespace SimpleTriangleLocal
 
-void Test_SimpleTriangle::Initialize() {
-    BaseTest::Initialize();
+void Ex_SimpleTriangle::Initialize() {
+    BaseExcercise::Initialize();
 
     m_shaderProgram = SimpleTriangleLocal::CreateShaderProgram();
 
@@ -67,15 +52,15 @@ void Test_SimpleTriangle::Initialize() {
     }
 }
 
-void Test_SimpleTriangle::Tick() {
-    BaseTest::Tick();
+void Ex_SimpleTriangle::Tick() {
+    BaseExcercise::Tick();
 
     m_shaderProgram->use();
     glBindVertexArray(m_VAO);
     glDrawArrays(GL_TRIANGLES, 0, 3);
 }
 
-void Test_SimpleTriangle::Finalize() {
-    BaseTest::Finalize();
+void Ex_SimpleTriangle::Finalize() {
+    BaseExcercise::Finalize();
     delete m_shaderProgram;
 }

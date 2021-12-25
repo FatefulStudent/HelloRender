@@ -1,7 +1,7 @@
-#ifndef TEST_2_SIMPLE_TRIANGLE_H
-#define TEST_2_SIMPLE_TRIANGLE_H
+#ifndef EX_SIMPLE_TRIANGLE_H
+#define EX_SIMPLE_TRIANGLE_H
 
-#include "BaseTest.h"
+#include "Lessons/BaseExcercise.h"
 
 #include "Helper/VertexData.h"
 
@@ -9,10 +9,10 @@
 
 class ShaderProgram;
 
-class Test_SimpleTriangle : public BaseTest {
+class Ex_SimpleTriangle : public BaseExcercise {
 public:
-    Test_SimpleTriangle(){};
-    virtual ~Test_SimpleTriangle(){};
+    Ex_SimpleTriangle(){};
+    virtual ~Ex_SimpleTriangle(){};
 
     virtual void Initialize() override;
     virtual void Tick() override;

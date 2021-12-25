@@ -8,12 +8,12 @@
 #include <iostream>
 #include <sstream>
 
-ShaderProgram::ShaderProgram(const char* vertexShaderSource,
-                             const char* fragmentShaderSource) {
+ShaderProgram::ShaderProgram(const char* vertexShaderPath,
+                             const char* fragmentShaderPath) {
     ShaderInstance* vertexShader =
-        new ShaderInstance(EShaderType::Vertex, vertexShaderSource);
+        new ShaderInstance(EShaderType::Vertex, vertexShaderPath);
     ShaderInstance* fragmentShader =
-        new ShaderInstance(EShaderType::Fragment, fragmentShaderSource);
+        new ShaderInstance(EShaderType::Fragment, fragmentShaderPath);
 
     ConstructShaderProgramFromShaderInstances(vertexShader,
                                               fragmentShader);

@@ -1,10 +1,10 @@
 #include "Helper/ApplicationHelper.h"
-#include "Tests/Test_2ShaderPrograms.h"
+#include "Lessons/Shaders/Ex_2ShaderPrograms.h"
 
 int main(void) {
     Application* application = new Application();
 
-    BaseTest* test = new Test_2ShaderPrograms();
+    BaseExcercise* test = new Ex_2ShaderPrograms();
     test->Initialize();
 
     while (!application->ShouldCloseWindow()) {

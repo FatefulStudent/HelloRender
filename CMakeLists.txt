@@ -14,20 +14,21 @@ include_directories(
 )
 
 add_executable(HelloRender 
+	./src/Lessons/BaseExcercise.h
+	./src/Lessons/HelloTriangle/Ex_SimpleTriangle.h
+	./src/Lessons/Shaders/Ex_2ShaderPrograms.h
 	./src/Helper/ApplicationHelper.h
 	./src/Helper/VertexData.h
-	./src/Tests/BaseTest.h
-	./src/Tests/Test_2ShaderPrograms.h
-	./src/Tests/Test_SimpleTriangle.h
 	./src/shaderInstance.h
 	./src/shaderProgram.h
 
-	./src/Tests/BaseTest.cpp
-	./src/Helper/ApplicationHelper.cpp
-	./src/Tests/Test_SimpleTriangle.cpp
-	./src/Tests/Test_2ShaderPrograms.cpp
-	./src/shaderInstance.cpp
 	./src/main.cpp
+
+	./src/Lessons/BaseExcercise.cpp
+	./src/Lessons/HelloTriangle/Ex_SimpleTriangle.cpp
+	./src/Lessons/Shaders/Ex_2ShaderPrograms.cpp
+	./src/Helper/ApplicationHelper.cpp
+	./src/shaderInstance.cpp
 	./src/shaderProgram.cpp
 	)
 
