@@ -3,13 +3,16 @@
 
 #include "BaseTest.h"
 
+#include "Helper/VertexData.h"
+
+#include <vector>
+
 class ShaderProgram;
 
-class Test_2ShaderPrograms : public BaseTest
-{
+class Test_2ShaderPrograms : public BaseTest {
 public:
-    Test_2ShaderPrograms() {};
-    virtual ~Test_2ShaderPrograms() {};
+    Test_2ShaderPrograms(){};
+    virtual ~Test_2ShaderPrograms(){};
 
     virtual void Initialize() override;
     virtual void Tick() override;
@@ -21,5 +24,7 @@ private:
 
     unsigned int m_VAOs[2];
     unsigned int m_VBOs[2];
+    std::vector<VertexData> m_vertices1;
+    std::vector<VertexData> m_vertices2;
 };
 #endif

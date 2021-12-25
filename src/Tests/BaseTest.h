@@ -1,14 +1,17 @@
 #ifndef BASE_TEST_H
 #define BASE_TEST_H
 
-class BaseTest
-{
-public: 
+class BaseTest {
+public:
+    BaseTest() {}
     virtual void Initialize();
+
     virtual void PreTick();
-    virtual void Tick() {};
+    virtual void Tick() {}
     virtual void PostTick();
-    virtual void Finalize() {};
-    virtual ~BaseTest() {};
+
+    virtual void Finalize() {}
+
+    virtual ~BaseTest() {}
 };
 #endif

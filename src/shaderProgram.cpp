@@ -22,11 +22,11 @@ ShaderProgram::ShaderProgram(ShaderInstance* vertexShader,
     glAttachShader(m_id, fragmentShader->GetShaderID());
     glLinkProgram(m_id);
 
-    // delete the shaders as they're linked into our program now and no
-    // longer necessary
+    // @TODO: move to ~ShaderInstance
     glDeleteShader(vertexShader->GetShaderID());
     glDeleteShader(fragmentShader->GetShaderID());
 
+    // @FIXME: deletion of objects that we do not own
     delete vertexShader;
     delete fragmentShader;
 

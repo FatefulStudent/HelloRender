@@ -1,25 +1,22 @@
 #include "Helper/ApplicationHelper.h"
-#include "Tests/Test_2ShaderPrograms.h"
-
-#include <GLFW/glfw3.h>
+#include "Tests/Test_SimpleTriangle.h"
 
 int main(void) {
-    GLFWwindow* window = ApplicationHelper::StartApplication();
+    Application* application = new Application();
 
-    Test_2ShaderPrograms* test = new Test_2ShaderPrograms();
+    BaseTest* test = new Test_SimpleTriangle();
     test->Initialize();
 
-    while (!ApplicationHelper::ShouldCloseWindow(window)) {
+    while (!application->ShouldCloseWindow()) {
         test->PreTick();
         test->Tick();
         test->PostTick();
-        glfwSwapBuffers(window);
-        glfwPollEvents();
+        application->Tick();
     }
 
     test->Finalize();
 
-    ApplicationHelper::FinalizeApplication();
+    delete application;
 
     return 0;
 }

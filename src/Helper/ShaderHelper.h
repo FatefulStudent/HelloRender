@@ -9,6 +9,7 @@
 
 namespace ShaderHelper {
 
+// @TODO: move to separate shader files
 ShaderInstance* CreateVertexShader() {
     const char* vertexShaderSource =
         "#version 420 core\n"
