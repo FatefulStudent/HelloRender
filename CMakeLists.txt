@@ -14,11 +14,10 @@ include_directories(
 )
 
 add_executable(HelloRender 
-	./src/Helper/ShaderHelper.h
 	./src/Helper/ApplicationHelper.h
 	./src/Helper/VertexData.h
 	./src/Tests/BaseTest.h
-	#./src/Tests/Test_2ShaderPrograms.h
+	./src/Tests/Test_2ShaderPrograms.h
 	./src/Tests/Test_SimpleTriangle.h
 	./src/shaderInstance.h
 	./src/shaderProgram.h
@@ -26,7 +25,7 @@ add_executable(HelloRender
 	./src/Tests/BaseTest.cpp
 	./src/Helper/ApplicationHelper.cpp
 	./src/Tests/Test_SimpleTriangle.cpp
-	#./src/Tests/Test_2ShaderPrograms.cpp
+	./src/Tests/Test_2ShaderPrograms.cpp
 	./src/shaderInstance.cpp
 	./src/main.cpp
 	./src/shaderProgram.cpp

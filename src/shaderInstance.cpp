@@ -53,3 +53,7 @@ ShaderInstance::ShaderInstance(EShaderType shaderType,
         throw -1;
     }
 }
+
+ShaderInstance::~ShaderInstance() {
+    glDeleteShader(GetShaderID());
+}

@@ -15,8 +15,8 @@
 
 namespace SimpleTriangleLocal {
 
-// @TODO: move to separate shader files
-ShaderInstance* CreateVertexShader() {
+ShaderProgram* CreateShaderProgram() {
+    // @TODO: move to separate shader files
     const char* vertexShaderSource =
         "#version 420 core\n"
         "out vec3 Position;"
@@ -27,10 +27,6 @@ ShaderInstance* CreateVertexShader() {
         "   Position = aPosition;"
         "}\0";
 
-    return new ShaderInstance(EShaderType::Vertex, vertexShaderSource);
-}
-
-ShaderInstance* CreateFragmentShader() {
     const char* fragmentShaderSource =
         "#version 420 core\n"
         "in vec3 Position;"
@@ -40,14 +36,7 @@ ShaderInstance* CreateFragmentShader() {
         "    FragColor = vec4(Position, 0.0f);\n"
         "}\0;";
 
-    return new ShaderInstance(EShaderType::Fragment, fragmentShaderSource);
-}
-
-ShaderProgram* CreateShaderProgram() {
-    ShaderInstance* vertexShaderInstance = CreateVertexShader();
-    ShaderInstance* fragmentShaderInstance1 = CreateFragmentShader();
-    return new ShaderProgram(vertexShaderInstance,
-                             fragmentShaderInstance1);
+    return new ShaderProgram(vertexShaderSource, fragmentShaderSource);
 }
 }  // namespace SimpleTriangleLocal
 

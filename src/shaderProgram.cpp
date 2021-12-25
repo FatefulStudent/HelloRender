@@ -1,43 +1,22 @@
 #include "shaderProgram.h"
 #include "shaderInstance.h"
 
+#include <GL/glew.h>
+
 #include <cassert>
 #include <fstream>
 #include <iostream>
 #include <sstream>
 
-#include <GL/glew.h>
+ShaderProgram::ShaderProgram(const char* vertexShaderSource,
+                             const char* fragmentShaderSource) {
+    ShaderInstance* vertexShader =
+        new ShaderInstance(EShaderType::Vertex, vertexShaderSource);
+    ShaderInstance* fragmentShader =
+        new ShaderInstance(EShaderType::Fragment, fragmentShaderSource);
 
-ShaderProgram::ShaderProgram(ShaderInstance* vertexShader,
-                             ShaderInstance* fragmentShader) {
-    static int success;
-    static char infoLog[512];
-
-    assert(vertexShader);
-    assert(fragmentShader);
-
-    // shader Program
-    m_id = glCreateProgram();
-    glAttachShader(m_id, vertexShader->GetShaderID());
-    glAttachShader(m_id, fragmentShader->GetShaderID());
-    glLinkProgram(m_id);
-
-    // @TODO: move to ~ShaderInstance
-    glDeleteShader(vertexShader->GetShaderID());
-    glDeleteShader(fragmentShader->GetShaderID());
-
-    // @FIXME: deletion of objects that we do not own
-    delete vertexShader;
-    delete fragmentShader;
-
-    // print linking errors if any
-    glGetProgramiv(m_id, GL_LINK_STATUS, &success);
-    if (!success) {
-        glGetProgramInfoLog(m_id, 512, NULL, infoLog);
-        std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n"
-                  << infoLog << std::endl;
-        throw -1;
-    }
+    ConstructShaderProgramFromShaderInstances(vertexShader,
+                                              fragmentShader);
 }
 
 void ShaderProgram::use() {
@@ -54,4 +33,32 @@ void ShaderProgram::setInt(const std::string& name, int value) const {
 
 void ShaderProgram::setFloat(const std::string& name, float value) const {
     glUniform1f(glGetUniformLocation(m_id, name.c_str()), value);
+}
+
+void ShaderProgram::ConstructShaderProgramFromShaderInstances(
+    ShaderInstance* vertexShader,
+    ShaderInstance* fragmentShader) {
+    static int success;
+    static char infoLog[512];
+
+    assert(vertexShader);
+    assert(fragmentShader);
+
+    // shader Program
+    m_id = glCreateProgram();
+    glAttachShader(m_id, vertexShader->GetShaderID());
+    glAttachShader(m_id, fragmentShader->GetShaderID());
+    glLinkProgram(m_id);
+
+    delete vertexShader;
+    delete fragmentShader;
+
+    // print linking errors if any
+    glGetProgramiv(m_id, GL_LINK_STATUS, &success);
+    if (!success) {
+        glGetProgramInfoLog(m_id, 512, NULL, infoLog);
+        std::cerr << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n"
+                  << infoLog << std::endl;
+        throw -1;
+    }
 }

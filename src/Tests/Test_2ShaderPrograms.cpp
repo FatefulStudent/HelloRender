@@ -1,7 +1,6 @@
 #include "Test_2ShaderPrograms.h"
 
 #include "Helper/ApplicationHelper.h"
-#include "Helper/ShaderHelper.h"
 #include "Helper/VertexData.h"
 #include "shaderInstance.h"
 #include "shaderProgram.h"
@@ -14,13 +13,72 @@
 #include <iostream>
 #include <vector>
 
+namespace Test_2ShaderProgramsLocal {
+
+ShaderProgram* CreateShaderProgram1() {
+    // @TODO: move to separate shader files
+    const char* vertexShaderSource =
+        "#version 420 core\n"
+        "out vec3 Position;"
+        "out vec3 Color;"
+        "layout (location = 0) in vec3 aPosition;\n"
+        "layout (location = 1) in vec3 aColor;\n"
+        "void main()\n"
+        "{\n"
+        "   gl_Position = vec4(aPosition, 1.0);\n"
+        "   Position = aPosition;"
+        "   Color = aColor;"
+        "}\0";
+
+    const char* fragmentShaderSource =
+        "#version 420 core\n"
+        "in vec3 Position;"
+        "in vec3 Color;"
+        "out vec4 FragColor;\n"
+        "void main()\n"
+        "{\n"
+        "    FragColor = vec4(Color, 1.0f);\n"
+        "}\0;";
+
+    return new ShaderProgram(vertexShaderSource, fragmentShaderSource);
+}
+
+ShaderProgram* CreateShaderProgram2() {
+    const char* vertexShaderSource =
+        "#version 420 core\n"
+        "out vec3 Position;"
+        "out vec3 Color;"
+        "layout (location = 0) in vec3 aPosition;\n"
+        "layout (location = 1) in vec3 aColor;\n"
+        "void main()\n"
+        "{\n"
+        "   gl_Position = vec4(aPosition, 1.0);\n"
+        "   Position = aPosition;"
+        "   Color = aColor;"
+        "}\0";
+
+    const char* fragmentShaderSource =
+        "#version 420 core\n"
+        "in vec3 Position;"
+        "uniform float BlueColor;"
+        "out vec4 FragColor;\n"
+        "void main()\n"
+        "{\n"
+        "    FragColor = vec4(-Position.xy, BlueColor, 1.0f);\n"
+        "}\0;";
+
+    return new ShaderProgram(vertexShaderSource, fragmentShaderSource);
+}
+
+}  // namespace Test_2ShaderProgramsLocal
+
 void Test_2ShaderPrograms::Initialize() {
     BaseTest::Initialize();
 
-    m_shaderProgram1 = ShaderHelper::CreateShaderProgram1();
+    m_shaderProgram1 = Test_2ShaderProgramsLocal::CreateShaderProgram1();
     assert(m_shaderProgram1);
 
-    m_shaderProgram2 = ShaderHelper::CreateShaderProgram2();
+    m_shaderProgram2 = Test_2ShaderProgramsLocal::CreateShaderProgram2();
     assert(m_shaderProgram2);
 
     m_vertices1 = {
