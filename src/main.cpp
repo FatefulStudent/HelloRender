@@ -1,10 +1,10 @@
-#include "../Lessons/HelloTriangle/Ex_SimpleTriangle.h"
+#include "../Lessons/Shaders/Ex_Additionals.h"
 #include "Helper/ApplicationHelper.h"
 
 int main(void) {
     Application* application = new Application();
 
-    BaseExcercise* test = new Ex_SimpleTriangle();
+    BaseExcercise* test = new Ex_Additionals();
     test->Initialize();
 
     while (!application->ShouldCloseWindow()) {

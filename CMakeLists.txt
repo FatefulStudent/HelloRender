@@ -18,6 +18,7 @@ add_executable(HelloRender
 	./Lessons/BaseExcercise.h
 	./Lessons/HelloTriangle/Ex_SimpleTriangle.h
 	./Lessons/Shaders/Ex_2ShaderPrograms.h
+	./Lessons/Shaders/Ex_Additionals.h
 	./src/Helper/ApplicationHelper.h
 	./src/Helper/VertexData.h
 	./src/shaderInstance.h
@@ -28,6 +29,7 @@ add_executable(HelloRender
 	./Lessons/BaseExcercise.cpp
 	./Lessons/HelloTriangle/Ex_SimpleTriangle.cpp
 	./Lessons/Shaders/Ex_2ShaderPrograms.cpp
+	./Lessons/Shaders/Ex_Additionals.cpp
 	./src/Helper/ApplicationHelper.cpp
 	./src/shaderInstance.cpp
 	./src/shaderProgram.cpp
