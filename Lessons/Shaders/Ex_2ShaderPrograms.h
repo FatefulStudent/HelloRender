@@ -24,7 +24,7 @@ private:
 
     unsigned int m_VAOs[2];
     unsigned int m_VBOs[2];
-    std::vector<VertexData> m_vertices1;
-    std::vector<VertexData> m_vertices2;
+    std::vector<VertexData_PosColor> m_vertices1;
+    std::vector<VertexData_PosColor> m_vertices2;
 };
 #endif

@@ -1,10 +1,10 @@
-#include "../Lessons/Shaders/Ex_Additionals.h"
+#include "../Lessons/Textures/Ex_Textures.h"
 #include "Helper/ApplicationHelper.h"
 
 int main(void) {
     Application* application = new Application();
 
-    BaseExcercise* test = new Ex_Additionals();
+    BaseExcercise* test = new Ex_Textures();
     test->Initialize();
 
     while (!application->ShouldCloseWindow()) {

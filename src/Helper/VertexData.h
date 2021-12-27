@@ -7,9 +7,20 @@ struct Vector3 {
     float z = 0.0f;
 };
 
-struct VertexData {
-    Vector3 Location{};
+struct Vector2 {
+    float x = 0.0f;
+    float y = 0.0f;
+};
+
+struct VertexData_PosColor {
+    Vector3 Position{};
     Vector3 Color{};
+};
+
+struct VertexData_PosColorTexture {
+    Vector3 Position{};
+    Vector3 Color{};
+    Vector2 Texture{};
 };
 
 #endif
