@@ -22,7 +22,8 @@ private:
     ShaderProgram* m_shaderProgram = nullptr;
     std::vector<VertexData_PosColorTexture> m_vertices;
 
-    unsigned int m_texture;
+    unsigned int m_texture1;
+    unsigned int m_texture2;
     unsigned int m_VAO;
     unsigned int m_VBO;
     unsigned int m_EBO;

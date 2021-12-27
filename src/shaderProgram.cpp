@@ -11,8 +11,7 @@
 ShaderProgram::ShaderProgram(const char* vertexShaderPath,
                              const char* fragmentShaderPath) {
     ShaderInstance vertexShader(EShaderType::Vertex, vertexShaderPath);
-    ShaderInstance fragmentShader(EShaderType::Fragment,
-                                  fragmentShaderPath);
+    ShaderInstance fragmentShader(EShaderType::Fragment, fragmentShaderPath);
 
     // shader Program
     m_id = glCreateProgram();

@@ -24,7 +24,7 @@ ShaderProgram* CreateShaderProgram() {
 
     return new ShaderProgram(vertexShaderPath, fragmentShaderPath);
 }
-unsigned int CreateTexture() {
+unsigned int CreateTexture(const char* texturePath) {
     unsigned int texture;
     glGenTextures(1, &texture);
     glBindTexture(GL_TEXTURE_2D, texture);
@@ -36,17 +36,25 @@ unsigned int CreateTexture() {
                     GL_LINEAR_MIPMAP_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     // load and generate the texture
+    stbi_set_flip_vertically_on_load(true);
     int width, height, nrChannels;
-    const char* texturePath = "Resources/woodenContainer.jpg";
     unsigned char* data =
         stbi_load(texturePath, &width, &height, &nrChannels, 0);
     if (data) {
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB,
-                     GL_UNSIGNED_BYTE, data);
+        GLenum inputImageType = 0;
+        if (nrChannels == 4)
+            inputImageType = GL_RGBA;
+        else if (nrChannels == 3)
+            inputImageType = GL_RGB;
+        else
+            throw -1;
+
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0,
+                     inputImageType, GL_UNSIGNED_BYTE, data);
         glGenerateMipmap(GL_TEXTURE_2D);
     } else {
-        std::cerr << "Failed to load texture at path \"" << texturePath
-                  << "\"" << std::endl;
+        std::cerr << "Failed to load texture at path \"" << texturePath << "\""
+                  << std::endl;
         throw -1;
     }
     stbi_image_free(data);
@@ -57,7 +65,8 @@ unsigned int CreateTexture() {
 void Ex_Textures::Initialize() {
     BaseExcercise::Initialize();
 
-    m_texture = TexturesLocal::CreateTexture();
+    m_texture1 = TexturesLocal::CreateTexture("Resources/woodContainer.jpg");
+    m_texture2 = TexturesLocal::CreateTexture("Resources/awesomeFace.png");
 
     m_vertices = {
         // positions          // colors           // texture coords
@@ -84,14 +93,12 @@ void Ex_Textures::Initialize() {
                      GL_STATIC_DRAW);
 
         glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
-        glBufferData(
-            GL_ARRAY_BUFFER,
-            m_vertices.size() * sizeof(VertexData_PosColorTexture),
-            m_vertices.data(), GL_STATIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER,
+                     m_vertices.size() * sizeof(VertexData_PosColorTexture),
+                     m_vertices.data(), GL_STATIC_DRAW);
 
         glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE,
-                              sizeof(VertexData_PosColorTexture),
-                              (void*)0);
+                              sizeof(VertexData_PosColorTexture), (void*)0);
         glEnableVertexAttribArray(0);
 
         glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE,
@@ -106,13 +113,19 @@ void Ex_Textures::Initialize() {
     }
 
     m_shaderProgram = TexturesLocal::CreateShaderProgram();
+    m_shaderProgram->use();
+    m_shaderProgram->setInt("Texture2", 1);
 }
 
 void Ex_Textures::Tick() {
     BaseExcercise::Tick();
 
     m_shaderProgram->use();
-    glBindTexture(GL_TEXTURE_2D, m_texture);
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, m_texture1);
+    glActiveTexture(GL_TEXTURE1);
+    glBindTexture(GL_TEXTURE_2D, m_texture2);
+
     glBindVertexArray(m_VAO);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 }

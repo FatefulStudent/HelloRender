@@ -32,11 +32,10 @@ std::string readFile(const std::string& path) {
 }
 };  // namespace ShaderInstanceLocal
 
-const std::map<EShaderType, int> ShaderInstance::ShaderTypeToGLShaderType =
-    {
-        {EShaderType::Undefined, NULL},
-        {EShaderType::Vertex, GL_VERTEX_SHADER},
-        {EShaderType::Fragment, GL_FRAGMENT_SHADER},
+const std::map<EShaderType, int> ShaderInstance::ShaderTypeToGLShaderType = {
+    {EShaderType::Undefined, NULL},
+    {EShaderType::Vertex, GL_VERTEX_SHADER},
+    {EShaderType::Fragment, GL_FRAGMENT_SHADER},
 };
 
 ShaderInstance::ShaderInstance(EShaderType shaderType,
