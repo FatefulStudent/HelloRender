@@ -14,7 +14,7 @@ include_directories(
 	Lessons/
 )
 
-add_executable(HelloRender 
+set(HEADERS 
 	./Lessons/BaseExcercise.h
 	./Lessons/HelloTriangle/Ex_SimpleTriangle.h
 	./Lessons/Shaders/Ex_2ShaderPrograms.h
@@ -23,9 +23,8 @@ add_executable(HelloRender
 	./src/Helper/VertexData.h
 	./src/shaderInstance.h
 	./src/shaderProgram.h
-
-	./src/main.cpp
-
+)
+set(SOURCES 
 	./Lessons/BaseExcercise.cpp
 	./Lessons/HelloTriangle/Ex_SimpleTriangle.cpp
 	./Lessons/Shaders/Ex_2ShaderPrograms.cpp
@@ -33,6 +32,11 @@ add_executable(HelloRender
 	./src/Helper/ApplicationHelper.cpp
 	./src/shaderInstance.cpp
 	./src/shaderProgram.cpp
-	)
+)
 
+add_executable(HelloRender 
+	${HEADERS}
+	${SOURCES}
+	./src/main.cpp
+)
 target_link_libraries(HelloRender glew glfw GL)
