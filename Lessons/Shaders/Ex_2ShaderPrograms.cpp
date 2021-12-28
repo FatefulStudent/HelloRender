@@ -15,22 +15,22 @@
 
 namespace Ex_2ShaderProgramsLocal {
 
-ShaderProgram* CreateShaderProgramWithColorInVertexData() {
+std::shared_ptr<ShaderProgram> CreateShaderProgramWithColorInVertexData() {
     const char* vertexPath =
         "Lessons/Shaders/shaders/shaderWithPositionAndColor.vert";
     const char* fragmentPath =
         "Lessons/Shaders/shaders/shaderThatUsesInColor.frag";
 
-    return new ShaderProgram(vertexPath, fragmentPath);
+    return std::make_shared<ShaderProgram>(vertexPath, fragmentPath);
 }
 
-ShaderProgram* CreateShaderProgramWithUniformColor() {
+std::shared_ptr<ShaderProgram> CreateShaderProgramWithUniformColor() {
     const char* vertexPath =
         "Lessons/Shaders/shaders/shaderWithPositionAndColor.vert";
     const char* fragmentPath =
         "Lessons/Shaders/shaders/shaderWithUniformBlueColor.frag";
 
-    return new ShaderProgram(vertexPath, fragmentPath);
+    return std::make_shared<ShaderProgram>(vertexPath, fragmentPath);
 }
 
 }  // namespace Ex_2ShaderProgramsLocal
@@ -38,8 +38,8 @@ ShaderProgram* CreateShaderProgramWithUniformColor() {
 void Ex_2ShaderPrograms::Initialize() {
     BaseExcercise::Initialize();
 
-    m_shaderProgramWithColorInVertex = Ex_2ShaderProgramsLocal::
-        CreateShaderProgramWithColorInVertexData();
+    m_shaderProgramWithColorInVertex =
+        Ex_2ShaderProgramsLocal::CreateShaderProgramWithColorInVertexData();
     assert(m_shaderProgramWithColorInVertex);
 
     m_shaderProgramWithUniformColor =
@@ -110,11 +110,4 @@ void Ex_2ShaderPrograms::Tick() {
         glBindVertexArray(m_VAOs[1]);
         glDrawArrays(GL_TRIANGLES, 0, 3);
     }
-}
-
-void Ex_2ShaderPrograms::Finalize() {
-    BaseExcercise::Finalize();
-
-    delete m_shaderProgramWithColorInVertex;
-    delete m_shaderProgramWithUniformColor;
 }

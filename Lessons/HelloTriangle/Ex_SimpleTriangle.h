@@ -5,6 +5,7 @@
 
 #include "Helper/VertexData.h"
 
+#include <memory>
 #include <vector>
 
 class ShaderProgram;
@@ -16,10 +17,9 @@ public:
 
     virtual void Initialize() override;
     virtual void Tick() override;
-    virtual void Finalize() override;
 
 private:
-    ShaderProgram* m_shaderProgram = nullptr;
+    std::shared_ptr<ShaderProgram> m_shaderProgram;
     std::vector<Vector3> m_vertices;
 
     unsigned int m_VAO;

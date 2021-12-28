@@ -18,7 +18,7 @@ struct VertexData_PosColor {
 };
 
 struct VertexData_PosColorTexture {
-    Vector3 Position{};
+    Vector2 Position{};
     Vector3 Color{};
     Vector2 Texture{};
 };

@@ -2,21 +2,17 @@
 #include "Helper/ApplicationHelper.h"
 
 int main(void) {
-    Application* application = new Application();
+    Application application;
+    Ex_Textures test;
+    test.Initialize();
 
-    BaseExcercise* test = new Ex_Textures();
-    test->Initialize();
-
-    while (!application->ShouldCloseWindow()) {
-        test->PreTick();
-        test->Tick();
-        test->PostTick();
-        application->Tick();
+    while (!application.ShouldCloseWindow()) {
+        test.PreTick();
+        test.Tick();
+        test.PostTick();
+        application.Tick();
     }
 
-    test->Finalize();
-
-    delete application;
-
+    test.Finalize();
     return 0;
 }

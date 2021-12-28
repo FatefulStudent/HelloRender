@@ -14,16 +14,14 @@
 #include <iostream>
 #include <vector>
 
-namespace TexturesLocal {
-
-ShaderProgram* CreateShaderProgram() {
-    const char* vertexShaderPath =
-        "Lessons/Textures/shaders/shaderWithTexture.vert";
-    const char* fragmentShaderPath =
+std::shared_ptr<ShaderProgram> CreateShaderProgram() {
+    const char* vertexPath = "Lessons/Textures/shaders/shaderWithTexture.vert";
+    const char* fragmentPath =
         "Lessons/Textures/shaders/shaderWithTexture.frag";
 
-    return new ShaderProgram(vertexShaderPath, fragmentShaderPath);
+    return std::make_shared<ShaderProgram>(vertexPath, fragmentPath);
 }
+
 unsigned int CreateTexture(const char* texturePath) {
     unsigned int texture;
     glGenTextures(1, &texture);
@@ -60,20 +58,19 @@ unsigned int CreateTexture(const char* texturePath) {
     stbi_image_free(data);
     return texture;
 }
-}  // namespace TexturesLocal
 
 void Ex_Textures::Initialize() {
     BaseExcercise::Initialize();
 
-    m_texture1 = TexturesLocal::CreateTexture("Resources/woodContainer.jpg");
-    m_texture2 = TexturesLocal::CreateTexture("Resources/awesomeFace.png");
+    m_texture1 = CreateTexture("Resources/woodContainer.jpg");
+    m_texture2 = CreateTexture("Resources/awesomeFace.png");
 
     m_vertices = {
         // positions          // colors           // texture coords
-        {{0.5f, 0.5f, 0.0f}, {1.0f, 0.0f, 0.0f}, {1.0f, 1.0f}},    // UR
-        {{0.5f, -0.5f, 0.0f}, {0.0f, 1.0f, 0.0f}, {1.0f, 0.0f}},   // DR
-        {{-0.5f, -0.5f, 0.0f}, {0.0f, 0.0f, 1.0f}, {0.0f, 0.0f}},  // DL
-        {{-0.5f, 0.5f, 0.0f}, {1.0f, 1.0f, 0.0f}, {0.0f, 1.0f}},   // UL
+        {{0.5f, 0.5f}, {1.0f, 0.0f, 0.0f}, {1.0f, 1.0f}},    // UR
+        {{0.5f, -0.5f}, {0.0f, 1.0f, 0.0f}, {1.0f, 0.0f}},   // DR
+        {{-0.5f, -0.5f}, {0.0f, 0.0f, 1.0f}, {0.0f, 0.0f}},  // DL
+        {{-0.5f, 0.5f}, {1.0f, 1.0f, 0.0f}, {0.0f, 1.0f}},   // UL
     };
 
     glGenVertexArrays(1, &m_VAO);
@@ -103,16 +100,16 @@ void Ex_Textures::Initialize() {
 
         glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE,
                               sizeof(VertexData_PosColorTexture),
-                              (void*)sizeof(Vector3));
+                              (void*)sizeof(Vector2));
         glEnableVertexAttribArray(1);
 
         glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE,
                               sizeof(VertexData_PosColorTexture),
-                              (void*)(2 * sizeof(Vector3)));
+                              (void*)(sizeof(Vector2) + sizeof(Vector3)));
         glEnableVertexAttribArray(2);
     }
 
-    m_shaderProgram = TexturesLocal::CreateShaderProgram();
+    m_shaderProgram = CreateShaderProgram();
     m_shaderProgram->use();
     m_shaderProgram->setInt("Texture2", 1);
 }
@@ -128,9 +125,4 @@ void Ex_Textures::Tick() {
 
     glBindVertexArray(m_VAO);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-}
-
-void Ex_Textures::Finalize() {
-    BaseExcercise::Finalize();
-    delete m_shaderProgram;
 }

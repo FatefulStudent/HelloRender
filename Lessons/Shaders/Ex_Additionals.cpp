@@ -15,13 +15,13 @@
 
 namespace AdditionalsLocal {
 
-ShaderProgram* CreateShaderProgram() {
-    const char* vertexShaderPath =
+std::shared_ptr<ShaderProgram> CreateShaderProgram() {
+    const char* vertexPath =
         "Lessons/Shaders/shaders/inverted_OutPos_UniformOffset.vert";
-    const char* fragmentShaderPath =
+    const char* fragmentPath =
         "Lessons/Shaders/shaders/colorBasedOnPosition.frag";
 
-    return new ShaderProgram(vertexShaderPath, fragmentShaderPath);
+    return std::make_shared<ShaderProgram>(vertexPath, fragmentPath);
 }
 }  // namespace AdditionalsLocal
 
@@ -62,9 +62,4 @@ void Ex_Additionals::Tick() {
 
     glBindVertexArray(m_VAO);
     glDrawArrays(GL_TRIANGLES, 0, 3);
-}
-
-void Ex_Additionals::Finalize() {
-    BaseExcercise::Finalize();
-    delete m_shaderProgram;
 }

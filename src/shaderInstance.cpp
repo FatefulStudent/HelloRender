@@ -63,7 +63,7 @@ ShaderInstance::ShaderInstance(EShaderType shaderType,
     }
 
     std::string shaderString = ShaderInstanceLocal::readFile(shaderPath);
-    char* shaderSource = const_cast<char*>(shaderString.c_str());
+    const char* shaderSource = shaderString.c_str();
 
     m_GLShaderType = GLShaderTypeIter->second;
 
