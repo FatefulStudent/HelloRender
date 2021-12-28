@@ -2,7 +2,35 @@
 
 #include <GL/glew.h>
 
+#include <fstream>
 #include <iostream>
+#include <sstream>
+#include <string>
+
+namespace ShaderInstanceLocal {
+std::string readFile(const std::string& path) {
+    std::ifstream input;
+    input.exceptions(std::ifstream::failbit | std::ifstream::badbit);
+    std::stringstream sstr;
+    try {
+        input.open(path);
+        sstr << input.rdbuf();
+        input.close();
+    } catch (std::ifstream::failure e) {
+        std::cerr << "ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ: \"" << path
+                  << "\":" << e.what() << std::endl;
+        throw -1;
+    }
+    const std::string result = sstr.str();
+
+    if (result.empty()) {
+        std::cerr << "ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ: \"" << path
+                  << std::endl;
+        throw -1;
+    }
+    return result;
+}
+};  // namespace ShaderInstanceLocal
 
 const std::map<EShaderType, int> ShaderInstance::ShaderTypeToGLShaderType =
     {
@@ -12,7 +40,7 @@ const std::map<EShaderType, int> ShaderInstance::ShaderTypeToGLShaderType =
 };
 
 ShaderInstance::ShaderInstance(EShaderType shaderType,
-                               const char* shaderSource) {
+                               const char* shaderPath) {
     static char infoLog[512];
     if (shaderType == EShaderType::Undefined) {
         std::cerr << "ERROR::SHADER::INSTANCE ShaderType is Undefined.\n"
@@ -20,8 +48,8 @@ ShaderInstance::ShaderInstance(EShaderType shaderType,
         throw -1;
     }
 
-    if (!shaderSource) {
-        std::cerr << "ERROR::SHADER::INSTANCE  shaderSource is NULL.\n"
+    if (!shaderPath) {
+        std::cerr << "ERROR::SHADER::INSTANCE shaderPath is NULL.\n"
                   << std::endl;
         throw -1;
     }
@@ -34,6 +62,9 @@ ShaderInstance::ShaderInstance(EShaderType shaderType,
                   << std::endl;
         throw -1;
     }
+
+    std::string shaderString = ShaderInstanceLocal::readFile(shaderPath);
+    char* shaderSource = const_cast<char*>(shaderString.c_str());
 
     m_GLShaderType = GLShaderTypeIter->second;
 
@@ -52,4 +83,8 @@ ShaderInstance::ShaderInstance(EShaderType shaderType,
                   << infoLog << std::endl;
         throw -1;
     }
+}
+
+ShaderInstance::~ShaderInstance() {
+    glDeleteShader(GetShaderID());
 }

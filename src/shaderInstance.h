@@ -19,7 +19,7 @@ public:
     unsigned GetShaderID() const { return m_GLShaderID; }
 
     ShaderInstance(EShaderType shaderType, const char* shaderSource);
-    ~ShaderInstance() {}
+    ~ShaderInstance();
 };
 
 #endif

@@ -1,9 +1,9 @@
-#ifndef BASE_TEST_H
-#define BASE_TEST_H
+#ifndef BASE_EXCERCISE_123H
+#define BASE_EXCERCISE_123H
 
-class BaseTest {
+class BaseExcercise {
 public:
-    BaseTest() {}
+    BaseExcercise() {}
     virtual void Initialize();
 
     virtual void PreTick();
@@ -12,6 +12,6 @@ public:
 
     virtual void Finalize() {}
 
-    virtual ~BaseTest() {}
+    virtual ~BaseExcercise() {}
 };
 #endif

@@ -1,40 +1,32 @@
 #include "shaderProgram.h"
 #include "shaderInstance.h"
 
+#include <GL/glew.h>
+
 #include <cassert>
 #include <fstream>
 #include <iostream>
 #include <sstream>
 
-#include <GL/glew.h>
-
-ShaderProgram::ShaderProgram(ShaderInstance* vertexShader,
-                             ShaderInstance* fragmentShader) {
-    static int success;
-    static char infoLog[512];
-
-    assert(vertexShader);
-    assert(fragmentShader);
+ShaderProgram::ShaderProgram(const char* vertexShaderPath,
+                             const char* fragmentShaderPath) {
+    ShaderInstance vertexShader(EShaderType::Vertex, vertexShaderPath);
+    ShaderInstance fragmentShader(EShaderType::Fragment,
+                                  fragmentShaderPath);
 
     // shader Program
     m_id = glCreateProgram();
-    glAttachShader(m_id, vertexShader->GetShaderID());
-    glAttachShader(m_id, fragmentShader->GetShaderID());
+    glAttachShader(m_id, vertexShader.GetShaderID());
+    glAttachShader(m_id, fragmentShader.GetShaderID());
     glLinkProgram(m_id);
 
-    // @TODO: move to ~ShaderInstance
-    glDeleteShader(vertexShader->GetShaderID());
-    glDeleteShader(fragmentShader->GetShaderID());
+    static int success;
+    static char infoLog[512];
 
-    // @FIXME: deletion of objects that we do not own
-    delete vertexShader;
-    delete fragmentShader;
-
-    // print linking errors if any
     glGetProgramiv(m_id, GL_LINK_STATUS, &success);
     if (!success) {
         glGetProgramInfoLog(m_id, 512, NULL, infoLog);
-        std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n"
+        std::cerr << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n"
                   << infoLog << std::endl;
         throw -1;
     }

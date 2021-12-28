@@ -1,7 +1,6 @@
-#include "Test_SimpleTriangle.h"
+#include "Ex_Additionals.h"
 
 #include "Helper/ApplicationHelper.h"
-#include "Helper/ShaderHelper.h"
 #include "Helper/VertexData.h"
 #include "shaderInstance.h"
 #include "shaderProgram.h"
@@ -14,10 +13,22 @@
 #include <iostream>
 #include <vector>
 
-void Test_SimpleTriangle::Initialize() {
-    BaseTest::Initialize();
+namespace AdditionalsLocal {
 
-    m_shaderProgram = ShaderHelper::CreateShaderProgram2();
+ShaderProgram* CreateShaderProgram() {
+    const char* vertexShaderPath =
+        "Lessons/Shaders/shaders/inverted_OutPos_UniformOffset.vert";
+    const char* fragmentShaderPath =
+        "Lessons/Shaders/shaders/colorBasedOnPosition.frag";
+
+    return new ShaderProgram(vertexShaderPath, fragmentShaderPath);
+}
+}  // namespace AdditionalsLocal
+
+void Ex_Additionals::Initialize() {
+    BaseExcercise::Initialize();
+
+    m_shaderProgram = AdditionalsLocal::CreateShaderProgram();
 
     m_vertices = {
         {0.5f, -0.5f, 0.0f},   // bottom right
@@ -41,15 +52,19 @@ void Test_SimpleTriangle::Initialize() {
     }
 }
 
-void Test_SimpleTriangle::Tick() {
-    BaseTest::Tick();
+void Ex_Additionals::Tick() {
+    BaseExcercise::Tick();
 
+    float timeValue = glfwGetTime();
+    float XOffset = (sin(timeValue) / 2.0f);
+    m_shaderProgram->setFloat("XOffset", XOffset);
     m_shaderProgram->use();
+
     glBindVertexArray(m_VAO);
     glDrawArrays(GL_TRIANGLES, 0, 3);
 }
 
-void Test_SimpleTriangle::Finalize() {
-    BaseTest::Finalize();
+void Ex_Additionals::Finalize() {
+    BaseExcercise::Finalize();
     delete m_shaderProgram;
 }

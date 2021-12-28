@@ -1,7 +1,6 @@
-#include "Test_2ShaderPrograms.h"
+#include "Ex_2ShaderPrograms.h"
 
 #include "Helper/ApplicationHelper.h"
-#include "Helper/ShaderHelper.h"
 #include "Helper/VertexData.h"
 #include "shaderInstance.h"
 #include "shaderProgram.h"
@@ -14,14 +13,38 @@
 #include <iostream>
 #include <vector>
 
-void Test_2ShaderPrograms::Initialize() {
-    BaseTest::Initialize();
+namespace Ex_2ShaderProgramsLocal {
 
-    m_shaderProgram1 = ShaderHelper::CreateShaderProgram1();
-    assert(m_shaderProgram1);
+ShaderProgram* CreateShaderProgramWithColorInVertexData() {
+    const char* vertexPath =
+        "Lessons/Shaders/shaders/shaderWithPositionAndColor.vert";
+    const char* fragmentPath =
+        "Lessons/Shaders/shaders/shaderThatUsesInColor.frag";
 
-    m_shaderProgram2 = ShaderHelper::CreateShaderProgram2();
-    assert(m_shaderProgram2);
+    return new ShaderProgram(vertexPath, fragmentPath);
+}
+
+ShaderProgram* CreateShaderProgramWithUniformColor() {
+    const char* vertexPath =
+        "Lessons/Shaders/shaders/shaderWithPositionAndColor.vert";
+    const char* fragmentPath =
+        "Lessons/Shaders/shaders/shaderWithUniformBlueColor.frag";
+
+    return new ShaderProgram(vertexPath, fragmentPath);
+}
+
+}  // namespace Ex_2ShaderProgramsLocal
+
+void Ex_2ShaderPrograms::Initialize() {
+    BaseExcercise::Initialize();
+
+    m_shaderProgramWithColorInVertex = Ex_2ShaderProgramsLocal::
+        CreateShaderProgramWithColorInVertexData();
+    assert(m_shaderProgramWithColorInVertex);
+
+    m_shaderProgramWithUniformColor =
+        Ex_2ShaderProgramsLocal::CreateShaderProgramWithUniformColor();
+    assert(m_shaderProgramWithUniformColor);
 
     m_vertices1 = {
         // location          colour
@@ -69,28 +92,28 @@ void Test_2ShaderPrograms::Initialize() {
     }
 }
 
-void Test_2ShaderPrograms::Tick() {
-    BaseTest::Tick();
+void Ex_2ShaderPrograms::Tick() {
+    BaseExcercise::Tick();
 
     {
-        m_shaderProgram1->use();
+        m_shaderProgramWithColorInVertex->use();
         glBindVertexArray(m_VAOs[0]);
         glDrawArrays(GL_TRIANGLES, 0, 3);
     }
 
     {
-        m_shaderProgram2->use();
+        m_shaderProgramWithUniformColor->use();
         float timeValue = glfwGetTime();
         float blueValue = sin(timeValue) / 2.0f + 0.5f;
-        m_shaderProgram2->setFloat("BlueColor", blueValue);
+        m_shaderProgramWithUniformColor->setFloat("BlueColor", blueValue);
         glBindVertexArray(m_VAOs[1]);
         glDrawArrays(GL_TRIANGLES, 0, 3);
     }
 }
 
-void Test_2ShaderPrograms::Finalize() {
-    BaseTest::Finalize();
+void Ex_2ShaderPrograms::Finalize() {
+    BaseExcercise::Finalize();
 
-    delete m_shaderProgram1;
-    delete m_shaderProgram2;
+    delete m_shaderProgramWithColorInVertex;
+    delete m_shaderProgramWithUniformColor;
 }
