@@ -26,6 +26,7 @@ set(HEADERS
 	./src/Helper/VertexData.h
 	./src/shaderInstance.h
 	./src/shaderProgram.h
+	./src/texture.h
 )
 set(SOURCES 
 	./libs/stb/stb_image.cpp
@@ -37,6 +38,7 @@ set(SOURCES
 	./src/Helper/ApplicationHelper.cpp
 	./src/shaderInstance.cpp
 	./src/shaderProgram.cpp
+	./src/texture.cpp
 )
 
 add_executable(HelloRender 
