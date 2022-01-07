@@ -9,8 +9,8 @@ class ShaderProgram {
 public:
     unsigned int m_id;
 
-    ShaderProgram(const char* vertexShaderSource,
-                  const char* fragmentShaderSource);
+    ShaderProgram(const std::string& vertexShaderSource,
+                  const std::string& fragmentShaderSource);
     ~ShaderProgram() {}
 
     void use();

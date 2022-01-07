@@ -8,8 +8,8 @@
 #include <iostream>
 #include <sstream>
 
-ShaderProgram::ShaderProgram(const char* vertexShaderPath,
-                             const char* fragmentShaderPath) {
+ShaderProgram::ShaderProgram(const std::string& vertexShaderPath,
+                             const std::string& fragmentShaderPath) {
     ShaderInstance vertexShader(EShaderType::Vertex, vertexShaderPath);
     ShaderInstance fragmentShader(EShaderType::Fragment, fragmentShaderPath);
 

@@ -39,7 +39,7 @@ const std::map<EShaderType, int> ShaderInstance::ShaderTypeToGLShaderType = {
 };
 
 ShaderInstance::ShaderInstance(EShaderType shaderType,
-                               const char* shaderPath) {
+                               const std::string& shaderPath) {
     static char infoLog[512];
     if (shaderType == EShaderType::Undefined) {
         std::cerr << "ERROR::SHADER::INSTANCE ShaderType is Undefined.\n"
@@ -47,7 +47,7 @@ ShaderInstance::ShaderInstance(EShaderType shaderType,
         throw -1;
     }
 
-    if (!shaderPath) {
+    if (shaderPath.empty()) {
         std::cerr << "ERROR::SHADER::INSTANCE shaderPath is NULL.\n"
                   << std::endl;
         throw -1;

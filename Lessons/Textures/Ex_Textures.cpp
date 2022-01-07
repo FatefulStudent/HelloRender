@@ -15,8 +15,9 @@
 #include <vector>
 
 std::shared_ptr<ShaderProgram> CreateShaderProgram() {
-    const char* vertexPath = "Lessons/Textures/shaders/shaderWithTexture.vert";
-    const char* fragmentPath =
+    const std::string vertexPath =
+        "Lessons/Textures/shaders/shaderWithTexture.vert";
+    const std::string fragmentPath =
         "Lessons/Textures/shaders/shaderWithTexture.frag";
 
     return std::make_shared<ShaderProgram>(vertexPath, fragmentPath);
