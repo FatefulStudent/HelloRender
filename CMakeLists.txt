@@ -27,6 +27,7 @@ set(HEADERS
 	./src/shaderInstance.h
 	./src/shaderProgram.h
 	./src/texture.h
+	./src/mesh.h
 )
 set(SOURCES 
 	./libs/stb/stb_image.cpp
@@ -39,6 +40,7 @@ set(SOURCES
 	./src/shaderInstance.cpp
 	./src/shaderProgram.cpp
 	./src/texture.cpp
+	./src/mesh.cpp
 )
 
 add_executable(HelloRender 
