@@ -76,18 +76,18 @@ void Ex_2ShaderPrograms::Initialize() {
 
         glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE,
                               sizeof(VertexData_PosColor),
-                              (void*)sizeof(Vector3));
+                              (void*)sizeof(Vector3f));
         glEnableVertexAttribArray(1);
     }
 
     {
         glBindBuffer(GL_ARRAY_BUFFER, m_VBOs[1]);
-        glBufferData(GL_ARRAY_BUFFER, m_vertices2.size() * sizeof(Vector3),
+        glBufferData(GL_ARRAY_BUFFER, m_vertices2.size() * sizeof(Vector3f),
                      m_vertices2.data(), GL_STATIC_DRAW);
 
         glBindVertexArray(m_VAOs[1]);
 
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vector3),
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vector3f),
                               (void*)0);
         glEnableVertexAttribArray(0);
     }

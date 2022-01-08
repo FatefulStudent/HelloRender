@@ -40,12 +40,12 @@ void Ex_SimpleTriangle::Initialize() {
 
     {
         glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
-        glBufferData(GL_ARRAY_BUFFER, m_vertices.size() * sizeof(Vector3),
+        glBufferData(GL_ARRAY_BUFFER, m_vertices.size() * sizeof(Vector3f),
                      m_vertices.data(), GL_STATIC_DRAW);
 
         glBindVertexArray(m_VAO);
 
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vector3),
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vector3f),
                               (void*)0);
         glEnableVertexAttribArray(0);
     }

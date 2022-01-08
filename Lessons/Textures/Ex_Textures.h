@@ -22,6 +22,7 @@ public:
 private:
     std::shared_ptr<ShaderProgram> m_shaderProgram;
     std::vector<VertexData_PosColorTexture> m_vertices;
+    std::vector<Vector3u> m_indices;
 
     std::shared_ptr<Texture> m_texture1;
     std::shared_ptr<Texture> m_texture2;

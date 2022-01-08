@@ -39,20 +39,22 @@ void Ex_Textures::Initialize() {
         {{-0.5f, 0.5f}, {1.0f, 1.0f, 0.0f}, {0.0f, 1.0f}},   // UL
     };
 
+    m_indices = {
+        {0, 1, 3},  // first triangle
+        {1, 2, 3},  // second triangle
+    };
+
     glGenVertexArrays(1, &m_VAO);
     glGenBuffers(1, &m_VBO);
     glGenBuffers(1, &m_EBO);
-
-    unsigned int indices[] = {
-        0, 1, 3,  // first triangle
-        1, 2, 3   // second triangle
-    };
 
     {
         glBindVertexArray(m_VAO);
 
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_EBO);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices,
+
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER,
+                     m_indices.size() * sizeof(Vector3u), m_indices.data(),
                      GL_STATIC_DRAW);
 
         glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
@@ -60,19 +62,32 @@ void Ex_Textures::Initialize() {
                      m_vertices.size() * sizeof(VertexData_PosColorTexture),
                      m_vertices.data(), GL_STATIC_DRAW);
 
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE,
-                              sizeof(VertexData_PosColorTexture), (void*)0);
-        glEnableVertexAttribArray(0);
+        // Position
+        glVertexAttribPointer(
+            VertexData_PosColorTexture::GetIndexForPosition(),
+            VertexData_PosColorTexture::GetNumberOfComponentsForPosition(),
+            GL_FLOAT, GL_FALSE, sizeof(VertexData_PosColorTexture),
+            VertexData_PosColorTexture::GetOffsetForPosition());
+        glEnableVertexAttribArray(
+            VertexData_PosColorTexture::GetIndexForPosition());
 
-        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE,
-                              sizeof(VertexData_PosColorTexture),
-                              (void*)sizeof(Vector2));
-        glEnableVertexAttribArray(1);
+        // Color
+        glVertexAttribPointer(
+            VertexData_PosColorTexture::GetIndexForColor(),
+            VertexData_PosColorTexture::GetNumberOfComponentsForColor(),
+            GL_FLOAT, GL_FALSE, sizeof(VertexData_PosColorTexture),
+            VertexData_PosColorTexture::GetOffsetForColor());
+        glEnableVertexAttribArray(
+            VertexData_PosColorTexture::GetIndexForColor());
 
-        glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE,
-                              sizeof(VertexData_PosColorTexture),
-                              (void*)(sizeof(Vector2) + sizeof(Vector3)));
-        glEnableVertexAttribArray(2);
+        // Texture
+        glVertexAttribPointer(
+            VertexData_PosColorTexture::GetIndexForTexture(),
+            VertexData_PosColorTexture::GetNumberOfComponentsForTexture(),
+            GL_FLOAT, GL_FALSE, sizeof(VertexData_PosColorTexture),
+            VertexData_PosColorTexture::GetOffsetForTexture());
+        glEnableVertexAttribArray(
+            VertexData_PosColorTexture::GetIndexForTexture());
     }
 
     m_shaderProgram = CreateShaderProgram();
