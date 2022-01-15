@@ -22,6 +22,7 @@ set(HEADERS
 	./Lessons/Shaders/Ex_2ShaderPrograms.h
 	./Lessons/Shaders/Ex_Additionals.h
 	./Lessons/Textures/Ex_Textures.h
+	./Lessons/Textures/Ex_TexturesAdditionals.h
 	./src/Helper/ApplicationHelper.h
 	./src/Helper/VertexData.h
 	./src/shaderInstance.h
@@ -36,6 +37,7 @@ set(SOURCES
 	./Lessons/Shaders/Ex_2ShaderPrograms.cpp
 	./Lessons/Shaders/Ex_Additionals.cpp
 	./Lessons/Textures/Ex_Textures.cpp
+	./Lessons/Textures/Ex_TexturesAdditionals.cpp
 	./src/Helper/ApplicationHelper.cpp
 	./src/shaderInstance.cpp
 	./src/shaderProgram.cpp

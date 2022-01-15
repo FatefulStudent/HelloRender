@@ -24,8 +24,8 @@ std::shared_ptr<ShaderProgram> CreateShaderProgram() {
 }
 }  // namespace SimpleTriangleLocal
 
-void Ex_SimpleTriangle::Initialize() {
-    BaseExcercise::Initialize();
+void Ex_SimpleTriangle::Initialize(GLFWwindow* window) {
+    BaseExcercise::Initialize(window);
 
     m_shaderProgram = SimpleTriangleLocal::CreateShaderProgram();
 

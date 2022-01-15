@@ -4,8 +4,6 @@ OK  б) Создать класс Mesh с VAO VBO EBO
 OK  в) Перейти на std::string с char* (move!)
     г)* AssetManager
     д)** Unique_ptr
-    е) Mesh(const std::vector<VertexData_PosColorTexture>& vertexData,
-         const std::vector<Vector3u>& indexData); -> std::move
 
 2. Выполнить задачки в текстурном уроке уроке
     а) Make sure only the happy face looks in the other/reverse direction by changing the fragment shader.

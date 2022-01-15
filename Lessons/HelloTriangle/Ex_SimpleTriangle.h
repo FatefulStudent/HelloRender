@@ -15,7 +15,7 @@ public:
     Ex_SimpleTriangle(){};
     virtual ~Ex_SimpleTriangle(){};
 
-    virtual void Initialize() override;
+    virtual void Initialize(GLFWwindow* window) override;
     virtual void Tick() override;
 
 private:

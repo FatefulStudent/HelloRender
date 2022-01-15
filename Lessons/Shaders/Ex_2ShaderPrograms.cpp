@@ -35,8 +35,8 @@ std::shared_ptr<ShaderProgram> CreateShaderProgramWithUniformColor() {
 
 }  // namespace Ex_2ShaderProgramsLocal
 
-void Ex_2ShaderPrograms::Initialize() {
-    BaseExcercise::Initialize();
+void Ex_2ShaderPrograms::Initialize(GLFWwindow* window) {
+    BaseExcercise::Initialize(window);
 
     m_shaderProgramWithColorInVertex =
         Ex_2ShaderProgramsLocal::CreateShaderProgramWithColorInVertexData();

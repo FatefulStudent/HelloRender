@@ -1,8 +1,10 @@
 #include "BaseExcercise.h"
 
 #include <GL/glew.h>
+#include <GLFW/glfw3.h>
 
-void BaseExcercise::Initialize() {
+void BaseExcercise::Initialize(GLFWwindow* window) {
+    m_window = window;
     glClearColor(0.f, 0.f, 0.0f, 1.0f);
 }
 

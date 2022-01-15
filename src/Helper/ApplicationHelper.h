@@ -5,6 +5,7 @@
 #include <GLFW/glfw3.h>
 
 #include <iostream>
+#include <memory>
 
 class Application {
 public:
@@ -13,6 +14,7 @@ public:
 
     void Tick();
     bool ShouldCloseWindow() const;
+    GLFWwindow* GetWindow() const { return m_window; }
 
 private:
     GLFWwindow* m_window = nullptr;

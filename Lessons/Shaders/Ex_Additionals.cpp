@@ -25,8 +25,8 @@ std::shared_ptr<ShaderProgram> CreateShaderProgram() {
 }
 }  // namespace AdditionalsLocal
 
-void Ex_Additionals::Initialize() {
-    BaseExcercise::Initialize();
+void Ex_Additionals::Initialize(GLFWwindow* window) {
+    BaseExcercise::Initialize(window);
 
     m_shaderProgram = AdditionalsLocal::CreateShaderProgram();
 

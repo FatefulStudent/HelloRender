@@ -15,7 +15,7 @@ public:
     Ex_2ShaderPrograms(){};
     virtual ~Ex_2ShaderPrograms(){};
 
-    virtual void Initialize() override;
+    virtual void Initialize(GLFWwindow* window) override;
     virtual void Tick() override;
 
 private:

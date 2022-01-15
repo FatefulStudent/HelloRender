@@ -1,10 +1,10 @@
-#include "../Lessons/Textures/Ex_Textures.h"
+#include "../Lessons/Textures/Ex_TexturesAdditionals.h"
 #include "Helper/ApplicationHelper.h"
 
 int main(void) {
     Application application;
-    Ex_Textures test;
-    test.Initialize();
+    Ex_TexturesAdditionals test;
+    test.Initialize(application.GetWindow());
 
     while (!application.ShouldCloseWindow()) {
         test.PreTick();

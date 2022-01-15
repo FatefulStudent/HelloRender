@@ -15,7 +15,7 @@ public:
     Ex_Additionals(){};
     virtual ~Ex_Additionals(){};
 
-    virtual void Initialize() override;
+    virtual void Initialize(GLFWwindow* window) override;
     virtual void Tick() override;
 
 private:
