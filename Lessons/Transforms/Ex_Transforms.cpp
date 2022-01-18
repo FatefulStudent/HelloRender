@@ -1,4 +1,4 @@
-#include "Ex_SimpleTriangle.h"
+#include "Ex_Transforms.h"
 
 #include "Helper/ApplicationHelper.h"
 #include "Helper/VertexData.h"
@@ -13,7 +13,7 @@
 #include <iostream>
 #include <vector>
 
-namespace SimpleTriangleLocal {
+namespace TransformsLocal {
 
 std::shared_ptr<ShaderProgram> CreateShaderProgram() {
     const char* vertexPath = "Lessons/HelloTriangle/shaders/simpleShader.vert";
@@ -22,12 +22,12 @@ std::shared_ptr<ShaderProgram> CreateShaderProgram() {
 
     return std::make_shared<ShaderProgram>(vertexPath, fragmentPath);
 }
-}  // namespace SimpleTriangleLocal
+}  // namespace TransformsLocal
 
-void Ex_SimpleTriangle::Initialize(GLFWwindow* window) {
+void Ex_Transforms::Initialize(GLFWwindow* window) {
     BaseExcercise::Initialize(window);
 
-    m_shaderProgram = SimpleTriangleLocal::CreateShaderProgram();
+    m_shaderProgram = TransformsLocal::CreateShaderProgram();
 
     m_vertices = {
         {0.5f, -0.5f, 0.0f},   // bottom right
@@ -52,7 +52,7 @@ void Ex_SimpleTriangle::Initialize(GLFWwindow* window) {
     }
 }
 
-void Ex_SimpleTriangle::Tick() {
+void Ex_Transforms::Tick() {
     BaseExcercise::Tick();
 
     m_shaderProgram->use();

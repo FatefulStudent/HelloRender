@@ -1,5 +1,5 @@
-#ifndef EX_SIMPLE_TRIANGLE_H
-#define EX_SIMPLE_TRIANGLE_H
+#ifndef EX_TRANSFORMS_H
+#define EX_TRANSFORMS_H
 
 #include "../../Lessons/BaseExcercise.h"
 
@@ -10,10 +10,10 @@
 
 class ShaderProgram;
 
-class Ex_SimpleTriangle : public BaseExcercise {
+class Ex_Transforms : public BaseExcercise {
 public:
-    Ex_SimpleTriangle(){};
-    virtual ~Ex_SimpleTriangle(){};
+    Ex_Transforms(){};
+    virtual ~Ex_Transforms(){};
 
     virtual void Initialize(GLFWwindow* window) override;
     virtual void Tick() override;

@@ -35,7 +35,7 @@ std::shared_ptr<Mesh> CreateMesh() {
         {{-0.5f, 0.5f}, {1.0f, 1.0f, 0.0f}, {0.0f, 1.0f}},   // UL
     };
 
-    const std::vector<Vector3u> indices = {
+    const std::vector<Vector3<unsigned>> indices = {
         {0, 1, 3},  // first triangle
         {1, 2, 3},  // second triangle
     };

@@ -3,46 +3,40 @@
 
 #include <cstddef>
 
-struct Vector3f {
-    float x = 0.0f;
-    float y = 0.0f;
-    float z = 0.0f;
+template <typename T>
+struct Vector3 {
+    T x;
+    T y;
+    T z;
 
     static int GetNumberOfComponents() { return 3; }
 };
 
-struct Vector3u {
-    unsigned x = 0;
-    unsigned y = 0;
-    unsigned z = 0;
-
-    static int GetNumberOfComponents() { return 3; }
-};
-
-struct Vector2f {
-    float x = 0.0f;
-    float y = 0.0f;
+template <typename T>
+struct Vector2 {
+    T x;
+    T y;
 
     static int GetNumberOfComponents() { return 2; }
 };
 
 struct VertexData_PosColor {
-    Vector3f Position{};
-    Vector3f Color{};
+    Vector3<float> Position{};
+    Vector3<float> Color{};
 };
 
 struct VertexData_PosColorTexture {
-    Vector2f Position{};
-    Vector3f Color{};
-    Vector2f Texture{};
+    Vector2<float> Position{};
+    Vector3<float> Color{};
+    Vector2<float> Texture{};
 
     static int GetIndexForPosition() { return 0; }
     static int GetIndexForColor() { return 1; }
     static int GetIndexForTexture() { return 2; }
 
-    static std::size_t GetSizeOfPosition() { return sizeof(Vector2f); }
-    static std::size_t GetSizeOfColor() { return sizeof(Vector3f); }
-    static std::size_t GetSizeOfTexture() { return sizeof(Vector2f); }
+    static std::size_t GetSizeOfPosition() { return sizeof(Vector2<float>); }
+    static std::size_t GetSizeOfColor() { return sizeof(Vector3<float>); }
+    static std::size_t GetSizeOfTexture() { return sizeof(Vector2<float>); }
 
     static void* GetOffsetForPosition() { return (void*)0; }
     static void* GetOffsetForColor() { return (void*)(GetSizeOfPosition()); }
@@ -51,13 +45,13 @@ struct VertexData_PosColorTexture {
     }
 
     static int GetNumberOfComponentsForPosition() {
-        return Vector2f::GetNumberOfComponents();
+        return Vector2<float>::GetNumberOfComponents();
     }
     static int GetNumberOfComponentsForColor() {
-        return Vector3f::GetNumberOfComponents();
+        return Vector3<float>::GetNumberOfComponents();
     }
     static int GetNumberOfComponentsForTexture() {
-        return Vector2f::GetNumberOfComponents();
+        return Vector2<float>::GetNumberOfComponents();
     }
 };
 

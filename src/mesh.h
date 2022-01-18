@@ -8,14 +8,14 @@
 class Mesh {
 private:
     std::vector<VertexData_PosColorTexture> m_vertices;
-    std::vector<Vector3u> m_indices;
+    std::vector<Vector3<unsigned>> m_indices;
     unsigned int m_VAO;
     unsigned int m_VBO;
     unsigned int m_EBO;
 
 public:
     Mesh(const std::vector<VertexData_PosColorTexture>& vertexData,
-         const std::vector<Vector3u>& indexData);
+         const std::vector<Vector3<unsigned>>& indexData);
     ~Mesh();
 
     void Draw();
