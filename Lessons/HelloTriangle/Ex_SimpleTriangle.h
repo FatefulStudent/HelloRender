@@ -5,6 +5,7 @@
 
 #include "Helper/VertexData.h"
 
+#include <memory>
 #include <vector>
 
 class ShaderProgram;
@@ -14,13 +15,12 @@ public:
     Ex_SimpleTriangle(){};
     virtual ~Ex_SimpleTriangle(){};
 
-    virtual void Initialize() override;
+    virtual void Initialize(GLFWwindow* window) override;
     virtual void Tick() override;
-    virtual void Finalize() override;
 
 private:
-    ShaderProgram* m_shaderProgram = nullptr;
-    std::vector<Vector3> m_vertices;
+    std::shared_ptr<ShaderProgram> m_shaderProgram;
+    std::vector<Vector3f> m_vertices;
 
     unsigned int m_VAO;
     unsigned int m_VBO;

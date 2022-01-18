@@ -12,26 +12,37 @@ include_directories(
 	libs/glfw-3.3.5/include/
 	src/
 	Lessons/
+	libs/stb/
 )
 
-set(HEADERS 
+set(HEADERS  
+	./libs/stb/stb_image.h
 	./Lessons/BaseExcercise.h
 	./Lessons/HelloTriangle/Ex_SimpleTriangle.h
 	./Lessons/Shaders/Ex_2ShaderPrograms.h
 	./Lessons/Shaders/Ex_Additionals.h
+	./Lessons/Textures/Ex_Textures.h
+	./Lessons/Textures/Ex_TexturesAdditionals.h
 	./src/Helper/ApplicationHelper.h
 	./src/Helper/VertexData.h
 	./src/shaderInstance.h
 	./src/shaderProgram.h
+	./src/texture.h
+	./src/mesh.h
 )
 set(SOURCES 
+	./libs/stb/stb_image.cpp
 	./Lessons/BaseExcercise.cpp
 	./Lessons/HelloTriangle/Ex_SimpleTriangle.cpp
 	./Lessons/Shaders/Ex_2ShaderPrograms.cpp
 	./Lessons/Shaders/Ex_Additionals.cpp
+	./Lessons/Textures/Ex_Textures.cpp
+	./Lessons/Textures/Ex_TexturesAdditionals.cpp
 	./src/Helper/ApplicationHelper.cpp
 	./src/shaderInstance.cpp
 	./src/shaderProgram.cpp
+	./src/texture.cpp
+	./src/mesh.cpp
 )
 
 add_executable(HelloRender 

@@ -15,31 +15,31 @@
 
 namespace Ex_2ShaderProgramsLocal {
 
-ShaderProgram* CreateShaderProgramWithColorInVertexData() {
+std::shared_ptr<ShaderProgram> CreateShaderProgramWithColorInVertexData() {
     const char* vertexPath =
         "Lessons/Shaders/shaders/shaderWithPositionAndColor.vert";
     const char* fragmentPath =
         "Lessons/Shaders/shaders/shaderThatUsesInColor.frag";
 
-    return new ShaderProgram(vertexPath, fragmentPath);
+    return std::make_shared<ShaderProgram>(vertexPath, fragmentPath);
 }
 
-ShaderProgram* CreateShaderProgramWithUniformColor() {
+std::shared_ptr<ShaderProgram> CreateShaderProgramWithUniformColor() {
     const char* vertexPath =
         "Lessons/Shaders/shaders/shaderWithPositionAndColor.vert";
     const char* fragmentPath =
         "Lessons/Shaders/shaders/shaderWithUniformBlueColor.frag";
 
-    return new ShaderProgram(vertexPath, fragmentPath);
+    return std::make_shared<ShaderProgram>(vertexPath, fragmentPath);
 }
 
 }  // namespace Ex_2ShaderProgramsLocal
 
-void Ex_2ShaderPrograms::Initialize() {
-    BaseExcercise::Initialize();
+void Ex_2ShaderPrograms::Initialize(GLFWwindow* window) {
+    BaseExcercise::Initialize(window);
 
-    m_shaderProgramWithColorInVertex = Ex_2ShaderProgramsLocal::
-        CreateShaderProgramWithColorInVertexData();
+    m_shaderProgramWithColorInVertex =
+        Ex_2ShaderProgramsLocal::CreateShaderProgramWithColorInVertexData();
     assert(m_shaderProgramWithColorInVertex);
 
     m_shaderProgramWithUniformColor =
@@ -65,28 +65,29 @@ void Ex_2ShaderPrograms::Initialize() {
     {
         glBindBuffer(GL_ARRAY_BUFFER, m_VBOs[0]);
         glBufferData(GL_ARRAY_BUFFER,
-                     m_vertices1.size() * sizeof(VertexData),
+                     m_vertices1.size() * sizeof(VertexData_PosColor),
                      m_vertices1.data(), GL_STATIC_DRAW);
 
         glBindVertexArray(m_VAOs[0]);
 
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(VertexData),
-                              (void*)0);
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE,
+                              sizeof(VertexData_PosColor), (void*)0);
         glEnableVertexAttribArray(0);
 
-        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(VertexData),
-                              (void*)sizeof(Vector3));
+        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE,
+                              sizeof(VertexData_PosColor),
+                              (void*)sizeof(Vector3f));
         glEnableVertexAttribArray(1);
     }
 
     {
         glBindBuffer(GL_ARRAY_BUFFER, m_VBOs[1]);
-        glBufferData(GL_ARRAY_BUFFER, m_vertices2.size() * sizeof(Vector3),
+        glBufferData(GL_ARRAY_BUFFER, m_vertices2.size() * sizeof(Vector3f),
                      m_vertices2.data(), GL_STATIC_DRAW);
 
         glBindVertexArray(m_VAOs[1]);
 
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vector3),
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vector3f),
                               (void*)0);
         glEnableVertexAttribArray(0);
     }
@@ -109,11 +110,4 @@ void Ex_2ShaderPrograms::Tick() {
         glBindVertexArray(m_VAOs[1]);
         glDrawArrays(GL_TRIANGLES, 0, 3);
     }
-}
-
-void Ex_2ShaderPrograms::Finalize() {
-    BaseExcercise::Finalize();
-
-    delete m_shaderProgramWithColorInVertex;
-    delete m_shaderProgramWithUniformColor;
 }

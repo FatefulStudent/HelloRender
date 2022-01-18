@@ -3,5 +3,5 @@ in vec3 Position;
 uniform float BlueColor;
 out vec4 FragColor;
 void main() {
-    FragColor = vec4(-Position.xy, BlueColor, 1.0f);
+    FragColor = vec4(abs(Position.xy), BlueColor, 1.0f);
 }

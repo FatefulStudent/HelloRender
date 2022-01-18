@@ -9,7 +9,9 @@ enum class EShaderType : uint8_t { Undefined, Vertex, Fragment };
 
 class ShaderInstance {
 private:
-    static const std::map<EShaderType, int> ShaderTypeToGLShaderType;
+    static const std::map<std::string, EShaderType>
+        shaderPathExtensionToShaderType;
+    static const std::map<EShaderType, int> shaderTypeToGLShaderType;
 
     GLenum m_GLShaderType = 0;
     EShaderType m_shaderType = EShaderType::Undefined;
@@ -17,9 +19,13 @@ private:
 
 public:
     unsigned GetShaderID() const { return m_GLShaderID; }
+    EShaderType GetShaderType() const { return m_shaderType; }
 
-    ShaderInstance(EShaderType shaderType, const char* shaderSource);
+    ShaderInstance(const std::string& shaderPath);
     ~ShaderInstance();
+
+private:
+    static EShaderType GetShaderTypeFromPath(const std::string& shaderPath);
 };
 
 #endif

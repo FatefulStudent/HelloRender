@@ -1,22 +1,18 @@
-#include "../Lessons/Shaders/Ex_Additionals.h"
+#include "../Lessons/Textures/Ex_TexturesAdditionals.h"
 #include "Helper/ApplicationHelper.h"
 
 int main(void) {
-    Application* application = new Application();
+    Application application;
+    Ex_TexturesAdditionals test;
+    test.Initialize(application.GetWindow());
 
-    BaseExcercise* test = new Ex_Additionals();
-    test->Initialize();
-
-    while (!application->ShouldCloseWindow()) {
-        test->PreTick();
-        test->Tick();
-        test->PostTick();
-        application->Tick();
+    while (!application.ShouldCloseWindow()) {
+        test.PreTick();
+        test.Tick();
+        test.PostTick();
+        application.Tick();
     }
 
-    test->Finalize();
-
-    delete application;
-
+    test.Finalize();
     return 0;
 }

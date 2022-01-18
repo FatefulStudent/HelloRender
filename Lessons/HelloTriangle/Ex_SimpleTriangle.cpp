@@ -15,18 +15,17 @@
 
 namespace SimpleTriangleLocal {
 
-ShaderProgram* CreateShaderProgram() {
-    const char* vertexShaderPath =
-        "Lessons/HelloTriangle/shaders/simpleShader.vert";
-    const char* fragmentShaderPath =
+std::shared_ptr<ShaderProgram> CreateShaderProgram() {
+    const char* vertexPath = "Lessons/HelloTriangle/shaders/simpleShader.vert";
+    const char* fragmentPath =
         "Lessons/HelloTriangle/shaders/simpleShader.frag";
 
-    return new ShaderProgram(vertexShaderPath, fragmentShaderPath);
+    return std::make_shared<ShaderProgram>(vertexPath, fragmentPath);
 }
 }  // namespace SimpleTriangleLocal
 
-void Ex_SimpleTriangle::Initialize() {
-    BaseExcercise::Initialize();
+void Ex_SimpleTriangle::Initialize(GLFWwindow* window) {
+    BaseExcercise::Initialize(window);
 
     m_shaderProgram = SimpleTriangleLocal::CreateShaderProgram();
 
@@ -41,12 +40,12 @@ void Ex_SimpleTriangle::Initialize() {
 
     {
         glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
-        glBufferData(GL_ARRAY_BUFFER, m_vertices.size() * sizeof(Vector3),
+        glBufferData(GL_ARRAY_BUFFER, m_vertices.size() * sizeof(Vector3f),
                      m_vertices.data(), GL_STATIC_DRAW);
 
         glBindVertexArray(m_VAO);
 
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vector3),
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vector3f),
                               (void*)0);
         glEnableVertexAttribArray(0);
     }
@@ -58,9 +57,4 @@ void Ex_SimpleTriangle::Tick() {
     m_shaderProgram->use();
     glBindVertexArray(m_VAO);
     glDrawArrays(GL_TRIANGLES, 0, 3);
-}
-
-void Ex_SimpleTriangle::Finalize() {
-    BaseExcercise::Finalize();
-    delete m_shaderProgram;
 }

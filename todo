@@ -1,0 +1,20 @@
+1. Долги по рефакторингу:
+OK  а) Обертка Texture в класс
+OK  б) Создать класс Mesh с VAO VBO EBO
+OK  в) Перейти на std::string с char* (move!)
+    г)* AssetManager
+    д)** Unique_ptr
+    е) Mesh(const std::vector<VertexData_PosColorTexture>& vertexData,
+         const std::vector<Vector3u>& indexData); -> std::move
+
+2. Выполнить задачки в текстурном уроке уроке
+    а) Make sure only the happy face looks in the other/reverse direction by changing the fragment shader.
+    b) Experiment with the different texture wrapping methods by specifying texture coordinates in the range 0.0f to 2.0f instead of 0.0f to 1.0f. 
+        See if you can display 4 smiley faces on a single container image clamped at its edge. 
+        See if you can experiment with other wrapping methods as well.
+    c) Try to display only the center pixels of the texture image on the rectangle in such a way that the individual pixels are getting visible 
+        by changing the texture coordinates. Try to set the texture filtering method to GL_NEAREST to see the pixels more clearly.
+    d) Use a uniform variable as the mix function's third parameter to vary the amount the two textures are visible. 
+        Use the up and down arrow keys to change how much the container or the smiley face is visible: solution.
+3. Пройтись по уроку с трансформами, записать вопросы.
+4*. Выполнить доп задания в уроках с трансформами

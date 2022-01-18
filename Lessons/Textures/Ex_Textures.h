@@ -1,5 +1,5 @@
-#ifndef EX_ADDITIONAL_TASKS_SHADERS_H
-#define EX_ADDITIONAL_TASKS_SHADERS_H
+#ifndef EX_TEXTURES_H
+#define EX_TEXTURES_H
 
 #include "../../Lessons/BaseExcercise.h"
 
@@ -9,20 +9,21 @@
 #include <vector>
 
 class ShaderProgram;
+class Mesh;
+class Texture;
 
-class Ex_Additionals : public BaseExcercise {
+class Ex_Textures : public BaseExcercise {
 public:
-    Ex_Additionals(){};
-    virtual ~Ex_Additionals(){};
+    Ex_Textures(){};
+    virtual ~Ex_Textures(){};
 
     virtual void Initialize(GLFWwindow* window) override;
     virtual void Tick() override;
 
 private:
     std::shared_ptr<ShaderProgram> m_shaderProgram;
-    std::vector<Vector3f> m_vertices;
-
-    unsigned int m_VAO;
-    unsigned int m_VBO;
+    std::shared_ptr<Mesh> m_mesh;
+    std::shared_ptr<Texture> m_texture1;
+    std::shared_ptr<Texture> m_texture2;
 };
 #endif

@@ -5,6 +5,7 @@
 
 #include "Helper/VertexData.h"
 
+#include <memory>
 #include <vector>
 
 class ShaderProgram;
@@ -14,17 +15,16 @@ public:
     Ex_2ShaderPrograms(){};
     virtual ~Ex_2ShaderPrograms(){};
 
-    virtual void Initialize() override;
+    virtual void Initialize(GLFWwindow* window) override;
     virtual void Tick() override;
-    virtual void Finalize() override;
 
 private:
-    ShaderProgram* m_shaderProgramWithColorInVertex = nullptr;
-    ShaderProgram* m_shaderProgramWithUniformColor = nullptr;
+    std::shared_ptr<ShaderProgram> m_shaderProgramWithColorInVertex;
+    std::shared_ptr<ShaderProgram> m_shaderProgramWithUniformColor;
 
     unsigned int m_VAOs[2];
     unsigned int m_VBOs[2];
-    std::vector<VertexData> m_vertices1;
-    std::vector<VertexData> m_vertices2;
+    std::vector<VertexData_PosColor> m_vertices1;
+    std::vector<VertexData_PosColor> m_vertices2;
 };
 #endif

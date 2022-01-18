@@ -15,18 +15,18 @@
 
 namespace AdditionalsLocal {
 
-ShaderProgram* CreateShaderProgram() {
-    const char* vertexShaderPath =
+std::shared_ptr<ShaderProgram> CreateShaderProgram() {
+    const char* vertexPath =
         "Lessons/Shaders/shaders/inverted_OutPos_UniformOffset.vert";
-    const char* fragmentShaderPath =
+    const char* fragmentPath =
         "Lessons/Shaders/shaders/colorBasedOnPosition.frag";
 
-    return new ShaderProgram(vertexShaderPath, fragmentShaderPath);
+    return std::make_shared<ShaderProgram>(vertexPath, fragmentPath);
 }
 }  // namespace AdditionalsLocal
 
-void Ex_Additionals::Initialize() {
-    BaseExcercise::Initialize();
+void Ex_Additionals::Initialize(GLFWwindow* window) {
+    BaseExcercise::Initialize(window);
 
     m_shaderProgram = AdditionalsLocal::CreateShaderProgram();
 
@@ -41,12 +41,12 @@ void Ex_Additionals::Initialize() {
 
     {
         glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
-        glBufferData(GL_ARRAY_BUFFER, m_vertices.size() * sizeof(Vector3),
+        glBufferData(GL_ARRAY_BUFFER, m_vertices.size() * sizeof(Vector3f),
                      m_vertices.data(), GL_STATIC_DRAW);
 
         glBindVertexArray(m_VAO);
 
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vector3),
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vector3f),
                               (void*)0);
         glEnableVertexAttribArray(0);
     }
@@ -62,9 +62,4 @@ void Ex_Additionals::Tick() {
 
     glBindVertexArray(m_VAO);
     glDrawArrays(GL_TRIANGLES, 0, 3);
-}
-
-void Ex_Additionals::Finalize() {
-    BaseExcercise::Finalize();
-    delete m_shaderProgram;
 }
