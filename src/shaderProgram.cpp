@@ -10,8 +10,11 @@
 
 ShaderProgram::ShaderProgram(const std::string& vertexShaderPath,
                              const std::string& fragmentShaderPath) {
-    ShaderInstance vertexShader(EShaderType::Vertex, vertexShaderPath);
-    ShaderInstance fragmentShader(EShaderType::Fragment, fragmentShaderPath);
+    ShaderInstance vertexShader(vertexShaderPath);
+    assert(vertexShader.GetShaderType() == EShaderType::Vertex);
+
+    ShaderInstance fragmentShader(fragmentShaderPath);
+    assert(fragmentShader.GetShaderType() == EShaderType::Fragment);
 
     // shader Program
     m_id = glCreateProgram();

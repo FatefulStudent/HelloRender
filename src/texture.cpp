@@ -27,22 +27,24 @@ Texture::Texture(const std::string& path,
         stbi_load(path.data(), &width, &height, &nrChannels, 0);
     if (data) {
         GLenum inputImageType = 0;
-        if (nrChannels == 4)
+        if (nrChannels == 4) {
             inputImageType = GL_RGBA;
-        else if (nrChannels == 3)
+        } else if (nrChannels == 3) {
             inputImageType = GL_RGB;
-        else
+        } else {
+            stbi_image_free(data);
             throw -1;
+        }
 
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0,
                      inputImageType, GL_UNSIGNED_BYTE, data);
         glGenerateMipmap(GL_TEXTURE_2D);
+        stbi_image_free(data);
     } else {
         std::cerr << "Failed to load texture at path \"" << path << "\""
                   << std::endl;
         throw -1;
     }
-    stbi_image_free(data);
 }
 
 void Texture::Bind() {

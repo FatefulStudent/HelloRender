@@ -30,18 +30,40 @@ std::string readFile(const std::string& path) {
     }
     return result;
 }
+std::string getExtensionOfFileName(const std::string& path) {
+    size_t extensionStartIndex = path.rfind(".");
+    if (extensionStartIndex == std::string::npos)
+        return {};
+
+    // Actually extension starts after the dot
+    extensionStartIndex += 1;
+
+    // if the dot was the last char in path then it has no extension
+    if (extensionStartIndex == path.length())
+        return {};
+
+    const std::string extensionSubstring = path.substr(extensionStartIndex);
+    return extensionSubstring;
+}
 };  // namespace ShaderInstanceLocal
 
-const std::map<EShaderType, int> ShaderInstance::ShaderTypeToGLShaderType = {
+const std::map<std::string, EShaderType>
+    ShaderInstance::shaderPathExtensionToShaderType = {
+        {std::string("vert"), EShaderType::Vertex},
+        {std::string("frag"), EShaderType::Fragment},
+};
+
+const std::map<EShaderType, int> ShaderInstance::shaderTypeToGLShaderType = {
     {EShaderType::Undefined, NULL},
     {EShaderType::Vertex, GL_VERTEX_SHADER},
     {EShaderType::Fragment, GL_FRAGMENT_SHADER},
 };
 
-ShaderInstance::ShaderInstance(EShaderType shaderType,
-                               const std::string& shaderPath) {
+ShaderInstance::ShaderInstance(const std::string& shaderPath) {
     static char infoLog[512];
-    if (shaderType == EShaderType::Undefined) {
+    m_shaderType = GetShaderTypeFromPath(shaderPath);
+
+    if (m_shaderType == EShaderType::Undefined) {
         std::cerr << "ERROR::SHADER::INSTANCE ShaderType is Undefined.\n"
                   << std::endl;
         throw -1;
@@ -53,10 +75,10 @@ ShaderInstance::ShaderInstance(EShaderType shaderType,
         throw -1;
     }
 
-    auto GLShaderTypeIter = ShaderTypeToGLShaderType.find(shaderType);
-    if (GLShaderTypeIter == ShaderTypeToGLShaderType.end()) {
+    auto GLShaderTypeIter = shaderTypeToGLShaderType.find(m_shaderType);
+    if (GLShaderTypeIter == shaderTypeToGLShaderType.end()) {
         std::cerr << "ERROR::SHADER::INSTANCE GLShaderType for ShaderType "
-                  << static_cast<uint8_t>(shaderType)
+                  << static_cast<uint8_t>(m_shaderType)
                   << " is not found in ShaderTypeToGLShaderType Map.\n"
                   << std::endl;
         throw -1;
@@ -77,7 +99,7 @@ ShaderInstance::ShaderInstance(EShaderType shaderType,
     if (!success) {
         glGetShaderInfoLog(m_GLShaderID, 512, NULL, infoLog);
         std::cerr << "ERROR::SHADER::INSTANCE::"
-                  << static_cast<uint8_t>(shaderType)
+                  << static_cast<uint8_t>(m_shaderType)
                   << "::COMPILATION_FAILED\n"
                   << infoLog << std::endl;
         throw -1;
@@ -86,4 +108,16 @@ ShaderInstance::ShaderInstance(EShaderType shaderType,
 
 ShaderInstance::~ShaderInstance() {
     glDeleteShader(GetShaderID());
+}
+
+EShaderType ShaderInstance::GetShaderTypeFromPath(
+    const std::string& shaderPath) {
+    const std::string extensionOfSource =
+        ShaderInstanceLocal::getExtensionOfFileName(shaderPath);
+    const auto pairWithExtension =
+        shaderPathExtensionToShaderType.find(extensionOfSource);
+    if (pairWithExtension == shaderPathExtensionToShaderType.end())
+        return EShaderType::Undefined;
+    else
+        return pairWithExtension->second;
 }
