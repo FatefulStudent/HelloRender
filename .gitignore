@@ -4,8 +4,5 @@
 
 build/*
 
-libs/*
-!libs/glew-2.1.0*
-!libs/glfw-3.3.5*
-!libs/stb*
-!libs/CMakeLists.txt
+libs/assimp-5.1.2
+libs/glm-0.9.8

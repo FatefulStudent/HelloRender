@@ -2,10 +2,14 @@
 
 #include "Helper/ApplicationHelper.h"
 #include "Helper/VertexData.h"
+#include "mesh.h"
 #include "shaderInstance.h"
 #include "shaderProgram.h"
+#include "texture.h"
 
 #include <GL/glew.h>
+#include <stb_image.h>
+#include <glm/glm.hpp>
 
 #include <cassert>
 #include <cmath>
@@ -13,49 +17,56 @@
 #include <iostream>
 #include <vector>
 
-namespace TransformsLocal {
-
+namespace {
 std::shared_ptr<ShaderProgram> CreateShaderProgram() {
-    const char* vertexPath = "Lessons/HelloTriangle/shaders/simpleShader.vert";
-    const char* fragmentPath =
-        "Lessons/HelloTriangle/shaders/simpleShader.frag";
+    const std::string vertexPath =
+        "Lessons/Transforms/shaders/shaderWithTexture.vert";
+    const std::string fragmentPath =
+        "Lessons/Transforms/shaders/shaderWithTexture.frag";
 
     return std::make_shared<ShaderProgram>(vertexPath, fragmentPath);
 }
-}  // namespace TransformsLocal
+
+std::shared_ptr<Mesh> CreateMesh() {
+    const std::vector<VertexData_PosColorTexture> vertices = {
+        // positions          // colors           // texture coords
+        {{0.5f, 0.5f}, {1.0f, 0.0f, 0.0f}, {1.0f, 1.0f}},    // UR
+        {{0.5f, -0.5f}, {0.0f, 1.0f, 0.0f}, {1.0f, 0.0f}},   // DR
+        {{-0.5f, -0.5f}, {0.0f, 0.0f, 1.0f}, {0.0f, 0.0f}},  // DL
+        {{-0.5f, 0.5f}, {1.0f, 1.0f, 0.0f}, {0.0f, 1.0f}},   // UL
+    };
+
+    const std::vector<unsigned> indices = {
+        0, 1, 3,  // first triangle
+        1, 2, 3,  // second triangle
+    };
+
+    return std::make_shared<Mesh>(vertices, indices);
+}
+}  // namespace
 
 void Ex_Transforms::Initialize(GLFWwindow* window) {
     BaseExcercise::Initialize(window);
 
-    m_shaderProgram = TransformsLocal::CreateShaderProgram();
+    m_texture1 =
+        std::make_shared<Texture>("Resources/woodContainer.jpg", GL_TEXTURE0);
+    m_texture2 =
+        std::make_shared<Texture>("Resources/awesomeFace.png", GL_TEXTURE1);
 
-    m_vertices = {
-        {0.5f, -0.5f, 0.0f},   // bottom right
-        {-0.5f, -0.5f, 0.0f},  // bottom left
-        {-0.0f, 0.5f, 0.0f},   // top left
-    };
+    m_mesh = CreateMesh();
 
-    glGenVertexArrays(1, &m_VAO);
-    glGenBuffers(1, &m_VBO);
-
-    {
-        glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
-        glBufferData(GL_ARRAY_BUFFER,
-                     m_vertices.size() * sizeof(Vector3<float>),
-                     m_vertices.data(), GL_STATIC_DRAW);
-
-        glBindVertexArray(m_VAO);
-
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vector3<float>),
-                              (void*)0);
-        glEnableVertexAttribArray(0);
-    }
+    m_shaderProgram = CreateShaderProgram();
+    m_shaderProgram->use();
+    m_shaderProgram->setInt("Texture1", 0);
+    m_shaderProgram->setInt("Texture2", 1);
 }
 
 void Ex_Transforms::Tick() {
     BaseExcercise::Tick();
 
     m_shaderProgram->use();
-    glBindVertexArray(m_VAO);
-    glDrawArrays(GL_TRIANGLES, 0, 3);
+    m_texture1->Bind();
+    m_texture2->Bind();
+
+    m_mesh->Draw();
 }

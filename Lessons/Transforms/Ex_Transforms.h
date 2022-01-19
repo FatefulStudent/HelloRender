@@ -9,6 +9,8 @@
 #include <vector>
 
 class ShaderProgram;
+class Mesh;
+class Texture;
 
 class Ex_Transforms : public BaseExcercise {
 public:
@@ -20,9 +22,8 @@ public:
 
 private:
     std::shared_ptr<ShaderProgram> m_shaderProgram;
-    std::vector<Vector3<float>> m_vertices;
-
-    unsigned int m_VAO;
-    unsigned int m_VBO;
+    std::shared_ptr<Mesh> m_mesh;
+    std::shared_ptr<Texture> m_texture1;
+    std::shared_ptr<Texture> m_texture2;
 };
 #endif

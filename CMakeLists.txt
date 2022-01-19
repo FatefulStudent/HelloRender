@@ -10,19 +10,15 @@ add_subdirectory(libs)
 include_directories(
 	libs/glew-2.1.0/include/
 	libs/glfw-3.3.5/include/
+	libs/glm-0.9.8/
+	libs/stb/
 	src/
 	Lessons/
-	libs/stb/
 )
 
 set(HEADERS  
 	./libs/stb/stb_image.h
 	./Lessons/BaseExcercise.h
-	./Lessons/HelloTriangle/Ex_SimpleTriangle.h
-	./Lessons/Shaders/Ex_2ShaderPrograms.h
-	./Lessons/Shaders/Ex_Additionals.h
-	./Lessons/Textures/Ex_Textures.h
-	./Lessons/Textures/Ex_TexturesAdditionals.h
 	./Lessons/Transforms/Ex_Transforms.h
 	./src/Helper/ApplicationHelper.h
 	./src/Helper/VertexData.h
@@ -34,11 +30,6 @@ set(HEADERS
 set(SOURCES 
 	./libs/stb/stb_image.cpp
 	./Lessons/BaseExcercise.cpp
-	./Lessons/HelloTriangle/Ex_SimpleTriangle.cpp
-	./Lessons/Shaders/Ex_2ShaderPrograms.cpp
-	./Lessons/Shaders/Ex_Additionals.cpp
-	./Lessons/Textures/Ex_Textures.cpp
-	./Lessons/Textures/Ex_TexturesAdditionals.cpp
 	./Lessons/Transforms/Ex_Transforms.cpp
 	./src/Helper/ApplicationHelper.cpp
 	./src/shaderInstance.cpp
