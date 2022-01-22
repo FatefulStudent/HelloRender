@@ -27,4 +27,8 @@ private:
     std::shared_ptr<Texture> m_texture1;
     std::shared_ptr<Texture> m_texture2;
 };
+
+std::shared_ptr<BaseExcercise> make() {
+    return std::make_shared<Ex_Transforms>();
+}
 #endif

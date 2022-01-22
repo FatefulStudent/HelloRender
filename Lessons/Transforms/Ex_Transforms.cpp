@@ -10,6 +10,7 @@
 #include <GL/glew.h>
 #include <stb_image.h>
 #include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 
 #include <cassert>
 #include <cmath>
@@ -20,15 +21,11 @@
 namespace {
 std::shared_ptr<ShaderProgram> CreateShaderProgram() {
     const std::string vertexPath =
-        "Lessons/Transforms/shaders/shaderWithTexture.vert";
+        "Lessons/Transforms/shaders/shaderWithTransform.vert";
     const std::string fragmentPath =
         "Lessons/Transforms/shaders/shaderWithTexture.frag";
 
     return std::make_shared<ShaderProgram>(vertexPath, fragmentPath);
-}
-
-std::shared_ptr<BaseExcercise> make() {
-    return std::make_shared<Ex_Transforms>();
 }
 
 std::shared_ptr<Mesh> CreateMesh() {
@@ -68,7 +65,16 @@ void Ex_Transforms::Initialize(GLFWwindow* window) {
 void Ex_Transforms::Tick() {
     BaseExcercise::Tick();
 
+    glm::mat4 trans = glm::mat4(1.0f);
+    glm::vec3 transOffset = glm::vec3(sin((float)glfwGetTime()), -0.5f, 0.0f);
+    trans = glm::translate(trans, transOffset);
+    trans = glm::rotate(trans, 3 * (float)glfwGetTime(),
+                        glm::vec3(0.0f, 0.0f, 1.0f));
+    trans = glm::scale(trans, glm::vec3(0.5, 0.5, 0.5));
+
     m_shaderProgram->use();
+    m_shaderProgram->setMatrix("Transform", trans);
+
     m_texture1->Bind();
     m_texture2->Bind();
 

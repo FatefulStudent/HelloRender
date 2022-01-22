@@ -2,6 +2,7 @@
 #include "shaderInstance.h"
 
 #include <GL/glew.h>
+#include <glm/gtc/type_ptr.hpp>
 
 #include <cassert>
 #include <fstream>
@@ -48,4 +49,10 @@ void ShaderProgram::setInt(const std::string& name, int value) const {
 
 void ShaderProgram::setFloat(const std::string& name, float value) const {
     glUniform1f(glGetUniformLocation(m_id, name.c_str()), value);
+}
+
+void ShaderProgram::setMatrix(const std::string& name,
+                              const glm::mat4& value) const {
+    unsigned int transformLoc = glGetUniformLocation(m_id, name.c_str());
+    glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(value));
 }
