@@ -1,18 +1,18 @@
-#include "../Lessons/Transforms/Ex_Transforms.h"
+#include "Excercise.h"
 #include "Helper/ApplicationHelper.h"
 
 int main(void) {
     Application application;
-    Ex_Transforms test;
-    test.Initialize(application.GetWindow());
+    std::shared_ptr<BaseExcercise> test = make();
+    test->Initialize(application.GetWindow());
 
     while (!application.ShouldCloseWindow()) {
-        test.PreTick();
-        test.Tick();
-        test.PostTick();
+        test->PreTick();
+        test->Tick();
+        test->PostTick();
         application.Tick();
     }
 
-    test.Finalize();
+    test->Finalize();
     return 0;
 }

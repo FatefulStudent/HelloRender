@@ -27,6 +27,10 @@ std::shared_ptr<ShaderProgram> CreateShaderProgram() {
     return std::make_shared<ShaderProgram>(vertexPath, fragmentPath);
 }
 
+std::shared_ptr<BaseExcercise> make() {
+    return std::make_shared<Ex_Transforms>();
+}
+
 std::shared_ptr<Mesh> CreateMesh() {
     const std::vector<VertexData_PosColorTexture> vertices = {
         // positions          // colors           // texture coords
