@@ -65,18 +65,24 @@ void Ex_Transforms::Initialize(GLFWwindow* window) {
 void Ex_Transforms::Tick() {
     BaseExcercise::Tick();
 
-    glm::mat4 trans = glm::mat4(1.0f);
-    glm::vec3 transOffset = glm::vec3(sin((float)glfwGetTime()), -0.5f, 0.0f);
-    trans = glm::translate(trans, transOffset);
-    trans = glm::rotate(trans, 3 * (float)glfwGetTime(),
-                        glm::vec3(0.0f, 0.0f, 1.0f));
-    trans = glm::scale(trans, glm::vec3(0.5, 0.5, 0.5));
+    glm::mat4 trans1 = glm::mat4(1.0f);
+    trans1 = glm::rotate(trans1, 3 * (float)glfwGetTime(),
+                         glm::vec3(0.0f, 0.0f, 1.0f));
+    trans1 = glm::translate(trans1, glm::vec3(0.5f, -0.5f, 0.0f));
 
     m_shaderProgram->use();
-    m_shaderProgram->setMatrix("Transform", trans);
+    m_shaderProgram->setMatrix("Transform", trans1);
 
     m_texture1->Bind();
     m_texture2->Bind();
 
+    m_mesh->Draw();
+
+    float sinValue = sin(glfwGetTime());
+
+    glm::mat4 trans2 = glm::mat4(1.0f);
+    trans2 = glm::translate(trans2, glm::vec3(-0.5f, 0.5f, 0.0f));
+    trans2 = glm::scale(trans2, glm::vec3(sinValue, sinValue, sinValue));
+    m_shaderProgram->setMatrix("Transform", trans2);
     m_mesh->Draw();
 }
