@@ -1,4 +1,4 @@
-#include "ApplicationHelper.h"
+#include "Application.h"
 
 #include <GL/glew.h>
 

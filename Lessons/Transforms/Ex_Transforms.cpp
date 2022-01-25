@@ -1,6 +1,6 @@
 #include "Ex_Transforms.h"
 
-#include "Helper/ApplicationHelper.h"
+#include "Helper/Application.h"
 #include "Helper/VertexData.h"
 #include "mesh.h"
 #include "shaderInstance.h"
@@ -29,7 +29,7 @@ std::shared_ptr<ShaderProgram> CreateShaderProgram() {
 }
 
 std::shared_ptr<Mesh> CreateMesh() {
-    const std::vector<VertexData_PosColorTexture> vertices = {
+    std::vector<VertexData_PosColorTexture> vertices = {
         // positions          // colors           // texture coords
         {{0.5f, 0.5f}, {1.0f, 0.0f, 0.0f}, {1.0f, 1.0f}},    // UR
         {{0.5f, -0.5f}, {0.0f, 1.0f, 0.0f}, {1.0f, 0.0f}},   // DR
@@ -37,12 +37,12 @@ std::shared_ptr<Mesh> CreateMesh() {
         {{-0.5f, 0.5f}, {1.0f, 1.0f, 0.0f}, {0.0f, 1.0f}},   // UL
     };
 
-    const std::vector<unsigned> indices = {
+    std::vector<unsigned> indices = {
         0, 1, 3,  // first triangle
         1, 2, 3,  // second triangle
     };
 
-    return std::make_shared<Mesh>(vertices, indices);
+    return std::make_shared<Mesh>(std::move(vertices), std::move(indices));
 }
 }  // namespace
 

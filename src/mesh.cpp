@@ -2,8 +2,8 @@
 
 #include <GL/glew.h>
 
-Mesh::Mesh(const std::vector<VertexData_PosColorTexture>& vertexData,
-           const std::vector<unsigned>& indexData) {
+Mesh::Mesh(std::vector<VertexData_PosColorTexture>&& vertexData,
+           std::vector<unsigned>&& indexData) {
     m_indices = indexData;
     m_vertices = vertexData;
     glGenVertexArrays(1, &m_VAO);

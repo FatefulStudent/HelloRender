@@ -1,5 +1,5 @@
 #include "Excercise.h"
-#include "Helper/ApplicationHelper.h"
+#include "Helper/Application.h"
 
 int main(void) {
     Application application;

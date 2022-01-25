@@ -20,7 +20,7 @@ set(HEADERS
 	./libs/stb/stb_image.h
 	./Lessons/BaseExcercise.h
 	./Lessons/Transforms/Ex_Transforms.h
-	./src/Helper/ApplicationHelper.h
+	./src/Helper/Application.h
 	./src/Helper/VertexData.h
 	./src/shaderInstance.h
 	./src/shaderProgram.h
@@ -31,7 +31,7 @@ set(SOURCES
 	./libs/stb/stb_image.cpp
 	./Lessons/BaseExcercise.cpp
 	./Lessons/Transforms/Ex_Transforms.cpp
-	./src/Helper/ApplicationHelper.cpp
+	./src/Helper/Application.cpp
 	./src/shaderInstance.cpp
 	./src/shaderProgram.cpp
 	./src/texture.cpp

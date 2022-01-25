@@ -14,8 +14,8 @@ private:
     unsigned int m_EBO;
 
 public:
-    Mesh(const std::vector<VertexData_PosColorTexture>& vertexData,
-         const std::vector<unsigned>& indexData);
+    Mesh(std::vector<VertexData_PosColorTexture>&& vertexData,
+         std::vector<unsigned>&& indexData);
     ~Mesh();
 
     void Draw();
