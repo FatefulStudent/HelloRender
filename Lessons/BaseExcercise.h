@@ -10,9 +10,10 @@ public:
     BaseExcercise() {}
     virtual void Initialize(GLFWwindow* window);
 
-    virtual void PreTick();
-    virtual void Tick() {}
-    virtual void PostTick();
+    virtual void ProcessInput(float deltaTime){};
+    virtual void PreTick(float deltaTime);
+    virtual void Tick(float deltaTime) {}
+    virtual void PostTick(float deltaTime);
 
     virtual void Finalize() {}
 

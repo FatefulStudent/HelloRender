@@ -29,7 +29,7 @@ Application::~Application() {
     Finalize();
 }
 
-void Application::Tick() {
+void Application::Tick(float deltaTime) {
     glfwSwapBuffers(m_window);
     glfwPollEvents();
 }

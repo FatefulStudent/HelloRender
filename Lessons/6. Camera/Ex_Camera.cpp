@@ -93,19 +93,39 @@ void Ex_Camera::Initialize(GLFWwindow* window) {
     m_shaderProgram->setInt("Texture2", 1);
 }
 
-void Ex_Camera::Tick() {
-    BaseExcercise::Tick();
+void Ex_Camera::ProcessInput(float deltaTime) {
+    BaseExcercise::ProcessInput(deltaTime);
+
+    constexpr float cameraSpeed = 5.f;
+    const float cameraDistance = deltaTime * cameraSpeed;
+
+    if (glfwGetKey(m_window, GLFW_KEY_W) == GLFW_PRESS)
+        m_cameraPos += cameraDistance * m_cameraFront;
+    if (glfwGetKey(m_window, GLFW_KEY_S) == GLFW_PRESS)
+        m_cameraPos -= cameraDistance * m_cameraFront;
+    if (glfwGetKey(m_window, GLFW_KEY_A) == GLFW_PRESS)
+        m_cameraPos -= glm::normalize(glm::cross(m_cameraFront, m_cameraUp)) *
+                       cameraDistance;
+    if (glfwGetKey(m_window, GLFW_KEY_D) == GLFW_PRESS)
+        m_cameraPos += glm::normalize(glm::cross(m_cameraFront, m_cameraUp)) *
+                       cameraDistance;
+    if (glfwGetKey(m_window, GLFW_KEY_E) == GLFW_PRESS)
+        m_cameraPos += cameraDistance * m_cameraUp;
+    if (glfwGetKey(m_window, GLFW_KEY_Q) == GLFW_PRESS)
+        m_cameraPos -= cameraDistance * m_cameraUp;
+}
+
+void Ex_Camera::Tick(float deltaTime) {
+    BaseExcercise::Tick(deltaTime);
 
     const float radius = 10.0f;
     float camX = sin(glfwGetTime()) * radius;
     float camZ = cos(glfwGetTime()) * radius;
 
-    glm::vec3 cameraPos = glm::vec3(camX, 0.0, camZ);
-    glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
-    glm::vec3 cameraTarget = glm::vec3(0.0f, 0.0f, 0.0f);
+    glm::vec3 cameraTarget = m_cameraPos + m_cameraFront;
 
     glm::mat4 view;
-    view = glm::lookAt(cameraPos, cameraTarget, cameraUp);
+    view = glm::lookAt(m_cameraPos, cameraTarget, m_cameraUp);
 
     std::vector<glm::vec3> cubePositions = {
         {0.0f, 0.0f, 0.0f},     {2.0f, 5.0f, -15.0f}, {-1.5f, -2.2f, -2.5f},
