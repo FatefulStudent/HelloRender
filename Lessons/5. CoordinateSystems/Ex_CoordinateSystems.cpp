@@ -21,9 +21,9 @@
 namespace {
 std::shared_ptr<ShaderProgram> CreateShaderProgram() {
     const std::string vertexPath =
-        "Lessons/CoordinateSystems/shaders/shaderWithModelViewProj.vert";
+        "Lessons/5. CoordinateSystems/shaders/shaderWithModelViewProj.vert";
     const std::string fragmentPath =
-        "Lessons/CoordinateSystems/shaders/shaderWithTexture.frag";
+        "Lessons/5. CoordinateSystems/shaders/shaderWithTexture.frag";
 
     return std::make_shared<ShaderProgram>(vertexPath, fragmentPath);
 }
