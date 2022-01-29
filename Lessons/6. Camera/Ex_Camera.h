@@ -23,6 +23,11 @@ public:
     virtual void Tick(float deltaTime) override;
 
 private:
+    static void ScrollCallback(GLFWwindow* window,
+                               double xoffset,
+                               double yoffset);
+    static float fov;
+
     std::shared_ptr<ShaderProgram> m_shaderProgram;
     std::shared_ptr<Mesh> m_mesh;
     std::shared_ptr<Texture> m_texture1;

@@ -77,6 +77,8 @@ std::shared_ptr<Mesh> CreateMesh() {
 }
 }  // namespace
 
+float Ex_Camera::fov = 45.0f;
+
 void Ex_Camera::Initialize(GLFWwindow* window) {
     BaseExcercise::Initialize(window);
 
@@ -94,6 +96,8 @@ void Ex_Camera::Initialize(GLFWwindow* window) {
 
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
+    glfwSetScrollCallback(window, ScrollCallback);
+
     int windowWidth, windowHeight;
     glfwGetWindowSize(window, &windowWidth, &windowHeight);
     glfwSetCursorPos(window, windowWidth / 2, windowHeight / 2);
@@ -108,39 +112,47 @@ void Ex_Camera::Initialize(GLFWwindow* window) {
 void Ex_Camera::ProcessInput(float deltaTime) {
     BaseExcercise::ProcessInput(deltaTime);
 
-    constexpr float cameraSpeed = 5.f;
-    const float cameraDistance = deltaTime * cameraSpeed;
+    // process camera movement
+    {
+        constexpr float cameraSpeed = 5.f;
+        const float cameraDistance = deltaTime * cameraSpeed;
 
-    if (glfwGetKey(m_window, GLFW_KEY_W) == GLFW_PRESS)
-        m_cameraPos += cameraDistance * m_cameraFront;
-    if (glfwGetKey(m_window, GLFW_KEY_S) == GLFW_PRESS)
-        m_cameraPos -= cameraDistance * m_cameraFront;
-    if (glfwGetKey(m_window, GLFW_KEY_A) == GLFW_PRESS)
-        m_cameraPos -= glm::normalize(glm::cross(m_cameraFront, m_cameraUp)) *
-                       cameraDistance;
-    if (glfwGetKey(m_window, GLFW_KEY_D) == GLFW_PRESS)
-        m_cameraPos += glm::normalize(glm::cross(m_cameraFront, m_cameraUp)) *
-                       cameraDistance;
-    if (glfwGetKey(m_window, GLFW_KEY_E) == GLFW_PRESS)
-        m_cameraPos += cameraDistance * m_cameraUp;
-    if (glfwGetKey(m_window, GLFW_KEY_Q) == GLFW_PRESS)
-        m_cameraPos -= cameraDistance * m_cameraUp;
+        if (glfwGetKey(m_window, GLFW_KEY_W) == GLFW_PRESS)
+            m_cameraPos += cameraDistance * m_cameraFront;
+        if (glfwGetKey(m_window, GLFW_KEY_S) == GLFW_PRESS)
+            m_cameraPos -= cameraDistance * m_cameraFront;
+        if (glfwGetKey(m_window, GLFW_KEY_A) == GLFW_PRESS)
+            m_cameraPos -=
+                glm::normalize(glm::cross(m_cameraFront, m_cameraUp)) *
+                cameraDistance;
+        if (glfwGetKey(m_window, GLFW_KEY_D) == GLFW_PRESS)
+            m_cameraPos +=
+                glm::normalize(glm::cross(m_cameraFront, m_cameraUp)) *
+                cameraDistance;
+        if (glfwGetKey(m_window, GLFW_KEY_E) == GLFW_PRESS)
+            m_cameraPos += cameraDistance * m_cameraUp;
+        if (glfwGetKey(m_window, GLFW_KEY_Q) == GLFW_PRESS)
+            m_cameraPos -= cameraDistance * m_cameraUp;
+    }
 
-    double cursorPosX, cursorPosY;
-    glfwGetCursorPos(m_window, &cursorPosX, &cursorPosY);
+    // process camera rotation
+    {
+        double cursorPosX, cursorPosY;
+        glfwGetCursorPos(m_window, &cursorPosX, &cursorPosY);
 
-    float xOffset = cursorPosX - m_cachedCursorPos.x;
-    float yOffset = m_cachedCursorPos.y - cursorPosY;
+        float xOffset = cursorPosX - m_cachedCursorPos.x;
+        float yOffset = m_cachedCursorPos.y - cursorPosY;
 
-    float sensitivity = 0.1f;
-    xOffset *= sensitivity;
-    yOffset *= sensitivity;
+        float sensitivity = 0.1f;
+        xOffset *= sensitivity;
+        yOffset *= sensitivity;
 
-    m_yaw += xOffset;
-    m_pitch += yOffset;
-    m_pitch = std::min(89.0f, std::max(m_pitch, -89.0f));
+        m_yaw += xOffset;
+        m_pitch += yOffset;
+        m_pitch = std::min(89.0f, std::max(m_pitch, -89.0f));
 
-    m_cachedCursorPos = {cursorPosX, cursorPosY};
+        m_cachedCursorPos = {cursorPosX, cursorPosY};
+    }
 }
 
 void Ex_Camera::Tick(float deltaTime) {
@@ -176,8 +188,8 @@ void Ex_Camera::Tick(float deltaTime) {
                         glm::vec3(1.0f, 1.f, 0.0f));
 
         glm::mat4 projection = glm::mat4(1.0f);
-        projection = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f,
-                                      0.1f, 100.0f);
+        projection =
+            glm::perspective(glm::radians(fov), 800.0f / 600.0f, 0.1f, 100.0f);
 
         m_shaderProgram->use();
         m_shaderProgram->setMatrix("Model", model);
@@ -189,4 +201,14 @@ void Ex_Camera::Tick(float deltaTime) {
 
         m_mesh->Draw();
     }
+}
+
+void Ex_Camera::ScrollCallback(GLFWwindow* window,
+                               double xoffset,
+                               double yoffset) {
+    fov -= (float)yoffset;
+    if (fov < 1.0f)
+        fov = 1.0f;
+    if (fov > 100.0f)
+        fov = 100.0f;
 }
