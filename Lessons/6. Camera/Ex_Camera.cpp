@@ -91,6 +91,18 @@ void Ex_Camera::Initialize(GLFWwindow* window) {
     m_shaderProgram->use();
     m_shaderProgram->setInt("Texture1", 0);
     m_shaderProgram->setInt("Texture2", 1);
+
+    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+
+    int windowWidth, windowHeight;
+    glfwGetWindowSize(window, &windowWidth, &windowHeight);
+    glfwSetCursorPos(window, windowWidth / 2, windowHeight / 2);
+    double cursorPosX, cursorPosY;
+    glfwGetCursorPos(m_window, &cursorPosX, &cursorPosY);
+    m_cachedCursorPos = {cursorPosX, cursorPosY};
+
+    m_yaw = -90.0f;
+    m_pitch = 0.f;
 }
 
 void Ex_Camera::ProcessInput(float deltaTime) {
@@ -113,16 +125,35 @@ void Ex_Camera::ProcessInput(float deltaTime) {
         m_cameraPos += cameraDistance * m_cameraUp;
     if (glfwGetKey(m_window, GLFW_KEY_Q) == GLFW_PRESS)
         m_cameraPos -= cameraDistance * m_cameraUp;
+
+    double cursorPosX, cursorPosY;
+    glfwGetCursorPos(m_window, &cursorPosX, &cursorPosY);
+
+    float xOffset = cursorPosX - m_cachedCursorPos.x;
+    float yOffset = m_cachedCursorPos.y - cursorPosY;
+
+    float sensitivity = 0.1f;
+    xOffset *= sensitivity;
+    yOffset *= sensitivity;
+
+    m_yaw += xOffset;
+    m_pitch += yOffset;
+    m_pitch = std::min(89.0f, std::max(m_pitch, -89.0f));
+
+    m_cachedCursorPos = {cursorPosX, cursorPosY};
 }
 
 void Ex_Camera::Tick(float deltaTime) {
     BaseExcercise::Tick(deltaTime);
 
-    const float radius = 10.0f;
-    float camX = sin(glfwGetTime()) * radius;
-    float camZ = cos(glfwGetTime()) * radius;
+    glm::vec3 direction;
+    direction.x = cos(glm::radians(m_yaw)) * cos(glm::radians(m_pitch));
+    direction.y = sin(glm::radians(m_pitch));
+    direction.z = sin(glm::radians(m_yaw)) * cos(glm::radians(m_pitch));
 
-    glm::vec3 cameraTarget = m_cameraPos + m_cameraFront;
+    m_cameraFront = glm::normalize(direction);
+
+    glm::vec3 cameraTarget = m_cameraPos + direction;
 
     glm::mat4 view;
     view = glm::lookAt(m_cameraPos, cameraTarget, m_cameraUp);
