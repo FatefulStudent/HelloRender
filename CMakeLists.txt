@@ -1,5 +1,7 @@
 cmake_minimum_required( VERSION 3.16 )
 
+set (CMAKE_CXX_STANDARD 17)
+
 project (HelloRender)
 
 find_package(OpenGL REQUIRED)
@@ -26,6 +28,7 @@ set(HEADERS
 	./src/shaderProgram.h
 	./src/texture.h
 	./src/mesh.h
+	./src/camera.h
 )
 set(SOURCES 
 	./libs/stb/stb_image.cpp
@@ -36,6 +39,7 @@ set(SOURCES
 	./src/shaderProgram.cpp
 	./src/texture.cpp
 	./src/mesh.cpp
+	./src/camera.cpp
 )
 
 add_executable(HelloRender 
