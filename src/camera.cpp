@@ -44,22 +44,24 @@ void Camera::Tick(float deltaTime) {
         constexpr float cameraSpeed = 5.f;
         const float cameraDistance = deltaTime * cameraSpeed;
 
+        glm::vec3 moveDirection = {0.0f, 0.0f, 0.0f};
+
         if (glfwGetKey(m_window, GLFW_KEY_W) == GLFW_PRESS)
-            m_cameraPos += cameraDistance * m_cameraFront;
+            moveDirection += m_cameraFront;
         if (glfwGetKey(m_window, GLFW_KEY_S) == GLFW_PRESS)
-            m_cameraPos -= cameraDistance * m_cameraFront;
+            moveDirection -= m_cameraFront;
         if (glfwGetKey(m_window, GLFW_KEY_A) == GLFW_PRESS)
-            m_cameraPos -=
-                glm::normalize(glm::cross(m_cameraFront, m_cameraUp)) *
-                cameraDistance;
+            moveDirection -=
+                glm::normalize(glm::cross(m_cameraFront, m_cameraUp));
         if (glfwGetKey(m_window, GLFW_KEY_D) == GLFW_PRESS)
-            m_cameraPos +=
-                glm::normalize(glm::cross(m_cameraFront, m_cameraUp)) *
-                cameraDistance;
-        if (glfwGetKey(m_window, GLFW_KEY_E) == GLFW_PRESS)
-            m_cameraPos += cameraDistance * m_cameraUp;
-        if (glfwGetKey(m_window, GLFW_KEY_Q) == GLFW_PRESS)
-            m_cameraPos -= cameraDistance * m_cameraUp;
+            moveDirection +=
+                glm::normalize(glm::cross(m_cameraFront, m_cameraUp));
+
+        if (moveDirection != glm::vec3(0.0f, 0.0f, 0.0f))
+            moveDirection = glm::normalize(
+                glm::vec3(moveDirection.x, 0.0f, moveDirection.z));
+
+        m_cameraPos += moveDirection * cameraDistance;
     }
 
     // process camera rotation
