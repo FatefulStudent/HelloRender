@@ -1,7 +1,7 @@
 1. Долги по рефакторингу:
-OK  а) Обертка Texture в класс
-OK  б) Создать класс Mesh с VAO VBO EBO
-OK  в) Перейти на std::string с char* (move!)
+    а) Использование shared_ptr для Window
+    б) Использовать темплейты для векторов
+    в) CreateShaderProgram() - move!
     г)* AssetManager
     д)** Unique_ptr
 

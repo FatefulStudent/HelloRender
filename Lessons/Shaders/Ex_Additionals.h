@@ -20,7 +20,7 @@ public:
 
 private:
     std::shared_ptr<ShaderProgram> m_shaderProgram;
-    std::vector<Vector3f> m_vertices;
+    std::vector<Vector3<float>> m_vertices;
 
     unsigned int m_VAO;
     unsigned int m_VBO;

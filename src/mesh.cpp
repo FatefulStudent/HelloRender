@@ -2,8 +2,8 @@
 
 #include <GL/glew.h>
 
-Mesh::Mesh(const std::vector<VertexData_PosColorTexture>& vertexData,
-           const std::vector<Vector3u>& indexData) {
+Mesh::Mesh(std::vector<VertexData_PosColorTexture>&& vertexData,
+           std::vector<unsigned>&& indexData) {
     m_indices = indexData;
     m_vertices = vertexData;
     glGenVertexArrays(1, &m_VAO);
@@ -14,7 +14,7 @@ Mesh::Mesh(const std::vector<VertexData_PosColorTexture>& vertexData,
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_EBO);
 
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_indices.size() * sizeof(Vector3u),
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_indices.size() * sizeof(unsigned),
                  m_indices.data(), GL_STATIC_DRAW);
 
     glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
@@ -51,9 +51,7 @@ Mesh::Mesh(const std::vector<VertexData_PosColorTexture>& vertexData,
 
 void Mesh::Draw() {
     glBindVertexArray(m_VAO);
-    glDrawElements(GL_TRIANGLES,
-                   m_indices.size() * Vector3u::GetNumberOfComponents(),
-                   GL_UNSIGNED_INT, 0);
+    glDrawElements(GL_TRIANGLES, m_indices.size(), GL_UNSIGNED_INT, 0);
 }
 
 Mesh::~Mesh() {}

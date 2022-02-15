@@ -41,12 +41,13 @@ void Ex_Additionals::Initialize(GLFWwindow* window) {
 
     {
         glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
-        glBufferData(GL_ARRAY_BUFFER, m_vertices.size() * sizeof(Vector3f),
+        glBufferData(GL_ARRAY_BUFFER,
+                     m_vertices.size() * sizeof(Vector3<float>),
                      m_vertices.data(), GL_STATIC_DRAW);
 
         glBindVertexArray(m_VAO);
 
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vector3f),
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vector3<float>),
                               (void*)0);
         glEnableVertexAttribArray(0);
     }

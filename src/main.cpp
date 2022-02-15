@@ -1,18 +1,18 @@
-#include "../Lessons/Textures/Ex_TexturesAdditionals.h"
-#include "Helper/ApplicationHelper.h"
+#include "Excercise.h"
+#include "Helper/Application.h"
 
 int main(void) {
     Application application;
-    Ex_TexturesAdditionals test;
-    test.Initialize(application.GetWindow());
+    std::shared_ptr<BaseExcercise> test = make();
+    test->Initialize(application.GetWindow());
 
     while (!application.ShouldCloseWindow()) {
-        test.PreTick();
-        test.Tick();
-        test.PostTick();
+        test->PreTick();
+        test->Tick();
+        test->PostTick();
         application.Tick();
     }
 
-    test.Finalize();
+    test->Finalize();
     return 0;
 }
