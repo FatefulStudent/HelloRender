@@ -19,7 +19,9 @@
 #include <iostream>
 #include <vector>
 
-constexpr float DistanceMultiplier = 0.0005f;
+constexpr float DistanceMultiplier = 0.0001f;
+constexpr float RadiusMultiplier = 0.00002f;
+constexpr float AdditionalSunRadiusDivider = 10.f;
 namespace {
 std::shared_ptr<ShaderProgram> CreateShaderProgram() {
     const std::string vertexPath =
@@ -42,56 +44,65 @@ std::shared_ptr<Mesh> CreateMesh() {
 void Ex_SolarSystemProject::Initialize(GLFWwindow* window) {
     BaseExcercise::Initialize(window);
     {
-        const CelestalBody SunModel = {"Resources/sunmap.jpg",
-                                       0.0f * DistanceMultiplier, 1.0f};
+        const CelestalBody SunModel = {
+            "Resources/sunmap.jpg", 0.0f * DistanceMultiplier,
+            1392000.0f * RadiusMultiplier / AdditionalSunRadiusDivider};
         m_CelestalBodies.push_back(SunModel);
     }
 
     {
-        const CelestalBody MercuryModel = {
-            "Resources/mercurymap.jpg", 57950.0f * DistanceMultiplier, 1.0f};
+        const CelestalBody MercuryModel = {"Resources/mercurymap.jpg",
+                                           57950.0f * DistanceMultiplier,
+                                           4800.0f * RadiusMultiplier};
         m_CelestalBodies.push_back(MercuryModel);
     }
 
     {
         const CelestalBody VenusModel = {"Resources/venusmap.jpg",
-                                         108110.0f * DistanceMultiplier, 1.0f};
+                                         108110.0f * DistanceMultiplier,
+                                         12100.0f * RadiusMultiplier};
         m_CelestalBodies.push_back(VenusModel);
     }
 
     {
         const CelestalBody EarthModel = {"Resources/earthmap.jpg",
-                                         149570.0f * DistanceMultiplier, 1.0f};
+                                         149570.0f * DistanceMultiplier,
+                                         12700.0f * RadiusMultiplier};
         m_CelestalBodies.push_back(EarthModel);
     }
 
     {
         const CelestalBody MarsModel = {"Resources/marsmap.jpg",
-                                        227840.0f * DistanceMultiplier, 1.0f};
+                                        227840.0f * DistanceMultiplier,
+                                        6700.0f * RadiusMultiplier};
         m_CelestalBodies.push_back(MarsModel);
     }
 
     {
-        const CelestalBody JupiterModel = {
-            "Resources/jupitermap.jpg", 778140.0f * DistanceMultiplier, 1.0f};
+        const CelestalBody JupiterModel = {"Resources/jupitermap.jpg",
+                                           778140.0f * DistanceMultiplier,
+                                           142900.0f * RadiusMultiplier};
         m_CelestalBodies.push_back(JupiterModel);
     }
 
     {
-        const CelestalBody SaturnModel = {
-            "Resources/saturnmap.jpg", 1427000.0f * DistanceMultiplier, 1.0f};
+        const CelestalBody SaturnModel = {"Resources/saturnmap.jpg",
+                                          1427000.0f * DistanceMultiplier,
+                                          116438.0f * RadiusMultiplier};
         m_CelestalBodies.push_back(SaturnModel);
     }
 
     {
-        const CelestalBody UranusModel = {
-            "Resources/uranusmap.jpg", 2870300.0f * DistanceMultiplier, 1.0f};
+        const CelestalBody UranusModel = {"Resources/uranusmap.jpg",
+                                          2870300.0f * DistanceMultiplier,
+                                          46940.0f * RadiusMultiplier};
         m_CelestalBodies.push_back(UranusModel);
     }
 
     {
-        const CelestalBody NeptuneModel = {
-            "Resources/neptunemap.jpg", 4499900.0f * DistanceMultiplier, 1.0f};
+        const CelestalBody NeptuneModel = {"Resources/neptunemap.jpg",
+                                           4499900.0f * DistanceMultiplier,
+                                           45400.0f * RadiusMultiplier};
         m_CelestalBodies.push_back(NeptuneModel);
     }
 
@@ -117,11 +128,28 @@ void Ex_SolarSystemProject::Tick(float deltaTime) {
     for (int i = 0; i < m_CelestalBodies.size(); ++i) {
         const auto Body = m_CelestalBodies[i];
         glm::mat4 model = glm::mat4(1.0f);
+
+        float RotationAroundSun = 0.0f;
+
+        if (Body.DistanceFromOrigin > 1.0f)
+            RotationAroundSun =
+                glfwGetTime() * 300.0f / Body.DistanceFromOrigin;
+
+        model = glm::rotate(model, glm::radians(RotationAroundSun),
+                            glm::vec3(0.0f, 1.f, 0.0f));
+
         model = glm::translate(model,
                                glm::vec3(Body.DistanceFromOrigin, 0.0f, 0.0f));
 
         model = glm::rotate(model, glm::radians(180.0f),
                             glm::vec3(1.0f, 0.f, 0.0f));
+
+        float RotationAroundItself = glfwGetTime() * 5.0f / Body.Radius;
+        model = glm::rotate(model, glm::radians(RotationAroundItself),
+                            glm::vec3(0.0f, 1.f, 0.0f));
+
+        model = glm::scale(model,
+                           glm::vec3(Body.Radius, Body.Radius, Body.Radius));
 
         glm::mat4 projection = glm::mat4(1.0f);
         projection = glm::perspective(glm::radians(m_camera->GetFov()),
