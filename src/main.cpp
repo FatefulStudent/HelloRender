@@ -6,11 +6,19 @@ int main(void) {
     std::shared_ptr<BaseExcercise> test = make();
     test->Initialize(application.GetWindow());
 
+    float deltaTime = 0.0f;  // Time between current frame and last frame
+    float lastFrame = 0.0f;  // Time of last frame
+
     while (!application.ShouldCloseWindow()) {
-        test->PreTick();
-        test->Tick();
-        test->PostTick();
-        application.Tick();
+        float currentFrame = glfwGetTime();
+        deltaTime = currentFrame - lastFrame;
+        lastFrame = currentFrame;
+
+        test->ProcessInput(deltaTime);
+        test->PreTick(deltaTime);
+        test->Tick(deltaTime);
+        test->PostTick(deltaTime);
+        application.Tick(deltaTime);
     }
 
     test->Finalize();

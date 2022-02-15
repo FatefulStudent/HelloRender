@@ -1,5 +1,7 @@
 cmake_minimum_required( VERSION 3.16 )
 
+set (CMAKE_CXX_STANDARD 17)
+
 project (HelloRender)
 
 find_package(OpenGL REQUIRED)
@@ -19,23 +21,25 @@ include_directories(
 set(HEADERS  
 	./libs/stb/stb_image.h
 	./Lessons/BaseExcercise.h
-	./Lessons/5.\ CoordinateSystems/Ex_CoordinateSystems.h
+	./Lessons/6.\ Camera/Ex_Camera.h
 	./src/Helper/Application.h
 	./src/Helper/VertexData.h
 	./src/shaderInstance.h
 	./src/shaderProgram.h
 	./src/texture.h
 	./src/mesh.h
+	./src/camera.h
 )
 set(SOURCES 
 	./libs/stb/stb_image.cpp
 	./Lessons/BaseExcercise.cpp
-	./Lessons/5.\ CoordinateSystems/Ex_CoordinateSystems.cpp
+	./Lessons/6.\ Camera/Ex_Camera.cpp
 	./src/Helper/Application.cpp
 	./src/shaderInstance.cpp
 	./src/shaderProgram.cpp
 	./src/texture.cpp
 	./src/mesh.cpp
+	./src/camera.cpp
 )
 
 add_executable(HelloRender 
