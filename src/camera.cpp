@@ -41,8 +41,7 @@ Camera::~Camera() {}
 void Camera::Tick(float deltaTime) {
     // process camera movement
     {
-        constexpr float cameraSpeed = 5.f;
-        const float cameraDistance = deltaTime * cameraSpeed;
+        const float cameraDistance = deltaTime * m_cameraSpeed;
 
         glm::vec3 moveDirection = {0.0f, 0.0f, 0.0f};
 
@@ -56,6 +55,10 @@ void Camera::Tick(float deltaTime) {
         if (glfwGetKey(m_window, GLFW_KEY_D) == GLFW_PRESS)
             moveDirection +=
                 glm::normalize(glm::cross(m_cameraFront, m_cameraUp));
+        if (glfwGetKey(m_window, GLFW_KEY_E) == GLFW_PRESS)
+            m_cameraSpeed *= 1.2f;
+        if (glfwGetKey(m_window, GLFW_KEY_Q) == GLFW_PRESS)
+            m_cameraSpeed /= 1.2f;
 
         if (moveDirection != glm::vec3(0.0f, 0.0f, 0.0f))
             moveDirection = glm::normalize(

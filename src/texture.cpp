@@ -48,7 +48,7 @@ Texture::Texture(const std::string& path,
 }
 
 void Texture::Bind() {
-    glActiveTexture(m_textureUnitNumber);
+    // glActiveTexture(m_textureUnitNumber);
     glBindTexture(GL_TEXTURE_2D, m_Id);
 }
 

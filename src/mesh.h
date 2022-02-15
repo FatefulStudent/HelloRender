@@ -7,15 +7,14 @@
 
 class Mesh {
 private:
-    std::vector<VertexData_PosTexture> m_vertices;
-    std::vector<unsigned> m_indices;
+    std::vector<VertexData_PosTexture> m_vertices = {};
+    std::vector<Index> m_indices = {};
     unsigned int m_VAO;
     unsigned int m_VBO;
     unsigned int m_EBO;
 
 public:
-    Mesh(std::vector<VertexData_PosTexture>&& vertexData,
-         std::vector<unsigned>&& indexData = {});
+    Mesh();
     ~Mesh();
 
     void Draw();

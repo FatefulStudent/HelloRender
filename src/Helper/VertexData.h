@@ -1,6 +1,7 @@
 #ifndef VERTEX_DATA_H
 #define VERTEX_DATA_H
 
+#include <GL/glew.h>
 #include <glm/glm.hpp>
 
 #include <cstddef>
@@ -25,6 +26,10 @@ struct VertexData_PosTexture {
 
     static int GetNumberOfComponentsForPosition() { return 3; }
     static int GetNumberOfComponentsForTexture() { return 2; }
+};
+
+struct Index {
+    GLuint indices[3];
 };
 
 #endif

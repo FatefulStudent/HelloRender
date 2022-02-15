@@ -21,7 +21,7 @@ include_directories(
 set(HEADERS  
 	./libs/stb/stb_image.h
 	./Lessons/BaseExcercise.h
-	./Lessons/6.\ Camera/Ex_Camera.h
+	./Lessons/7.\ Solar\ System\ Project/Ex_SolarSystemProject.h
 	./src/Helper/Application.h
 	./src/Helper/VertexData.h
 	./src/shaderInstance.h
@@ -33,7 +33,7 @@ set(HEADERS
 set(SOURCES 
 	./libs/stb/stb_image.cpp
 	./Lessons/BaseExcercise.cpp
-	./Lessons/6.\ Camera/Ex_Camera.cpp
+	./Lessons/7.\ Solar\ System\ Project/Ex_SolarSystemProject.cpp
 	./src/Helper/Application.cpp
 	./src/shaderInstance.cpp
 	./src/shaderProgram.cpp
