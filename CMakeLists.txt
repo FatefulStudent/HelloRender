@@ -19,7 +19,7 @@ include_directories(
 set(HEADERS  
 	./libs/stb/stb_image.h
 	./Lessons/BaseExcercise.h
-	./Lessons/Transforms/Ex_Transforms.h
+	./Lessons/5.\ CoordinateSystems/Ex_CoordinateSystems.h
 	./src/Helper/Application.h
 	./src/Helper/VertexData.h
 	./src/shaderInstance.h
@@ -30,7 +30,7 @@ set(HEADERS
 set(SOURCES 
 	./libs/stb/stb_image.cpp
 	./Lessons/BaseExcercise.cpp
-	./Lessons/Transforms/Ex_Transforms.cpp
+	./Lessons/5.\ CoordinateSystems/Ex_CoordinateSystems.cpp
 	./src/Helper/Application.cpp
 	./src/shaderInstance.cpp
 	./src/shaderProgram.cpp
