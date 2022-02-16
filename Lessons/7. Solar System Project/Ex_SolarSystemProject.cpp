@@ -20,8 +20,8 @@
 #include <vector>
 
 constexpr float DistanceMultiplier = 0.0000005f;
-constexpr float RadiusMultiplier = 0.00002f;
-constexpr float AdditionalSunRadiusDivider = 1.f;
+constexpr float RadiusMultiplier = 0.0002f;
+constexpr float AdditionalSunRadiusDivider = 10.f;
 namespace {
 std::shared_ptr<ShaderProgram> CreateShaderProgram() {
     const std::string vertexPath =
@@ -125,18 +125,20 @@ void Ex_SolarSystemProject::Tick(float deltaTime) {
 
     m_camera->Tick(deltaTime);
 
+    glm::vec3 SunColor = glm::vec3(1.0f, 1.0f, .8f);
+
     for (int i = 0; i < m_CelestalBodies.size(); ++i) {
         const auto Body = m_CelestalBodies[i];
         glm::mat4 model = glm::mat4(1.0f);
 
-        float RotationAroundSun = 0.0f;
+        // float RotationAroundSun = 0.0f;
 
-        if (Body.DistanceFromOrigin > 1.0f)
-            RotationAroundSun =
-                glfwGetTime() * 300.0f / Body.DistanceFromOrigin;
+        // if (Body.DistanceFromOrigin > 1.0f)
+        //     RotationAroundSun =
+        //         glfwGetTime() * 300.0f / Body.DistanceFromOrigin;
 
-        model = glm::rotate(model, glm::radians(RotationAroundSun),
-                            glm::vec3(0.0f, 1.f, 0.0f));
+        // model = glm::rotate(model, glm::radians(RotationAroundSun),
+        //                     glm::vec3(0.0f, 1.f, 0.0f));
 
         model = glm::translate(model,
                                glm::vec3(Body.DistanceFromOrigin, 0.0f, 0.0f));
@@ -160,6 +162,15 @@ void Ex_SolarSystemProject::Tick(float deltaTime) {
         m_shaderProgram->setMatrix("View", m_camera->GetViewMatrix());
         m_shaderProgram->setMatrix("Projection", projection);
 
+        if (i == 0) {
+            m_shaderProgram->setVec3("objectColor", SunColor);
+            m_shaderProgram->setVec3("lightColor",
+                                     glm::vec3(1.0f, 1.0f, 1.0f));
+        } else {
+            m_shaderProgram->setVec3("objectColor",
+                                     glm::vec3(1.0f, 1.0f, 1.0f));
+            m_shaderProgram->setVec3("lightColor", SunColor);
+        }
         m_textures[i]->Bind();
 
         m_mesh->Draw();

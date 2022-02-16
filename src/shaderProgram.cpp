@@ -51,6 +51,13 @@ void ShaderProgram::setFloat(const std::string& name, float value) const {
     glUniform1f(glGetUniformLocation(m_id, name.c_str()), value);
 }
 
+void ShaderProgram::setVec3(const std::string& name,
+                            const glm::vec3& value) const {
+    GLuint location = glGetUniformLocation(m_id, name.c_str());
+
+    glUniform3fv(location, 1, glm::value_ptr(value));
+}
+
 void ShaderProgram::setMatrix(const std::string& name,
                               const glm::mat4& value) const {
     unsigned int transformLoc = glGetUniformLocation(m_id, name.c_str());

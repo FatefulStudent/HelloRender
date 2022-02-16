@@ -16,7 +16,7 @@ private:
     static Camera* m_camera;
 
     glm::mat4 m_view = {};
-    glm::vec3 m_cameraPos = {0.0f, 0.0f, 0.0f};
+    glm::vec3 m_cameraPos = {0.0f, 0.0f, 100.0f};
     glm::vec3 m_cameraUp = {0.0f, 1.0f, 0.0f};
     glm::vec3 m_cameraFront = {0.0f, 0.0f, -1.0f};
     glm::vec2 m_cachedCursorPos = {0.0f, 0.0f};
