@@ -6,7 +6,7 @@
 
 #include <algorithm>
 
-float Camera::m_fov = 45.0f;
+Camera* Camera::m_camera = nullptr;
 
 void Camera::SetupInput() {
     glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
@@ -24,14 +24,15 @@ void Camera::SetupInput() {
 void Camera::ScrollCallback(GLFWwindow* window,
                             double xoffset,
                             double yoffset) {
-    m_fov -= (float)yoffset;
-    if (m_fov < 1.0f)
-        m_fov = 1.0f;
-    if (m_fov > 100.0f)
-        m_fov = 100.0f;
+    if (!m_camera)
+        return;
+    auto& fov = m_camera->m_fov;
+    fov -= (float)yoffset;
+    fov = std::clamp(fov, 1.0f, 100.0f);
 }
 
 Camera::Camera(GLFWwindow* window) {
+    m_camera = this;
     m_window = window;
     SetupInput();
 }
@@ -60,9 +61,9 @@ void Camera::Tick(float deltaTime) {
         if (glfwGetKey(m_window, GLFW_KEY_Q) == GLFW_PRESS)
             m_cameraSpeed /= 1.2f;
 
-        if (moveDirection != glm::vec3(0.0f, 0.0f, 0.0f))
-            moveDirection = glm::normalize(
-                glm::vec3(moveDirection.x, 0.0f, moveDirection.z));
+        // if (moveDirection != glm::vec3(0.0f, 0.0f, 0.0f))
+        //     moveDirection = glm::normalize(
+        //         glm::vec3(moveDirection.x, 0.0f, moveDirection.z));
 
         m_cameraPos += moveDirection * cameraDistance;
     }

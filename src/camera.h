@@ -12,7 +12,8 @@ private:
                                double yoffset);
     void SetupInput();
 
-    static float m_fov;
+    float m_fov = 45.0f;
+    static Camera* m_camera;
 
     glm::mat4 m_view = {};
     glm::vec3 m_cameraPos = {0.0f, 0.0f, 0.0f};
@@ -28,7 +29,7 @@ public:
     Camera(GLFWwindow* window);
     ~Camera();
 
-    static float GetFov() { return m_fov; };
+    float GetFov() { return m_fov; };
     const glm::mat4& GetViewMatrix() const { return m_view; };
 
     void Tick(float deltaTime);
