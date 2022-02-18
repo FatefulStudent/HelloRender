@@ -29,7 +29,8 @@ public:
     Camera(GLFWwindow* window);
     ~Camera();
 
-    float GetFov() { return m_fov; };
+    float GetFov() const { return m_fov; };
+    glm::vec3 GetPosition() const { return m_cameraPos; };
     const glm::mat4& GetViewMatrix() const { return m_view; };
 
     void Tick(float deltaTime);

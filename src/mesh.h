@@ -7,7 +7,7 @@
 
 class Mesh {
 private:
-    std::vector<VertexData_PosTexture> m_vertices = {};
+    std::vector<VertexData_PosNormalTexture> m_vertices = {};
     std::vector<Index> m_indices = {};
     unsigned int m_VAO;
     unsigned int m_VBO;

@@ -19,15 +19,27 @@
 #include <iostream>
 #include <vector>
 
-constexpr float DistanceMultiplier = 0.0000005f;
+constexpr float DistanceMultiplier = 0.000001f;
 constexpr float RadiusMultiplier = 0.0002f;
-constexpr float AdditionalSunRadiusDivider = 10.f;
+constexpr float AdditionalSunRadiusDivider = 5.f;
+constexpr bool bRotateAroundSun = true;
+constexpr float RotationAroundAxisMultiplier = 50.0f;
+constexpr float RotationAroundSunMultiplier = 1500.0f;
 namespace {
 std::shared_ptr<ShaderProgram> CreateShaderProgram() {
     const std::string vertexPath =
         "Lessons/7. Solar System Project/shaders/shaderWithModelViewProj.vert";
     const std::string fragmentPath =
         "Lessons/7. Solar System Project/shaders/shaderWithTexture.frag";
+
+    return std::make_shared<ShaderProgram>(vertexPath, fragmentPath);
+}
+std::shared_ptr<ShaderProgram> CreateShaderProgramSun() {
+    const std::string vertexPath =
+        "Lessons/7. Solar System "
+        "Project/shaders/shaderWithModelViewProj.vert";
+    const std::string fragmentPath =
+        "Lessons/7. Solar System Project/shaders/shaderForSun.frag";
 
     return std::make_shared<ShaderProgram>(vertexPath, fragmentPath);
 }
@@ -38,6 +50,35 @@ std::shared_ptr<Camera> CreateCamera(GLFWwindow* window) {
 
 std::shared_ptr<Mesh> CreateMesh() {
     return std::make_shared<Mesh>();
+}
+
+void ComputeModelMatrix(glm::mat4& OutModelMatrix, const CelestalBody& Body) {
+    if (bRotateAroundSun) {
+        float RotationAroundSun = 0.0f;
+
+        if (Body.DistanceFromOrigin > 1.0f)
+            RotationAroundSun = glfwGetTime() * RotationAroundSunMultiplier /
+                                Body.DistanceFromOrigin;
+
+        OutModelMatrix =
+            glm::rotate(OutModelMatrix, glm::radians(RotationAroundSun),
+                        glm::vec3(0.0f, 1.f, 0.0f));
+    }
+
+    OutModelMatrix = glm::translate(
+        OutModelMatrix, glm::vec3(Body.DistanceFromOrigin, 0.0f, 0.0f));
+
+    OutModelMatrix = glm::rotate(OutModelMatrix, glm::radians(180.0f),
+                                 glm::vec3(1.0f, 0.f, 0.0f));
+
+    float RotationAroundItself =
+        glfwGetTime() * RotationAroundAxisMultiplier / Body.Radius;
+    OutModelMatrix =
+        glm::rotate(OutModelMatrix, glm::radians(RotationAroundItself),
+                    glm::vec3(0.0f, 1.f, 0.0f));
+
+    OutModelMatrix = glm::scale(
+        OutModelMatrix, glm::vec3(Body.Radius, Body.Radius, Body.Radius));
 }
 }  // namespace
 
@@ -117,7 +158,7 @@ void Ex_SolarSystemProject::Initialize(GLFWwindow* window) {
     m_mesh = CreateMesh();
 
     m_shaderProgram = CreateShaderProgram();
-    m_shaderProgram->use();
+    m_shaderProgramSun = CreateShaderProgramSun();
 }
 
 void Ex_SolarSystemProject::Tick(float deltaTime) {
@@ -128,48 +169,29 @@ void Ex_SolarSystemProject::Tick(float deltaTime) {
     glm::vec3 SunColor = glm::vec3(1.0f, 1.0f, .8f);
 
     for (int i = 0; i < m_CelestalBodies.size(); ++i) {
+        auto shaderProgram = i == 0 ? m_shaderProgramSun : m_shaderProgram;
         const auto Body = m_CelestalBodies[i];
         glm::mat4 model = glm::mat4(1.0f);
 
-        // float RotationAroundSun = 0.0f;
-
-        // if (Body.DistanceFromOrigin > 1.0f)
-        //     RotationAroundSun =
-        //         glfwGetTime() * 300.0f / Body.DistanceFromOrigin;
-
-        // model = glm::rotate(model, glm::radians(RotationAroundSun),
-        //                     glm::vec3(0.0f, 1.f, 0.0f));
-
-        model = glm::translate(model,
-                               glm::vec3(Body.DistanceFromOrigin, 0.0f, 0.0f));
-
-        model = glm::rotate(model, glm::radians(180.0f),
-                            glm::vec3(1.0f, 0.f, 0.0f));
-
-        float RotationAroundItself = glfwGetTime() * 5.0f / Body.Radius;
-        model = glm::rotate(model, glm::radians(RotationAroundItself),
-                            glm::vec3(0.0f, 1.f, 0.0f));
-
-        model = glm::scale(model,
-                           glm::vec3(Body.Radius, Body.Radius, Body.Radius));
+        ComputeModelMatrix(model, Body);
 
         glm::mat4 projection = glm::mat4(1.0f);
         projection = glm::perspective(glm::radians(m_camera->GetFov()), 1.0f,
                                       0.1f, 500000.0f);
 
-        m_shaderProgram->use();
-        m_shaderProgram->setMatrix("Model", model);
-        m_shaderProgram->setMatrix("View", m_camera->GetViewMatrix());
-        m_shaderProgram->setMatrix("Projection", projection);
+        shaderProgram->use();
+        shaderProgram->setMatrix("Model", model);
+        shaderProgram->setMatrix("View", m_camera->GetViewMatrix());
+        shaderProgram->setMatrix("Projection", projection);
 
-        if (i == 0) {
-            m_shaderProgram->setVec3("objectColor", SunColor);
-            m_shaderProgram->setVec3("lightColor",
-                                     glm::vec3(1.0f, 1.0f, 1.0f));
-        } else {
-            m_shaderProgram->setVec3("objectColor",
-                                     glm::vec3(1.0f, 1.0f, 1.0f));
-            m_shaderProgram->setVec3("lightColor", SunColor);
+        if (i != 0) {
+            shaderProgram->setVec3("lightPos", glm::vec3(.0f));
+
+            shaderProgram->setVec3("objectColor", glm::vec3(1.0f, 1.0f, 1.0f));
+            shaderProgram->setFloat("ambientStrength", 0.05f);
+            shaderProgram->setFloat("specularStrength", 1.f);
+            shaderProgram->setVec3("lightColor", SunColor);
+            shaderProgram->setVec3("viewPos", m_camera->GetPosition());
         }
         m_textures[i]->Bind();
 
