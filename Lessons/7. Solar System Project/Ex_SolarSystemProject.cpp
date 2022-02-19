@@ -35,10 +35,10 @@ namespace {
 std::shared_ptr<ShaderProgram> CreateShaderProgram() {
     const std::string vertexPath =
         "Lessons/7. Solar System "
-        "Project/shaders/shaderWithGouraudLighting.vert";
+        "Project/shaders/shaderWithModelViewProj.vert";
     const std::string fragmentPath =
         "Lessons/7. Solar System "
-        "Project/shaders/shaderWithGouraudLighting.frag";
+        "Project/shaders/shaderWithTexture.frag";
 
     return std::make_shared<ShaderProgram>(vertexPath, fragmentPath);
 }
