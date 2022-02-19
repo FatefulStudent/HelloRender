@@ -21,10 +21,16 @@
 
 constexpr float DistanceMultiplier = 0.000001f;
 constexpr float RadiusMultiplier = 0.0002f;
-constexpr float AdditionalSunRadiusDivider = 5.f;
-constexpr bool bRotateAroundSun = true;
+constexpr float AdditionalSunRadiusDivider = 7.f;
+constexpr bool bRotateAroundSun = false;
 constexpr float RotationAroundAxisMultiplier = 50.0f;
 constexpr float RotationAroundSunMultiplier = 1500.0f;
+
+constexpr float AmbientStrength = 0.05f;
+constexpr float DiffuseStrength = 8.0f;
+constexpr float SpecularStrength = 0.7f;
+constexpr int Shininess = 16;
+
 namespace {
 std::shared_ptr<ShaderProgram> CreateShaderProgram() {
     const std::string vertexPath =
@@ -188,8 +194,11 @@ void Ex_SolarSystemProject::Tick(float deltaTime) {
             shaderProgram->setVec3("lightPos", glm::vec3(.0f));
 
             shaderProgram->setVec3("objectColor", glm::vec3(1.0f, 1.0f, 1.0f));
-            shaderProgram->setFloat("ambientStrength", 0.05f);
-            shaderProgram->setFloat("specularStrength", 1.f);
+            shaderProgram->setFloat("ambientStrength", AmbientStrength);
+            shaderProgram->setFloat("diffuseStrength", DiffuseStrength);
+            shaderProgram->setFloat("specularStrength", SpecularStrength);
+            shaderProgram->setInt("shininess", Shininess);
+            shaderProgram->setInt("index", i);
             shaderProgram->setVec3("lightColor", SunColor);
             shaderProgram->setVec3("viewPos", m_camera->GetPosition());
         }
