@@ -27,23 +27,25 @@ constexpr float RotationAroundAxisMultiplier = 50.0f;
 constexpr float RotationAroundSunMultiplier = 1500.0f;
 
 constexpr float AmbientStrength = 0.05f;
-constexpr float DiffuseStrength = 8.0f;
-constexpr float SpecularStrength = 0.7f;
+constexpr float DiffuseStrength = 1.0f;
+constexpr float SpecularStrength = 1.7f;
 constexpr int Shininess = 16;
 
 namespace {
 std::shared_ptr<ShaderProgram> CreateShaderProgram() {
     const std::string vertexPath =
-        "Lessons/7. Solar System Project/shaders/shaderWithModelViewProj.vert";
+        "Lessons/7. Solar System "
+        "Project/shaders/shaderWithGouraudLighting.vert";
     const std::string fragmentPath =
-        "Lessons/7. Solar System Project/shaders/shaderWithTexture.frag";
+        "Lessons/7. Solar System "
+        "Project/shaders/shaderWithGouraudLighting.frag";
 
     return std::make_shared<ShaderProgram>(vertexPath, fragmentPath);
 }
 std::shared_ptr<ShaderProgram> CreateShaderProgramSun() {
     const std::string vertexPath =
         "Lessons/7. Solar System "
-        "Project/shaders/shaderWithModelViewProj.vert";
+        "Project/shaders/shaderForSun.vert";
     const std::string fragmentPath =
         "Lessons/7. Solar System Project/shaders/shaderForSun.frag";
 
