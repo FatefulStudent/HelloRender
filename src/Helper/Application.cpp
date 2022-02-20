@@ -40,8 +40,8 @@ void Application::Finalize() {
 
 GLFWwindow* Application::CreateWindow() const {
     GLFWwindow* window = nullptr;
-    const int InitialWindowWidth = 800;
-    const int InitialWindowHeight = 600;
+    const int InitialWindowWidth = 1080;
+    const int InitialWindowHeight = 1080;
 
     glfwWindowHint(GLFW_SAMPLES, 4);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);

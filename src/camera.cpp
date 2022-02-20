@@ -6,7 +6,7 @@
 
 #include <algorithm>
 
-float Camera::m_fov = 45.0f;
+Camera* Camera::m_camera = nullptr;
 
 void Camera::SetupInput() {
     glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
@@ -24,14 +24,15 @@ void Camera::SetupInput() {
 void Camera::ScrollCallback(GLFWwindow* window,
                             double xoffset,
                             double yoffset) {
-    m_fov -= (float)yoffset;
-    if (m_fov < 1.0f)
-        m_fov = 1.0f;
-    if (m_fov > 100.0f)
-        m_fov = 100.0f;
+    if (!m_camera)
+        return;
+    auto& fov = m_camera->m_fov;
+    fov -= (float)yoffset;
+    fov = std::clamp(fov, 1.0f, 100.0f);
 }
 
 Camera::Camera(GLFWwindow* window) {
+    m_camera = this;
     m_window = window;
     SetupInput();
 }
@@ -41,8 +42,7 @@ Camera::~Camera() {}
 void Camera::Tick(float deltaTime) {
     // process camera movement
     {
-        constexpr float cameraSpeed = 5.f;
-        const float cameraDistance = deltaTime * cameraSpeed;
+        const float cameraDistance = deltaTime * m_cameraSpeed;
 
         glm::vec3 moveDirection = {0.0f, 0.0f, 0.0f};
 
@@ -56,10 +56,14 @@ void Camera::Tick(float deltaTime) {
         if (glfwGetKey(m_window, GLFW_KEY_D) == GLFW_PRESS)
             moveDirection +=
                 glm::normalize(glm::cross(m_cameraFront, m_cameraUp));
+        if (glfwGetKey(m_window, GLFW_KEY_E) == GLFW_PRESS)
+            m_cameraSpeed *= 1.2f;
+        if (glfwGetKey(m_window, GLFW_KEY_Q) == GLFW_PRESS)
+            m_cameraSpeed /= 1.2f;
 
-        if (moveDirection != glm::vec3(0.0f, 0.0f, 0.0f))
-            moveDirection = glm::normalize(
-                glm::vec3(moveDirection.x, 0.0f, moveDirection.z));
+        // if (moveDirection != glm::vec3(0.0f, 0.0f, 0.0f))
+        //     moveDirection = glm::normalize(
+        //         glm::vec3(moveDirection.x, 0.0f, moveDirection.z));
 
         m_cameraPos += moveDirection * cameraDistance;
     }
