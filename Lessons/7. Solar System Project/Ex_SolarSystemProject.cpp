@@ -38,7 +38,7 @@ std::shared_ptr<ShaderProgram> CreateShaderProgram() {
         "Project/shaders/shaderWithModelViewProj.vert";
     const std::string fragmentPath =
         "Lessons/7. Solar System "
-        "Project/shaders/shaderWithTexture.frag";
+        "Project/shaders/shaderWithLighting.frag";
 
     return std::make_shared<ShaderProgram>(vertexPath, fragmentPath);
 }
