@@ -1,27 +1,40 @@
 cmake_minimum_required( VERSION 3.16 )
 
 set (CMAKE_CXX_STANDARD 17)
+set (PROJECT_NAME HelloRender)
 
-project (HelloRender)
+project (${PROJECT_NAME})
 
 find_package(OpenGL REQUIRED)
 
-add_subdirectory(libs)
-
+add_definitions(-DGLEW_STATIC)
 
 include_directories(
+	${OPENGL_INCLUDE_DIRS}
 	libs/glew-2.1.0/include/
 	libs/glfw-3.3.5/include/
 	libs/glm-0.9.8/
 	libs/stb/
 	src/
-	Lessons/
+	examples/
 )
+
+add_subdirectory(libs)
+
+if( MSVC )
+	file(GLOB ResourceFiles "res/*") 
+	file(COPY ${ResourceFiles} DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/res)
+
+	file(GLOB ShaderFiles "shaders/*") 
+	file(COPY ${ShaderFiles} DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/shaders)
+
+	SET( CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /ENTRY:mainCRTStartup" )
+endif()
 
 set(HEADERS  
 	./libs/stb/stb_image.h
-	./Lessons/BaseExcercise.h
-	./Lessons/7.\ Solar\ System\ Project/Ex_SolarSystemProject.h
+	./examples/BaseExcercise.h
+	./examples/SolarSystemProject/Ex_SolarSystemProject.h
 	./src/Helper/Application.h
 	./src/Helper/VertexData.h
 	./src/shaderInstance.h
@@ -32,8 +45,8 @@ set(HEADERS
 )
 set(SOURCES 
 	./libs/stb/stb_image.cpp
-	./Lessons/BaseExcercise.cpp
-	./Lessons/7.\ Solar\ System\ Project/Ex_SolarSystemProject.cpp
+	./examples/BaseExcercise.cpp
+	./examples/SolarSystemProject/Ex_SolarSystemProject.cpp
 	./src/Helper/Application.cpp
 	./src/shaderInstance.cpp
 	./src/shaderProgram.cpp
@@ -42,9 +55,17 @@ set(SOURCES
 	./src/camera.cpp
 )
 
-add_executable(HelloRender 
+add_executable(${PROJECT_NAME} 
 	${HEADERS}
 	${SOURCES}
 	./src/main.cpp
 )
-target_link_libraries(HelloRender glew glfw GL)
+target_link_libraries(${PROJECT_NAME} ${OPENGL_LIBRARIES} glew glfw)
+
+if( MSVC )
+    if(${CMAKE_VERSION} VERSION_LESS "3.6.0") 
+        message( "\n\t[ WARNING ]\n\n\tCMake version lower than 3.6.\n\n\t - Please update CMake and rerun; OR\n\t - Manually set 'OpenGL_clone' as StartUp Project in Visual Studio.\n" )
+    else()
+        set_property( DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT ${PROJECT_NAME} )
+    endif()
+endif()

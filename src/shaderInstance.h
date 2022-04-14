@@ -2,6 +2,7 @@
 #define SHADER_INSTANCE_H
 
 #include <map>
+#include <string>
 
 #include <GL/glew.h>
 

@@ -34,20 +34,17 @@ constexpr int Shininess = 16;
 namespace {
 std::shared_ptr<ShaderProgram> CreateShaderProgram() {
     const std::string vertexPath =
-        "Lessons/7. Solar System "
-        "Project/shaders/shaderWithModelViewProj.vert";
+        "shaders/shaderWithModelViewProj.vert";
     const std::string fragmentPath =
-        "Lessons/7. Solar System "
-        "Project/shaders/shaderWithLighting.frag";
+        "shaders/shaderWithLighting.frag";
 
     return std::make_shared<ShaderProgram>(vertexPath, fragmentPath);
 }
 std::shared_ptr<ShaderProgram> CreateShaderProgramSun() {
     const std::string vertexPath =
-        "Lessons/7. Solar System "
-        "Project/shaders/shaderForSun.vert";
+        "shaders/shaderForSun.vert";
     const std::string fragmentPath =
-        "Lessons/7. Solar System Project/shaders/shaderForSun.frag";
+        "shaders/shaderForSun.frag";
 
     return std::make_shared<ShaderProgram>(vertexPath, fragmentPath);
 }
@@ -94,62 +91,62 @@ void Ex_SolarSystemProject::Initialize(GLFWwindow* window) {
     BaseExcercise::Initialize(window);
     {
         const CelestalBody SunModel = {
-            "Resources/sunmap.jpg", 0.0f * DistanceMultiplier,
+            "res/sunmap.jpg", 0.0f * DistanceMultiplier,
             1392000.0f * RadiusMultiplier / AdditionalSunRadiusDivider};
         m_CelestalBodies.push_back(SunModel);
     }
 
     {
-        const CelestalBody MercuryModel = {"Resources/mercurymap.jpg",
+        const CelestalBody MercuryModel = {"res/mercurymap.jpg",
                                            57950000.0 * DistanceMultiplier,
                                            4800.0f * RadiusMultiplier};
         m_CelestalBodies.push_back(MercuryModel);
     }
 
     {
-        const CelestalBody VenusModel = {"Resources/venusmap.jpg",
+        const CelestalBody VenusModel = {"res/venusmap.jpg",
                                          108110000.0 * DistanceMultiplier,
                                          12100.0f * RadiusMultiplier};
         m_CelestalBodies.push_back(VenusModel);
     }
 
     {
-        const CelestalBody EarthModel = {"Resources/earthmap.jpg",
+        const CelestalBody EarthModel = {"res/earthmap.jpg",
                                          149570000.0 * DistanceMultiplier,
                                          12700.0f * RadiusMultiplier};
         m_CelestalBodies.push_back(EarthModel);
     }
 
     {
-        const CelestalBody MarsModel = {"Resources/marsmap.jpg",
+        const CelestalBody MarsModel = {"res/marsmap.jpg",
                                         227840000.0 * DistanceMultiplier,
                                         6700.0f * RadiusMultiplier};
         m_CelestalBodies.push_back(MarsModel);
     }
 
     {
-        const CelestalBody JupiterModel = {"Resources/jupitermap.jpg",
+        const CelestalBody JupiterModel = {"res/jupitermap.jpg",
                                            778140000.0 * DistanceMultiplier,
                                            142900.0f * RadiusMultiplier};
         m_CelestalBodies.push_back(JupiterModel);
     }
 
     {
-        const CelestalBody SaturnModel = {"Resources/saturnmap.jpg",
+        const CelestalBody SaturnModel = {"res/saturnmap.jpg",
                                           1427000000.0 * DistanceMultiplier,
                                           116438.0f * RadiusMultiplier};
         m_CelestalBodies.push_back(SaturnModel);
     }
 
     {
-        const CelestalBody UranusModel = {"Resources/uranusmap.jpg",
+        const CelestalBody UranusModel = {"res/uranusmap.jpg",
                                           2870300000.0 * DistanceMultiplier,
                                           46940.0f * RadiusMultiplier};
         m_CelestalBodies.push_back(UranusModel);
     }
 
     {
-        const CelestalBody NeptuneModel = {"Resources/neptunemap.jpg",
+        const CelestalBody NeptuneModel = {"res/neptunemap.jpg",
                                            4499900000.0 * DistanceMultiplier,
                                            45400.0f * RadiusMultiplier};
         m_CelestalBodies.push_back(NeptuneModel);

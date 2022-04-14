@@ -3,5 +3,4 @@
 !.clang-format
 
 build/*
-
-libs/assimp-5.1.2
+out/build/*

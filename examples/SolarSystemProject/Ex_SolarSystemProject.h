@@ -1,13 +1,14 @@
 #ifndef EX_CAMERA_H
 #define EX_CAMERA_H
 
-#include "../../Lessons/BaseExcercise.h"
+#include "../../examples/BaseExcercise.h"
 #include "Excercise.h"
 
 #include "Helper/VertexData.h"
 
 #include <memory>
 #include <vector>
+#include <string>
 
 class Camera;
 class ShaderProgram;
