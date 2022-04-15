@@ -7,6 +7,10 @@ public:
     UComponent();
     UComponent(long&& NewID);
 
+    virtual void Destroy(){};
+
+    virtual ~UComponent();
+
 private:
     long ID;
 };

@@ -7,12 +7,20 @@ class UComponent;
 
 class UEntity {
 public:
+    UEntity();
+    ~UEntity();
+
     template<typename T, typename ... Args>
     void AddComponent(Args... args);
 
+    void Destroy();
+
 private:
+    void DestroyImpl();
+    friend class UWorld;
 	// TODO: smartpointers
     std::vector<UComponent*> Components;
+    int ID;
 };
 
 #endif

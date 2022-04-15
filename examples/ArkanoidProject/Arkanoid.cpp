@@ -116,3 +116,9 @@ void Arkanoid::Tick(float deltaTime) {
         m_mesh->Draw();
     }
 }
+
+void Arkanoid::Finalize() {
+    auto World = UWorld::GetWorld();
+    World->DestroyWorld();
+    system("pause");
+}

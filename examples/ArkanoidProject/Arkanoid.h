@@ -27,6 +27,7 @@ public:
 
     virtual void Initialize(GLFWwindow* window) override;
     virtual void Tick(float deltaTime) override;
+    virtual void Finalize() override;
 
 private:
     std::vector<CelestalBody> m_CelestalBodies;

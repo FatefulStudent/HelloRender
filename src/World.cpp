@@ -21,8 +21,9 @@ UWorld* UWorld::GetWorld() {
     return World;
 }
 
-UEntity* UWorld::CreateEntity() const {
-    auto NewEntity = new UEntity();
+UEntity* UWorld::CreateEntity() {
+    UEntity* NewEntity = new UEntity();
+    Entities.push_back(NewEntity);
     return NewEntity;
 }
 
@@ -33,8 +34,31 @@ UEntity* UWorld::GetFirstEntity() const {
     return nullptr;
 }
 
+void UWorld::DestroyEntity(UEntity* Entity) {
+    if (!Entity)
+        return;
+
+    DestroyEntityImpl(Entity);
+
+    auto EntityIter = std::find(Entities.begin(), Entities.end(), Entity); 
+    if (EntityIter != Entities.end())
+        Entities.erase(EntityIter);
+    delete Entity;
+}
+
 void UWorld::Destroy() {
-    for each (UEntity* Entity in Entities) {
-        delete Entity;
+    for (auto Iter = Entities.begin(); Iter != Entities.end(); ++Iter){
+        if (*Iter) {
+            DestroyEntityImpl(*Iter);
+            delete *Iter;
+        }
     }
+    Entities.clear();
+}
+
+void UWorld::DestroyEntityImpl(UEntity* Entity) {
+    if (!Entity)
+        return;
+
+    Entity->DestroyImpl();
 }
