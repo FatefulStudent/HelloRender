@@ -8,6 +8,10 @@
 #include "shaderProgram.h"
 #include "texture.h"
 
+#include "World.h"
+#include "Entity.h"
+#include "Component.h"
+
 #include <GL/glew.h>
 #include <stb_image.h>
 #include <glm/glm.hpp>
@@ -57,6 +61,14 @@ void ComputeModelMatrix(glm::mat4& OutModelMatrix, const CelestalBody& Body) {
 
 void Arkanoid::Initialize(GLFWwindow* window) {
     BaseExcercise::Initialize(window);
+
+    auto World = UWorld::CreateWorld();
+
+    UEntity* Entity = World->CreateEntity();
+
+    Entity->AddComponent<UComponent>();
+    Entity->AddComponent<UComponent>(3);
+
     {
         const CelestalBody SunModel = {
             "res/sunmap.jpg", 10.0f};

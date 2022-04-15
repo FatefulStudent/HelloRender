@@ -44,6 +44,9 @@ set(HEADERS
 	./src/mesh.h
 	./src/camera3d.h
 	./src/camera2d.h
+	./src/Entity.h
+	./src/World.h
+	./src/Component.h
 )
 set(SOURCES 
 	./libs/stb/stb_image.cpp
@@ -56,6 +59,9 @@ set(SOURCES
 	./src/mesh.cpp
 	./src/camera3d.cpp
 	./src/camera2d.cpp
+	./src/Entity.cpp
+	./src/World.cpp
+	./src/Component.cpp
 )
 
 add_executable(${PROJECT_NAME} 
@@ -66,9 +72,5 @@ add_executable(${PROJECT_NAME}
 target_link_libraries(${PROJECT_NAME} ${OPENGL_LIBRARIES} glew glfw)
 
 if( MSVC )
-    if(${CMAKE_VERSION} VERSION_LESS "3.6.0") 
-        message( "\n\t[ WARNING ]\n\n\tCMake version lower than 3.6.\n\n\t - Please update CMake and rerun; OR\n\t - Manually set 'OpenGL_clone' as StartUp Project in Visual Studio.\n" )
-    else()
-        set_property( DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT ${PROJECT_NAME} )
-    endif()
+    set_property( DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT ${PROJECT_NAME} )
 endif()
