@@ -21,6 +21,13 @@ UWorld* UWorld::GetWorld() {
     return World;
 }
 
+USystem* UWorld::GetFirstSystem() const {
+    if (Systems.size() > 0)
+        return Systems.front();
+
+    return nullptr;
+}
+
 UEntity* UWorld::CreateEntity() {
     UEntity* NewEntity = new UEntity();
     Entities.push_back(NewEntity);

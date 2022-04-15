@@ -5,7 +5,6 @@ class UComponent {
 
 public:
     UComponent();
-    UComponent(long&& NewID);
 
     virtual void Destroy(){};
 

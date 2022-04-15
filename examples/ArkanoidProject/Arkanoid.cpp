@@ -11,6 +11,9 @@
 #include "World.h"
 #include "Entity.h"
 #include "Component.h"
+#include "MeshComponent.h"
+#include "System.h"
+#include "RenderSystem.h"
 
 #include <GL/glew.h>
 #include <stb_image.h>
@@ -67,7 +70,10 @@ void Arkanoid::Initialize(GLFWwindow* window) {
     UEntity* Entity = World->CreateEntity();
 
     Entity->AddComponent<UComponent>();
-    Entity->AddComponent<UComponent>(3);
+    Entity->AddComponent<UMeshComponent>("res/sunmap.jpg", 10.0f);
+
+    USystem* RenderSystem = World->CreateSystem<URenderSystem>();
+    RenderSystem->Initialize(World->GetFirstEntity());
 
     {
         const CelestalBody SunModel = {
@@ -83,7 +89,7 @@ void Arkanoid::Initialize(GLFWwindow* window) {
 
     m_camera = CreateCamera();
 
-    m_mesh = CreateMesh();
+    // m_mesh = CreateMesh();
 
     m_shaderProgramSun = CreateShaderProgramSun();
 }
@@ -113,12 +119,16 @@ void Arkanoid::Tick(float deltaTime) {
 
         m_textures[i]->Bind();
 
-        m_mesh->Draw();
+        auto World = UWorld::GetWorld();
+        USystem* System = World->GetFirstSystem();
+        System->Update(World->GetFirstEntity());
     }
 }
 
 void Arkanoid::Finalize() {
     auto World = UWorld::GetWorld();
+    USystem* System = World->GetFirstSystem();
+    System->Finalize(World->GetFirstEntity());
+
     World->DestroyWorld();
-    system("pause");
 }

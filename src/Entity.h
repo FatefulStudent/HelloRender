@@ -13,6 +13,9 @@ public:
     template<typename T, typename ... Args>
     void AddComponent(Args... args);
 
+    template<typename T>
+    T* GetComponentOfClass() const;
+
     void Destroy();
 
 private:
@@ -23,11 +26,21 @@ private:
     int ID;
 };
 
-#endif
-
 template <typename T, typename... Args>
 inline void UEntity::AddComponent(Args... args) {
     auto NewObject = new T(std::forward<Args>(args)...);
     auto NewObjectAsComponent = static_cast<UComponent*>(NewObject);
     Components.push_back(NewObjectAsComponent);
 }
+
+template <typename T>
+inline T* UEntity::GetComponentOfClass() const {
+    for (UComponent* Component : Components) {
+        T* ComponentCasted = dynamic_cast<T*>(Component);
+        if (ComponentCasted)
+            return ComponentCasted;
+    }
+    return nullptr;
+}
+
+#endif

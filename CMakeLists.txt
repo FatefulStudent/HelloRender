@@ -47,6 +47,9 @@ set(HEADERS
 	./src/Entity.h
 	./src/World.h
 	./src/Component.h
+	./src/MeshComponent.h
+	./src/System.h
+	./src/RenderSystem.h
 )
 set(SOURCES 
 	./libs/stb/stb_image.cpp
@@ -62,6 +65,9 @@ set(SOURCES
 	./src/Entity.cpp
 	./src/World.cpp
 	./src/Component.cpp
+	./src/MeshComponent.cpp
+	./src/System.cpp
+	./src/RenderSystem.cpp
 )
 
 add_executable(${PROJECT_NAME} 

@@ -9,12 +9,6 @@ UComponent::UComponent() {
     std::cout << "Component #" << ID << " created!" << std::endl;
 }
 
-UComponent::UComponent(long&& NewID) : 
-    ID(NewID) 
-{
-    std::cout << "Component #" << ID << " created!" << std::endl;
-}
-
 UComponent::~UComponent() {
     std::cout << "Component #" << ID << " destroyed!" << std::endl;
 }

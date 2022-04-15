@@ -4,6 +4,7 @@
 #include <vector>
 
 class UEntity;
+class USystem;
 
 class UWorld 
 {
@@ -13,6 +14,11 @@ public:
 
     static UWorld* GetWorld();
     static UWorld* World;
+
+    template<typename T>
+    T* CreateSystem();
+
+    USystem* GetFirstSystem() const;
 
     UEntity* CreateEntity();
     UEntity* GetFirstEntity() const;
@@ -25,6 +31,18 @@ private:
 
     // TODO: move from raw pointers to new pointers
     std::vector<UEntity*> Entities;
+
+    // TODO: move from raw pointers to new pointers
+    std::vector<USystem*> Systems;
 };
+
+
+template <typename T>
+inline T* UWorld::CreateSystem() {
+    auto NewObject = new T();
+    auto NewObjectAsSystem = static_cast<USystem*>(NewObject);
+    Systems.push_back(NewObjectAsSystem);
+    return NewObject;
+}
 
 #endif
