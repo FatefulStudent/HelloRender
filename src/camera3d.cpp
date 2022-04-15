@@ -1,4 +1,4 @@
-#include "camera.h"
+#include "camera3d.h"
 
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
@@ -6,9 +6,9 @@
 
 #include <algorithm>
 
-Camera* Camera::m_camera = nullptr;
+Camera3d* Camera3d::m_camera = nullptr;
 
-void Camera::SetupInput() {
+void Camera3d::SetupInput() {
     glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
     glfwSetScrollCallback(m_window, ScrollCallback);
@@ -21,7 +21,7 @@ void Camera::SetupInput() {
     m_cachedCursorPos = {cursorPosX, cursorPosY};
 }
 
-void Camera::ScrollCallback(GLFWwindow* window,
+void Camera3d::ScrollCallback(GLFWwindow* window,
                             double xoffset,
                             double yoffset) {
     if (!m_camera)
@@ -31,15 +31,15 @@ void Camera::ScrollCallback(GLFWwindow* window,
     fov = std::clamp(fov, 1.0f, 100.0f);
 }
 
-Camera::Camera(GLFWwindow* window) {
+Camera3d::Camera3d(GLFWwindow* window) {
     m_camera = this;
     m_window = window;
     SetupInput();
 }
 
-Camera::~Camera() {}
+Camera3d::~Camera3d() {}
 
-void Camera::Tick(float deltaTime) {
+void Camera3d::Tick(float deltaTime) {
     // process camera movement
     {
         const float cameraDistance = deltaTime * m_cameraSpeed;

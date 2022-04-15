@@ -20,6 +20,6 @@ public:
     virtual ~BaseExcercise() {}
 
 protected:
-    GLFWwindow* m_window;
+    GLFWwindow* m_window = nullptr;
 };
 #endif

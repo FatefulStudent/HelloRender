@@ -33,26 +33,29 @@ endif()
 
 set(HEADERS  
 	./libs/stb/stb_image.h
+	./src/Excercise.h
 	./examples/BaseExcercise.h
-	./examples/SolarSystemProject/Ex_SolarSystemProject.h
+	./examples/ArkanoidProject/Arkanoid.h
 	./src/Helper/Application.h
 	./src/Helper/VertexData.h
 	./src/shaderInstance.h
 	./src/shaderProgram.h
 	./src/texture.h
 	./src/mesh.h
-	./src/camera.h
+	./src/camera3d.h
+	./src/camera2d.h
 )
 set(SOURCES 
 	./libs/stb/stb_image.cpp
 	./examples/BaseExcercise.cpp
-	./examples/SolarSystemProject/Ex_SolarSystemProject.cpp
+	./examples/ArkanoidProject/Arkanoid.cpp
 	./src/Helper/Application.cpp
 	./src/shaderInstance.cpp
 	./src/shaderProgram.cpp
 	./src/texture.cpp
 	./src/mesh.cpp
-	./src/camera.cpp
+	./src/camera3d.cpp
+	./src/camera2d.cpp
 )
 
 add_executable(${PROJECT_NAME} 
