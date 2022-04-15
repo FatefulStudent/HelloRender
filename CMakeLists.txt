@@ -48,6 +48,7 @@ set(HEADERS
 	./src/World.h
 	./src/Component.h
 	./src/MeshComponent.h
+	./src/TextureComponent.h
 	./src/System.h
 	./src/RenderSystem.h
 )
@@ -66,6 +67,7 @@ set(SOURCES
 	./src/World.cpp
 	./src/Component.cpp
 	./src/MeshComponent.cpp
+	./src/TextureComponent.cpp
 	./src/System.cpp
 	./src/RenderSystem.cpp
 )

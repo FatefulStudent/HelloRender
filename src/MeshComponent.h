@@ -10,7 +10,6 @@
 class UMeshComponent : public UComponent {
 
 public:
-    UMeshComponent(std::string&& InTexturePath, float InRadius);
     virtual void Destroy(){};
 
     virtual ~UMeshComponent(){};

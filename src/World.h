@@ -18,6 +18,15 @@ public:
     template<typename T>
     T* CreateSystem();
 
+    void Initialize();
+    void InitializeSystem(USystem* System);
+
+    void Update();
+    void UpdateSystem(USystem* System);
+
+    void Finalize();
+    void FinalizeSystem(USystem* System);
+
     USystem* GetFirstSystem() const;
 
     UEntity* CreateEntity();

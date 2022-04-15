@@ -3,15 +3,14 @@
 #include "Helper/Application.h"
 #include "Helper/VertexData.h"
 #include "Camera2d.h"
-#include "mesh.h"
 #include "shaderInstance.h"
 #include "shaderProgram.h"
-#include "texture.h"
 
 #include "World.h"
 #include "Entity.h"
 #include "Component.h"
 #include "MeshComponent.h"
+#include "TextureComponent.h"
 #include "System.h"
 #include "RenderSystem.h"
 
@@ -45,10 +44,6 @@ std::shared_ptr<Camera2d> CreateCamera() {
     return std::make_shared<Camera2d>();
 }
 
-std::shared_ptr<Mesh> CreateMesh() {
-    return std::make_shared<Mesh>();
-}
-
 void ComputeModelMatrix(glm::mat4& OutModelMatrix, const CelestalBody& Body) {
 
     //OutModelMatrix = glm::translate(
@@ -70,10 +65,11 @@ void Arkanoid::Initialize(GLFWwindow* window) {
     UEntity* Entity = World->CreateEntity();
 
     Entity->AddComponent<UComponent>();
-    Entity->AddComponent<UMeshComponent>("res/sunmap.jpg", 10.0f);
+    Entity->AddComponent<UMeshComponent>();
+    Entity->AddComponent<UTextureComponent>("res/sunmap.jpg", GL_TEXTURE0);
 
     USystem* RenderSystem = World->CreateSystem<URenderSystem>();
-    RenderSystem->Initialize(World->GetFirstEntity());
+    World->Initialize();
 
     {
         const CelestalBody SunModel = {
@@ -81,15 +77,7 @@ void Arkanoid::Initialize(GLFWwindow* window) {
         m_CelestalBodies.push_back(SunModel);
     }
 
-    for (int i = 0; i < m_CelestalBodies.size(); ++i) {
-        const auto TexturePath = m_CelestalBodies[i].TexturePath;
-        m_textures.push_back(
-            std::make_shared<Texture>(TexturePath, GL_TEXTURE0 + i));
-    }
-
     m_camera = CreateCamera();
-
-    // m_mesh = CreateMesh();
 
     m_shaderProgramSun = CreateShaderProgramSun();
 }
@@ -117,18 +105,14 @@ void Arkanoid::Tick(float deltaTime) {
         shaderProgram->setMatrix("View", m_camera->GetViewMatrix());
         shaderProgram->setMatrix("Projection", projection);
 
-        m_textures[i]->Bind();
-
         auto World = UWorld::GetWorld();
-        USystem* System = World->GetFirstSystem();
-        System->Update(World->GetFirstEntity());
+        World->Update();
     }
 }
 
 void Arkanoid::Finalize() {
     auto World = UWorld::GetWorld();
-    USystem* System = World->GetFirstSystem();
-    System->Finalize(World->GetFirstEntity());
+    World->Finalize();
 
     World->DestroyWorld();
 }

@@ -1,5 +1,6 @@
 #include "World.h"
 #include "Entity.h"
+#include "System.h"
 
 UWorld* UWorld::World = nullptr;
 
@@ -19,6 +20,45 @@ void UWorld::DestroyWorld() {
 
 UWorld* UWorld::GetWorld() {
     return World;
+}
+
+void UWorld::Initialize() {
+    for (USystem* System : Systems) {
+        InitializeSystem(System);
+    }
+}
+
+void UWorld::InitializeSystem(USystem* System) {
+    if (!System)
+        return;
+
+    System->Initialize(GetFirstEntity());
+}
+
+void UWorld::Update() {
+    for (USystem* System : Systems) {
+        UpdateSystem(System);
+    }
+}
+
+void UWorld::UpdateSystem(USystem* System) {
+    if (!System)
+        return;
+
+    System->Update(GetFirstEntity());
+}
+
+void UWorld::Finalize() {
+    for (USystem* System : Systems) {
+        UpdateSystem(System);
+    }
+}
+
+void UWorld::FinalizeSystem(USystem* System) {
+    if (!System)
+        return;
+
+    System->Finalize(GetFirstEntity());
 }
 
 USystem* UWorld::GetFirstSystem() const {

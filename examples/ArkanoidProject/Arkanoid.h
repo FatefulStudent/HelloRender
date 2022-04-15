@@ -33,10 +33,7 @@ private:
     std::vector<CelestalBody> m_CelestalBodies;
     std::shared_ptr<Camera2d> m_camera;
 
-    std::shared_ptr<ShaderProgram> m_shaderProgram;
     std::shared_ptr<ShaderProgram> m_shaderProgramSun;
-    std::shared_ptr<Mesh> m_mesh;
-    std::vector<std::shared_ptr<Texture>> m_textures;
 };
 
 std::shared_ptr<BaseExcercise> make() {
