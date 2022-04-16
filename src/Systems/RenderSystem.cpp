@@ -1,7 +1,7 @@
 #include "RenderSystem.h"
-#include "Entity.h"
-#include "MeshComponent.h"
-#include "TextureComponent.h"
+#include "Entity/Entity.h"
+#include "Components/MeshComponent.h"
+#include "Components/TextureComponent.h"
 
 #include <stb_image.h>
 #include <iostream>

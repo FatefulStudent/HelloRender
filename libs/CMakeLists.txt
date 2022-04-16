@@ -43,4 +43,5 @@ add_library( glew STATIC
 target_link_libraries( glew
 	${OPENGL_LIBRARY}
 	${EXTRA_LIBS}
+	${ASSIMP_LIBRARIES}
 )

@@ -1,6 +1,6 @@
 #include "Entity.h"
-#include "Component.h"
-#include "World.h"
+#include "Components/Component.h"
+#include "World/World.h"
 
 #include <iostream>
 

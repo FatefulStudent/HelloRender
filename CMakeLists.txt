@@ -13,6 +13,7 @@ include_directories(
 	${OPENGL_INCLUDE_DIRS}
 	libs/glew-2.1.0/include/
 	libs/glfw-3.3.5/include/
+	libs/assimp-5.2.3/include/
 	libs/glm-0.9.8/
 	libs/stb/
 	src/
@@ -20,6 +21,7 @@ include_directories(
 )
 
 add_subdirectory(libs)
+add_subdirectory(libs/assimp-5.2.3)
 
 if( MSVC )
 	file(GLOB ResourceFiles "res/*") 
@@ -80,7 +82,7 @@ add_executable(${PROJECT_NAME}
 	${SOURCES}
 	./src/main.cpp
 )
-target_link_libraries(${PROJECT_NAME} ${OPENGL_LIBRARIES} glew glfw)
+target_link_libraries(${PROJECT_NAME} ${OPENGL_LIBRARIES} assimp glew glfw)
 
 if( MSVC )
     set_property( DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT ${PROJECT_NAME} )
