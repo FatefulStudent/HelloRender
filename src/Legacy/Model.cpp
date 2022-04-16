@@ -48,17 +48,15 @@ Model::Model(char* path) {
     LoadModel(path);
 }
 
-void Model::Draw(Shader& shader) {
-    for (unsigned int i = 0; i < meshes.size(); i++)
-        meshes[i].Draw(shader);
-}
-
 void Model::Draw(ShaderProgram* shader) {
     for (unsigned int i = 0; i < meshes.size(); i++)
         meshes[i].Draw(shader);
 }
 
 void Model::LoadModel(const std::string& path) {
+
+    stbi_set_flip_vertically_on_load(true);
+
     Assimp::Importer import;
     const aiScene* scene =
         import.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs);

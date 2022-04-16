@@ -50,7 +50,7 @@ void UWorld::UpdateSystem(USystem* System) {
 
 void UWorld::Finalize() {
     for (USystem* System : Systems) {
-        UpdateSystem(System);
+        FinalizeSystem(System);
     }
 }
 

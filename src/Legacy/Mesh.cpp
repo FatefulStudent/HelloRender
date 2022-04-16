@@ -13,31 +13,6 @@ Mesh::Mesh(const std::vector<Vertex>& vertices,
     SetupMesh();
 }
 
-void Mesh::Draw(Shader& shader) {
-    unsigned int diffuseNr = 1;
-    unsigned int specularNr = 1;
-    for (unsigned int i = 0; i < Textures.size(); i++) {
-        glActiveTexture(GL_TEXTURE0 +
-                        i);  // activate proper texture unit before binding
-        // retrieve texture number (the N in diffuse_textureN)
-        std::string number;
-        std::string name = Textures[i].type;
-        if (name == "texture_diffuse")
-            number = std::to_string(diffuseNr++);
-        else if (name == "texture_specular")
-            number = std::to_string(specularNr++);
-
-        shader.setFloat(("material." + name + number).c_str(), i);
-        glBindTexture(GL_TEXTURE_2D, Textures[i].id);
-    }
-    glActiveTexture(GL_TEXTURE0);
-
-    // draw mesh
-    glBindVertexArray(VAO);
-    glDrawElements(GL_TRIANGLES, Indices.size(), GL_UNSIGNED_INT, 0);
-    glBindVertexArray(0);
-}
-
 void Mesh::Draw(ShaderProgram* shader) {
     unsigned int diffuseNr = 1;
     unsigned int specularNr = 1;

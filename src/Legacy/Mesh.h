@@ -5,8 +5,6 @@
 
 #include <glm/glm.hpp>
 
-#include "Shader.h"
-
 #include <string>
 #include <vector>
 
@@ -40,7 +38,6 @@ public:
          const std::vector<unsigned int>& indices,
          const std::vector<Texture>& textures);
 
-    void Draw(Shader& shader);
     void Draw(ShaderProgram* shader);
 
 private:

@@ -10,10 +10,9 @@
 #include <vector>
 #include <string>
 
-class Camera2d;
+class Camera3d;
 class ShaderProgram;
-class Mesh;
-class Texture;
+class Model;
 
 struct CelestalBody {
     std::string TexturePath = "";
@@ -31,7 +30,8 @@ public:
 
 private:
     std::vector<CelestalBody> m_CelestalBodies;
-    std::shared_ptr<Camera2d> m_camera;
+    std::shared_ptr<Camera3d> m_camera;
+    std::shared_ptr<Model> m_model;
 
     std::shared_ptr<ShaderProgram> m_shaderProgramSun;
 };

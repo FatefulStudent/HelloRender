@@ -18,7 +18,6 @@ class aiMaterial;
 class Model {
 public:
     Model(char* path);
-    void Draw(Shader& shader);
     void Draw(ShaderProgram* shader);
 
 private:

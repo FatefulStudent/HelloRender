@@ -38,7 +38,7 @@ set(HEADERS
 	
 	./examples/Excercise.h
 	./examples/BaseExcercise.h
-	#./examples/ArkanoidProject/Arkanoid.h
+	./examples/ArkanoidProject/Arkanoid.h
 	./examples/ModelLoadingProject/ModelLoading.h
 	
 	./src/Helper/VertexData.h
@@ -63,7 +63,7 @@ set(HEADERS
 set(SOURCES 
 	./libs/stb/stb_image.cpp
 	./examples/BaseExcercise.cpp
-	#./examples/ArkanoidProject/Arkanoid.cpp
+	./examples/ArkanoidProject/Arkanoid.cpp
 	./examples/ModelLoadingProject/ModelLoading.cpp
 
 	./src/Helper/Application.cpp

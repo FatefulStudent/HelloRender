@@ -2,9 +2,10 @@
 
 #include "Helper/Application.h"
 #include "Helper/VertexData.h"
-#include "Legacy/Camera2d.h"
+#include "Legacy/Camera3d.h"
 #include "Legacy/shaderInstance.h"
 #include "Legacy/shaderProgram.h"
+#include "Legacy/Model.h"
 
 #include "World/World.h"
 #include "Entity/Entity.h"
@@ -15,7 +16,6 @@
 #include "Systems/RenderSystem.h"
 
 #include <GL/glew.h>
-#include <stb_image.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
@@ -40,8 +40,12 @@ std::shared_ptr<ShaderProgram> CreateShaderProgramSun() {
     return std::make_shared<ShaderProgram>(vertexPath, fragmentPath);
 }
 
-std::shared_ptr<Camera2d> CreateCamera() {
-    return std::make_shared<Camera2d>();
+std::shared_ptr<Camera3d> CreateCamera(GLFWwindow* window) {
+    return std::make_shared<Camera3d>(window);
+}
+
+std::shared_ptr<Model> CreateModel(std::string&& Path) {
+    return std::make_shared<Model>(Path.data());
 }
 
 void ComputeModelMatrix(glm::mat4& OutModelMatrix, const CelestalBody& Body) {
@@ -61,7 +65,7 @@ void Arkanoid::Initialize(GLFWwindow* window) {
     BaseExcercise::Initialize(window);
 
     auto World = UWorld::CreateWorld();
-
+    /*
     UEntity* Entity = World->CreateEntity();
 
     Entity->AddComponent<UComponent>();
@@ -70,16 +74,18 @@ void Arkanoid::Initialize(GLFWwindow* window) {
 
     USystem* RenderSystem = World->CreateSystem<URenderSystem>();
     World->Initialize();
-
+    */
     {
         const CelestalBody SunModel = {
-            "res/sunmap.jpg", 10.0f};
+            "res/sunmap.jpg", 1.0f};
         m_CelestalBodies.push_back(SunModel);
     }
 
-    m_camera = CreateCamera();
+    m_camera = CreateCamera(window);
 
     m_shaderProgramSun = CreateShaderProgramSun();
+
+    m_model = CreateModel("res/backpack/backpack.obj");
 }
 
 void Arkanoid::Tick(float deltaTime) {
@@ -105,8 +111,12 @@ void Arkanoid::Tick(float deltaTime) {
         shaderProgram->setMatrix("View", m_camera->GetViewMatrix());
         shaderProgram->setMatrix("Projection", projection);
 
+        /*
         auto World = UWorld::GetWorld();
         World->Update();
+        */
+
+        m_model->Draw(shaderProgram.get());
     }
 }
 

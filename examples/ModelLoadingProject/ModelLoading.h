@@ -38,7 +38,4 @@ private:
     std::shared_ptr<ShaderProgram> m_shaderProgramSun;
 };
 
-std::shared_ptr<BaseExcercise> make() {
-    return std::make_shared<ModelLoading>();
-}
 #endif
