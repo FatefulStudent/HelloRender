@@ -38,7 +38,8 @@ set(HEADERS
 	
 	./examples/Excercise.h
 	./examples/BaseExcercise.h
-	./examples/ArkanoidProject/Arkanoid.h
+	#./examples/ArkanoidProject/Arkanoid.h
+	./examples/ModelLoadingProject/ModelLoading.h
 	
 	./src/Helper/VertexData.h
 	./src/Helper/Application.h
@@ -46,7 +47,10 @@ set(HEADERS
 	./src/Legacy/shaderInstance.h
 	./src/Legacy/shaderProgram.h
 	./src/Legacy/camera3d.h
-	./src/Legacy/camera2d.h
+	./src/Legacy/camera2d.h	
+	./src/Legacy/Mesh.h
+	./src/Legacy/Shader.h
+	./src/Legacy/Model.h
 	
 	./src/Entity/Entity.h
 	./src/World/World.h
@@ -59,7 +63,8 @@ set(HEADERS
 set(SOURCES 
 	./libs/stb/stb_image.cpp
 	./examples/BaseExcercise.cpp
-	./examples/ArkanoidProject/Arkanoid.cpp
+	#./examples/ArkanoidProject/Arkanoid.cpp
+	./examples/ModelLoadingProject/ModelLoading.cpp
 
 	./src/Helper/Application.cpp
 	
@@ -67,6 +72,9 @@ set(SOURCES
 	./src/Legacy/shaderProgram.cpp
 	./src/Legacy/camera3d.cpp
 	./src/Legacy/camera2d.cpp
+	./src/Legacy/Mesh.cpp
+	./src/Legacy/Shader.cpp
+	./src/Legacy/Model.cpp
 	
 	./src/Entity/Entity.cpp
 	./src/World/World.cpp

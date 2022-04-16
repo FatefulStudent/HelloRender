@@ -57,9 +57,9 @@ void Camera3d::Tick(float deltaTime) {
             moveDirection +=
                 glm::normalize(glm::cross(m_cameraFront, m_cameraUp));
         if (glfwGetKey(m_window, GLFW_KEY_E) == GLFW_PRESS)
-            m_cameraSpeed *= 1.2f;
+            m_cameraSpeed *= 1.05f;
         if (glfwGetKey(m_window, GLFW_KEY_Q) == GLFW_PRESS)
-            m_cameraSpeed /= 1.2f;
+            m_cameraSpeed /= 1.05f;
 
         // if (moveDirection != glm::vec3(0.0f, 0.0f, 0.0f))
         //     moveDirection = glm::normalize(
