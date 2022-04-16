@@ -1,6 +1,6 @@
 #include "World.h"
-#include "Entity.h"
-#include "System.h"
+#include "../Entity/Entity.h"
+#include "../Systems/System.h"
 
 UWorld* UWorld::World = nullptr;
 

@@ -33,43 +33,46 @@ endif()
 
 set(HEADERS  
 	./libs/stb/stb_image.h
-	./src/Excercise.h
+	
+	./examples/Excercise.h
 	./examples/BaseExcercise.h
 	./examples/ArkanoidProject/Arkanoid.h
-	./src/Helper/Application.h
+	
 	./src/Helper/VertexData.h
-	./src/shaderInstance.h
-	./src/shaderProgram.h
-	./src/texture.h
-	./src/mesh.h
-	./src/camera3d.h
-	./src/camera2d.h
-	./src/Entity.h
-	./src/World.h
-	./src/Component.h
-	./src/MeshComponent.h
-	./src/TextureComponent.h
-	./src/System.h
-	./src/RenderSystem.h
+	./src/Helper/Application.h
+	
+	./src/Legacy/shaderInstance.h
+	./src/Legacy/shaderProgram.h
+	./src/Legacy/camera3d.h
+	./src/Legacy/camera2d.h
+	
+	./src/Entity/Entity.h
+	./src/World/World.h
+	./src/Components/Component.h
+	./src/Components/MeshComponent.h
+	./src/Components/TextureComponent.h
+	./src/Systems/System.h
+	./src/Systems/RenderSystem.h
 )
 set(SOURCES 
 	./libs/stb/stb_image.cpp
 	./examples/BaseExcercise.cpp
 	./examples/ArkanoidProject/Arkanoid.cpp
+
 	./src/Helper/Application.cpp
-	./src/shaderInstance.cpp
-	./src/shaderProgram.cpp
-	./src/texture.cpp
-	./src/mesh.cpp
-	./src/camera3d.cpp
-	./src/camera2d.cpp
-	./src/Entity.cpp
-	./src/World.cpp
-	./src/Component.cpp
-	./src/MeshComponent.cpp
-	./src/TextureComponent.cpp
-	./src/System.cpp
-	./src/RenderSystem.cpp
+	
+	./src/Legacy/shaderInstance.cpp
+	./src/Legacy/shaderProgram.cpp
+	./src/Legacy/camera3d.cpp
+	./src/Legacy/camera2d.cpp
+	
+	./src/Entity/Entity.cpp
+	./src/World/World.cpp
+	./src/Components/Component.cpp
+	./src/Components/MeshComponent.cpp
+	./src/Components/TextureComponent.cpp
+	./src/Systems/System.cpp
+	./src/Systems/RenderSystem.cpp
 )
 
 add_executable(${PROJECT_NAME} 

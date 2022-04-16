@@ -2,17 +2,17 @@
 
 #include "Helper/Application.h"
 #include "Helper/VertexData.h"
-#include "Camera2d.h"
-#include "shaderInstance.h"
-#include "shaderProgram.h"
+#include "Legacy/Camera2d.h"
+#include "Legacy/shaderInstance.h"
+#include "Legacy/shaderProgram.h"
 
-#include "World.h"
-#include "Entity.h"
-#include "Component.h"
-#include "MeshComponent.h"
-#include "TextureComponent.h"
-#include "System.h"
-#include "RenderSystem.h"
+#include "World/World.h"
+#include "Entity/Entity.h"
+#include "Components/Component.h"
+#include "Components/MeshComponent.h"
+#include "Components/TextureComponent.h"
+#include "Systems/System.h"
+#include "Systems/RenderSystem.h"
 
 #include <GL/glew.h>
 #include <stb_image.h>
