@@ -31,12 +31,13 @@ public:
 private:
     std::vector<CelestalBody> m_CelestalBodies;
     std::shared_ptr<Camera3d> m_camera;
-    std::shared_ptr<Model> m_model;
 
     std::shared_ptr<ShaderProgram> m_shaderProgramSun;
 };
 
+
 std::shared_ptr<BaseExcercise> make() {
     return std::make_shared<Arkanoid>();
 }
+
 #endif

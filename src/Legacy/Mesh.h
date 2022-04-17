@@ -5,42 +5,29 @@
 
 #include <glm/glm.hpp>
 
+#include "Helper/MeshData.h"
+
 #include <string>
 #include <vector>
 
 class ShaderProgram;
-
-struct Vertex {
-    // position
-    glm::vec3 Position;
-    // normal
-    glm::vec3 Normal;
-    // texCoords
-    glm::vec2 TexCoords;
-};
-
-struct Texture {
-    unsigned int id = 0;
-    std::string type{};
-    std::string path{};
-};
+class UShaderComponent;
 
 class Mesh {
 public:
     // mesh Data
-    std::vector<Vertex> Vertices;
+    std::vector<FVertex> Vertices;
     std::vector<unsigned int> Indices;
-    std::vector<Texture> Textures;
+    std::vector<FTexture> Textures;
     unsigned int VAO;
 
     // constructor
-    Mesh(const std::vector<Vertex>& vertices,
+    Mesh(const std::vector<FVertex>& vertices,
          const std::vector<unsigned int>& indices,
-         const std::vector<Texture>& textures);
+         const std::vector<FTexture>& textures);
 
-    void Draw(ShaderProgram* shader);
+    void Draw(UShaderComponent* ShaderComponent);
 
-private:
     // render data
     unsigned int VBO, EBO;
 

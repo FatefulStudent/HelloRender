@@ -14,14 +14,14 @@ class aiNode;
 class aiMesh;
 class aiScene;
 class aiMaterial;
+class ShaderComponent;
 
 class Model {
 public:
     Model(char* path);
-    void Draw(ShaderProgram* shader);
+    void Draw(UShaderComponent* ShaderComponent);
 
-private:
-    std::vector<Texture> CachedTextures;
+    std::vector<FTexture> CachedTextures;
     // model data
     std::vector<Mesh> meshes;
     std::string directory;
@@ -29,7 +29,7 @@ private:
     void LoadModel(const std::string& path);
     void ProcessNode(aiNode* node, const aiScene* scene);
     Mesh ProcessMesh(aiMesh* mesh, const aiScene* scene);
-    std::vector<Texture> LoadMaterialTextures(aiMaterial* mat,
+    std::vector<FTexture> LoadMaterialTextures(aiMaterial* mat,
                                               aiTextureType type,
                                               const std::string& typeName);
 };

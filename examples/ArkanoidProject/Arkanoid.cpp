@@ -10,10 +10,12 @@
 #include "World/World.h"
 #include "Entity/Entity.h"
 #include "Components/Component.h"
-#include "Components/MeshComponent.h"
-#include "Components/TextureComponent.h"
+#include "Components/ShaderComponent.h"
+#include "Components/ModelComponent.h"
+
 #include "Systems/System.h"
-#include "Systems/RenderSystem.h"
+#include "Systems/RenderingSystem.h"
+#include "Systems/ShaderSystem.h"
 
 #include <GL/glew.h>
 #include <glm/glm.hpp>
@@ -31,61 +33,31 @@ constexpr float SpecularStrength = 1.7f;
 constexpr int Shininess = 16;
 
 namespace {
-std::shared_ptr<ShaderProgram> CreateShaderProgramSun() {
-    const std::string vertexPath =
-        "shaders/shaderForSun.vert";
-    const std::string fragmentPath =
-        "shaders/shaderForSun.frag";
-
-    return std::make_shared<ShaderProgram>(vertexPath, fragmentPath);
-}
 
 std::shared_ptr<Camera3d> CreateCamera(GLFWwindow* window) {
     return std::make_shared<Camera3d>(window);
 }
 
-std::shared_ptr<Model> CreateModel(std::string&& Path) {
-    return std::make_shared<Model>(Path.data());
-}
-
-void ComputeModelMatrix(glm::mat4& OutModelMatrix, const CelestalBody& Body) {
-
-    //OutModelMatrix = glm::translate(
-    //    OutModelMatrix, glm::vec3(Body.DistanceFromOrigin, 0.0f, 0.0f));
-
-    OutModelMatrix = glm::rotate(OutModelMatrix, glm::radians(180.0f),
-                                 glm::vec3(1.0f, 0.f, 0.0f));
-
-    OutModelMatrix = glm::scale(
-        OutModelMatrix, glm::vec3(Body.Radius, Body.Radius, Body.Radius));
-}
 }  // namespace
 
 void Arkanoid::Initialize(GLFWwindow* window) {
     BaseExcercise::Initialize(window);
-
+    glClearColor(0.0f, 1.0f, 1.0f, 1.0f);
     auto World = UWorld::CreateWorld();
-    /*
+    
     UEntity* Entity = World->CreateEntity();
 
     Entity->AddComponent<UComponent>();
-    Entity->AddComponent<UMeshComponent>();
-    Entity->AddComponent<UTextureComponent>("res/sunmap.jpg", GL_TEXTURE0);
+    Entity->AddComponent<UShaderComponent>("shaders/shaderForSun.vert",
+                                           "shaders/shaderForSun.frag");
+    Entity->AddComponent<UModelComponent>("res/backpack/backpack.obj");
 
-    USystem* RenderSystem = World->CreateSystem<URenderSystem>();
+    USystem* ShaderSystem = World->CreateSystem<UShaderSystem>();
+    USystem* RenderingSystem = World->CreateSystem<URenderingSystem>();
+
     World->Initialize();
-    */
-    {
-        const CelestalBody SunModel = {
-            "res/sunmap.jpg", 1.0f};
-        m_CelestalBodies.push_back(SunModel);
-    }
 
     m_camera = CreateCamera(window);
-
-    m_shaderProgramSun = CreateShaderProgramSun();
-
-    m_model = CreateModel("res/backpack/backpack.obj");
 }
 
 void Arkanoid::Tick(float deltaTime) {
@@ -93,31 +65,26 @@ void Arkanoid::Tick(float deltaTime) {
 
     m_camera->Tick(deltaTime);
 
-    glm::vec3 SunColor = glm::vec3(1.0f, 1.0f, .8f);
+    glm::mat4 model = glm::mat4(1.0f);
 
-    for (int i = 0; i < m_CelestalBodies.size(); ++i) {
-        auto shaderProgram = m_shaderProgramSun;
-        const auto Body = m_CelestalBodies[i];
-        glm::mat4 model = glm::mat4(1.0f);
+    glm::mat4 projection = glm::mat4(1.0f);
+    projection =
+        glm::perspective(glm::radians(m_camera->GetFov()), 1.0f, 0.1f, 500.0f);
 
-        ComputeModelMatrix(model, Body);
+    auto World = UWorld::GetWorld();
 
-        glm::mat4 projection = glm::mat4(1.0f);
-        projection = glm::perspective(glm::radians(m_camera->GetFov()), 1.0f,
-                                      0.1f, 500.0f);
+    // Should be in a separate system
+    {
+        auto Entity = World->GetFirstEntity();
+        UShaderComponent* ShaderComponent =
+            Entity->GetComponentOfClass<UShaderComponent>();
 
-        shaderProgram->use();
-        shaderProgram->setMatrix("Model", model);
-        shaderProgram->setMatrix("View", m_camera->GetViewMatrix());
-        shaderProgram->setMatrix("Projection", projection);
-
-        /*
-        auto World = UWorld::GetWorld();
-        World->Update();
-        */
-
-        m_model->Draw(shaderProgram.get());
+        ShaderComponent->Model = model;
+        ShaderComponent->View = m_camera->GetViewMatrix();
+        ShaderComponent->Projection = projection;
     }
+
+    World->Update();
 }
 
 void Arkanoid::Finalize() {

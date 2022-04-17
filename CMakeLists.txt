@@ -42,7 +42,11 @@ set(HEADERS
 	./examples/ModelLoadingProject/ModelLoading.h
 	
 	./src/Helper/VertexData.h
+	./src/Helper/MeshData.h
+	./src/Helper/ShaderData.h
 	./src/Helper/Application.h
+	./src/Helper/FileHelper.h
+	./src/Helper/ShaderHelper.h
 	
 	./src/Legacy/shaderInstance.h
 	./src/Legacy/shaderProgram.h
@@ -56,9 +60,13 @@ set(HEADERS
 	./src/World/World.h
 	./src/Components/Component.h
 	./src/Components/MeshComponent.h
+	./src/Components/ModelComponent.h
 	./src/Components/TextureComponent.h
+	./src/Components/ShaderComponent.h
 	./src/Systems/System.h
 	./src/Systems/RenderSystem.h
+	./src/Systems/RenderingSystem.h
+	./src/Systems/ShaderSystem.h
 )
 set(SOURCES 
 	./libs/stb/stb_image.cpp
@@ -66,7 +74,11 @@ set(SOURCES
 	./examples/ArkanoidProject/Arkanoid.cpp
 	./examples/ModelLoadingProject/ModelLoading.cpp
 
+	./src/Helper/MeshData.cpp
+	./src/Helper/ShaderData.cpp
 	./src/Helper/Application.cpp
+	./src/Helper/ShaderHelper.cpp
+	./src/Helper/FileHelper.cpp
 	
 	./src/Legacy/shaderInstance.cpp
 	./src/Legacy/shaderProgram.cpp
@@ -80,9 +92,13 @@ set(SOURCES
 	./src/World/World.cpp
 	./src/Components/Component.cpp
 	./src/Components/MeshComponent.cpp
+	./src/Components/ModelComponent.cpp
 	./src/Components/TextureComponent.cpp
+	./src/Components/ShaderComponent.cpp
 	./src/Systems/System.cpp
 	./src/Systems/RenderSystem.cpp
+	./src/Systems/RenderingSystem.cpp
+	./src/Systems/ShaderSystem.cpp
 )
 
 add_executable(${PROJECT_NAME} 

@@ -5,7 +5,7 @@
 
 #include <stb_image.h>
 #include <iostream>
-
+/*
 namespace {
 void CreateSphere(std::vector<VertexData_PosNormalTexture>& m_vertices,
                   std::vector<Index>& m_indices) {
@@ -234,3 +234,4 @@ void URenderSystem::FinalizeTextureComponent(
 
     // TODO: maybe do some cleanup here?
 }
+*/

@@ -1,5 +1,8 @@
 #include "Model.h"
 #include "shaderProgram.h"
+#include "World/World.h"
+#include "Components/ShaderComponent.h"
+#include "Entity/Entity.h"
 
 #include <stb_image.h>
 
@@ -44,13 +47,16 @@ unsigned int TextureFromFile(const char* path, const std::string& directory) {
 }  // namespace
 }  // namespace
 
+
 Model::Model(char* path) {
     LoadModel(path);
 }
 
-void Model::Draw(ShaderProgram* shader) {
-    for (unsigned int i = 0; i < meshes.size(); i++)
-        meshes[i].Draw(shader);
+void Model::Draw(UShaderComponent* ShaderComponent) {
+    for (unsigned int i = 0; i < meshes.size(); i++) {
+
+        meshes[i].Draw(ShaderComponent); 
+    }
 }
 
 void Model::LoadModel(const std::string& path) {
@@ -84,13 +90,13 @@ void Model::ProcessNode(aiNode* node, const aiScene* scene) {
 }
 
 Mesh Model::ProcessMesh(aiMesh* mesh, const aiScene* scene) {
-    std::vector<Vertex> vertices;
+    std::vector<FVertex> vertices;
     std::vector<unsigned int> indices;
-    std::vector<Texture> textures;
+    std::vector<FTexture> textures;
 
     for (unsigned int i = 0; i < mesh->mNumVertices; i++) {
         const auto CurrentAiVertex = mesh->mVertices[i];
-        Vertex vertex = {};
+        FVertex vertex = {};
         // process vertex positions, normals and texture coordinates
         vertex.Position = {mesh->mVertices[i].x, mesh->mVertices[i].y,
                            mesh->mVertices[i].z};
@@ -115,11 +121,11 @@ Mesh Model::ProcessMesh(aiMesh* mesh, const aiScene* scene) {
     // process materials
     if (mesh->mMaterialIndex >= 0) {
         aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
-        std::vector<Texture> diffuseMaps = LoadMaterialTextures(
+        std::vector<FTexture> diffuseMaps = LoadMaterialTextures(
             material, aiTextureType_DIFFUSE, "texture_diffuse");
         textures.insert(textures.end(), diffuseMaps.begin(),
                         diffuseMaps.end());
-        std::vector<Texture> specularMaps = LoadMaterialTextures(
+        std::vector<FTexture> specularMaps = LoadMaterialTextures(
             material, aiTextureType_SPECULAR, "texture_specular");
         textures.insert(textures.end(), specularMaps.begin(),
                         specularMaps.end());
@@ -128,17 +134,17 @@ Mesh Model::ProcessMesh(aiMesh* mesh, const aiScene* scene) {
     return Mesh(vertices, indices, textures);
 }
 
-std::vector<Texture> Model::LoadMaterialTextures(aiMaterial* mat,
+std::vector<FTexture> Model::LoadMaterialTextures(aiMaterial* mat,
                                                  aiTextureType type,
                                                  const std::string& typeName) {
-    std::vector<Texture> textures;
+    std::vector<FTexture> textures;
     for (unsigned int i = 0; i < mat->GetTextureCount(type); i++) {
         aiString str;
         mat->GetTexture(type, i, &str);
         bool skip = false;
         for (unsigned int j = 0; j < CachedTextures.size(); j++) {
             const bool bTextureWasAlreadyLoaded =
-                CachedTextures[j].path == std::string(str.C_Str());
+                CachedTextures[j].Path == std::string(str.C_Str());
             if (bTextureWasAlreadyLoaded) {
                 textures.push_back(CachedTextures[j]);
                 skip = true;
@@ -146,10 +152,10 @@ std::vector<Texture> Model::LoadMaterialTextures(aiMaterial* mat,
             }
         }
         if (!skip) {  // if texture hasn't been loaded already, load it
-            Texture texture;
-            texture.id = TextureFromFile(str.C_Str(), directory);
-            texture.type = typeName;
-            texture.path = str.C_Str();
+            FTexture texture;
+            texture.ID = TextureFromFile(str.C_Str(), directory);
+            texture.Type = typeName;
+            texture.Path = str.C_Str();
             textures.push_back(texture);
             CachedTextures.push_back(texture);  // add to loaded textures
         }

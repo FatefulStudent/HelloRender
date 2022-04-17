@@ -10,16 +10,6 @@
 #include "Legacy/Model.h"
 #include "Legacy/Mesh.h"
 
-/*
-#include "World/World.h"
-#include "Entity/Entity.h"
-#include "Components/Component.h"
-#include "Components/MeshComponent.h"
-#include "Components/TextureComponent.h"
-#include "Systems/System.h"
-#include "Systems/RenderSystem.h"
-*/
-
 #include <GL/glew.h>
 #include <stb_image.h>
 #include <glm/glm.hpp>
@@ -54,40 +44,12 @@ std::shared_ptr<Model> CreateModel(std::string&& Path) {
     return std::make_shared<Model>(Path.data());
 }
 
-void ComputeModelMatrix(glm::mat4& OutModelMatrix, const CelestalBody& Body) {
-
-    //OutModelMatrix = glm::translate(
-    //    OutModelMatrix, glm::vec3(Body.DistanceFromOrigin, 0.0f, 0.0f));
-
-    OutModelMatrix = glm::rotate(OutModelMatrix, glm::radians(180.0f),
-                                 glm::vec3(1.0f, 0.f, 0.0f));
-
-    OutModelMatrix = glm::scale(
-        OutModelMatrix, glm::vec3(Body.Radius, Body.Radius, Body.Radius));
-}
 }  // namespace
 
 void ModelLoading::Initialize(GLFWwindow* window) {
     BaseExcercise::Initialize(window);
 
-    /*
-    auto World = UWorld::CreateWorld();
-
-    UEntity* Entity = World->CreateEntity();
-
-    Entity->AddComponent<UComponent>();
-    Entity->AddComponent<UMeshComponent>();
-    Entity->AddComponent<UTextureComponent>("res/sunmap.jpg", GL_TEXTURE0);
-
-    USystem* RenderSystem = World->CreateSystem<URenderSystem>();
-    World->Initialize();
-    */
     stbi_set_flip_vertically_on_load(true);
-    {
-        const CelestalBody SunModel = {
-            "res/sunmap.jpg", 10.0f};
-        m_CelestalBodies.push_back(SunModel);
-    }
 
     m_camera = CreateCamera(window);
 
@@ -101,37 +63,19 @@ void ModelLoading::Tick(float deltaTime) {
 
     m_camera->Tick(deltaTime);
 
-    glm::vec3 SunColor = glm::vec3(1.0f, 1.0f, .8f);
+     glm::mat4 model = glm::mat4(1.0f);
 
-    for (int i = 0; i < m_CelestalBodies.size(); ++i) {
-        auto shaderProgram = m_shaderProgramSun;
-        const auto Body = m_CelestalBodies[i];
-        glm::mat4 model = glm::mat4(1.0f);
+    glm::mat4 projection = glm::mat4(1.0f);
+    projection =
+        glm::perspective(glm::radians(m_camera->GetFov()), 1.0f, 0.1f, 500.0f);
 
-        // ComputeModelMatrix(model, Body);
+    m_shaderProgramSun->use();
+    m_shaderProgramSun->setMatrix("Model", model);
+    m_shaderProgramSun->setMatrix("View", m_camera->GetViewMatrix());
+    m_shaderProgramSun->setMatrix("Projection", projection);
 
-        glm::mat4 projection = glm::mat4(1.0f);
-        projection = glm::perspective(glm::radians(m_camera->GetFov()), 1.0f,
-                                      0.1f, 500.0f);
-
-        shaderProgram->use();
-        shaderProgram->setMatrix("Model", model);
-        shaderProgram->setMatrix("View", m_camera->GetViewMatrix());
-        shaderProgram->setMatrix("Projection", projection);
-
-        m_model->Draw(shaderProgram.get());
-
-        /*
-        auto World = UWorld::GetWorld();
-        World->Update();
-        */
-    }
+    m_model->Draw(nullptr);
 }
 
 void ModelLoading::Finalize() {
-    /*
-    auto World = UWorld::GetWorld();
-    World->Finalize();
-
-    World->DestroyWorld();*/
 }
