@@ -1,11 +1,7 @@
 #include "Arkanoid.h"
 
 #include "Helper/Application.h"
-#include "Helper/VertexData.h"
 #include "Legacy/Camera3d.h"
-#include "Legacy/shaderInstance.h"
-#include "Legacy/shaderProgram.h"
-#include "Legacy/Model.h"
 
 #include "World/World.h"
 #include "Entity/Entity.h"
@@ -27,10 +23,6 @@
 #include <iostream>
 #include <vector>
 
-constexpr float AmbientStrength = 0.05f;
-constexpr float DiffuseStrength = 1.0f;
-constexpr float SpecularStrength = 1.7f;
-constexpr int Shininess = 16;
 
 namespace {
 
@@ -42,7 +34,7 @@ std::shared_ptr<Camera3d> CreateCamera(GLFWwindow* window) {
 
 void Arkanoid::Initialize(GLFWwindow* window) {
     BaseExcercise::Initialize(window);
-    glClearColor(0.0f, 1.0f, 1.0f, 1.0f);
+    glClearColor(1.0f, 1.0f, 0.0f, 1.0f);
     auto World = UWorld::CreateWorld();
     
     UEntity* Entity = World->CreateEntity();

@@ -24,7 +24,6 @@ void UEntity::Destroy() {
 void UEntity::DestroyImpl() {
     for (UComponent* Component : Components) {
         if (Component) {
-            Component->Destroy();
             delete Component;
         }
     }

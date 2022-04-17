@@ -1,5 +1,9 @@
 #include "FileHelper.h"
 
+#include <fstream>
+#include <iostream>
+#include <sstream>
+
 std::string FileHelper::ReadFile(const std::string& Path) {
     std::ifstream Input;
     Input.exceptions(std::ifstream::failbit | std::ifstream::badbit);

@@ -13,8 +13,6 @@
 #include <assimp/scene.h>
 #include <assimp/Importer.hpp>
 
-#include "Legacy/Model.h"
-
 std::vector<FTexture> URenderingSystem::CachedTextures = {};
 
 void URenderingSystem::Initialize(UEntity* Entity) {

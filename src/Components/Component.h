@@ -5,9 +5,6 @@ class UComponent {
 
 public:
     UComponent();
-
-    virtual void Destroy(){};
-
     virtual ~UComponent();
 
 private:

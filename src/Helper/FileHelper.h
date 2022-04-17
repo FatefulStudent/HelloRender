@@ -1,9 +1,6 @@
 #ifndef FILE_HELPER_H
 #define FILE_HELPER_H
 
-#include <fstream>
-#include <iostream>
-#include <sstream>
 #include <string>
 
 namespace FileHelper

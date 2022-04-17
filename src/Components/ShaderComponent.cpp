@@ -1,4 +1,3 @@
-#include "MeshComponent.h"
 #include "ShaderComponent.h"
 
 UShaderComponent::UShaderComponent(const std::string& InVertexShaderPath,

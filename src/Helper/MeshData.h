@@ -6,8 +6,6 @@
 #include <string>
 #include <vector>
 
-class ShaderProgram;
-
 struct FVertex {
     // position
     glm::vec3 Position;
