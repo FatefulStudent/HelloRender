@@ -15,6 +15,15 @@ UEntity::~UEntity() {
     std::cout << "Entity #" << ID << " destroyed!" << std::endl;
 }
 
+UComponent* UEntity::GetComponentOfClass(
+    EComponentClass ComponentClassEnum) const {
+    auto Iter = ComponentClassToComponent.find(ComponentClassEnum);
+    if (Iter != ComponentClassToComponent.end())
+        return (*Iter).second;
+    else
+        return nullptr;
+}
+
 void UEntity::Destroy() {
     auto World = UWorld::GetWorld();
     if (World)
@@ -29,4 +38,5 @@ void UEntity::DestroyImpl() {
     }
 
     Components.clear();
+    ComponentClassToComponent.clear();
 }

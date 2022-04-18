@@ -22,6 +22,34 @@ UWorld* UWorld::GetWorld() {
     return World;
 }
 
+std::vector<UEntity*> UWorld::GetAllEntitiesWithComponents(
+    const std::vector<EComponentClass> RequiredClasses) const {
+    std::vector<UEntity*> Result{};
+
+    for (UEntity* Entity : Entities) {
+        if (Entity) {
+            const std::unordered_map<EComponentClass, UComponent*>&
+                ClassesToComponents = Entity->ComponentClassToComponent;
+
+            bool bHasAllClasses = true;
+            for each (EComponentClass ComponentClass in RequiredClasses) {
+                const bool bContains =
+                    ClassesToComponents.find(ComponentClass) !=
+                    ClassesToComponents.end();
+
+                if (!bContains) {
+                    bHasAllClasses = false;
+                    break;
+                }
+            }
+
+            if (bHasAllClasses)
+                Result.push_back(Entity);
+        }
+    }
+    return Result;
+}
+
 void UWorld::Initialize() {
     for (USystem* System : Systems) {
         InitializeSystem(System);
@@ -31,8 +59,12 @@ void UWorld::Initialize() {
 void UWorld::InitializeSystem(USystem* System) {
     if (!System)
         return;
+    const std::vector<UEntity*> ValidEntities =
+        GetAllEntitiesWithComponents(System->GetComponentClasses());
 
-    System->Initialize(GetFirstEntity());
+    for each (UEntity* Entity in ValidEntities) {
+        System->Initialize(Entity);
+    }
 }
 
 void UWorld::Update() {
@@ -45,7 +77,12 @@ void UWorld::UpdateSystem(USystem* System) {
     if (!System)
         return;
 
-    System->Update(GetFirstEntity());
+    const std::vector<UEntity*> ValidEntities =
+        GetAllEntitiesWithComponents(System->GetComponentClasses());
+
+    for each (UEntity* Entity in ValidEntities) {
+        System->Update(Entity);
+    }
 }
 
 void UWorld::Finalize() {
@@ -57,28 +94,19 @@ void UWorld::Finalize() {
 void UWorld::FinalizeSystem(USystem* System) {
     if (!System)
         return;
+    const std::vector<UEntity*> ValidEntities =
+        GetAllEntitiesWithComponents(System->GetComponentClasses());
 
-    System->Finalize(GetFirstEntity());
+    for each (UEntity* Entity in ValidEntities) {
+        System->Finalize(Entity);
+    }
 }
 
-USystem* UWorld::GetFirstSystem() const {
-    if (Systems.size() > 0)
-        return Systems.front();
-
-    return nullptr;
-}
 
 UEntity* UWorld::CreateEntity() {
     UEntity* NewEntity = new UEntity();
     Entities.push_back(NewEntity);
     return NewEntity;
-}
-
-UEntity* UWorld::GetFirstEntity() const {
-    if (Entities.size() > 0)
-        return Entities.front();
-
-    return nullptr;
 }
 
 void UWorld::DestroyEntity(UEntity* Entity) {
@@ -87,20 +115,27 @@ void UWorld::DestroyEntity(UEntity* Entity) {
 
     DestroyEntityImpl(Entity);
 
-    auto EntityIter = std::find(Entities.begin(), Entities.end(), Entity); 
+    auto EntityIter = std::find(Entities.begin(), Entities.end(), Entity);
     if (EntityIter != Entities.end())
         Entities.erase(EntityIter);
     delete Entity;
 }
 
 void UWorld::Destroy() {
-    for (auto Iter = Entities.begin(); Iter != Entities.end(); ++Iter){
-        if (*Iter) {
-            DestroyEntityImpl(*Iter);
-            delete *Iter;
+    for (UEntity* Entity : Entities) {
+        if (Entity) {
+            DestroyEntityImpl(Entity);
+            delete Entity;
         }
     }
     Entities.clear();
+
+    for (USystem* System : Systems) {
+        if (System) {
+            delete System;
+        }
+    }
+    Systems.clear();
 }
 
 void UWorld::DestroyEntityImpl(UEntity* Entity) {

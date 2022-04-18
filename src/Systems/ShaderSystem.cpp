@@ -9,6 +9,11 @@
 #include <glm/glm.hpp>
 #include <iostream>
 
+
+UShaderSystem::UShaderSystem() {
+    RequiredComponentClasses.push_back(EComponentClass::UShaderComponent);
+}
+
 void UShaderSystem::Initialize(UEntity* Entity) {
     if (!Entity) {
         assert(false);

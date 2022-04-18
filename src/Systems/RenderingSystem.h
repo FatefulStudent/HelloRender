@@ -18,6 +18,7 @@ class aiMesh;
 
 class URenderingSystem : public USystem {
 public:
+    URenderingSystem();
     virtual void Initialize(UEntity* Entity);
 
     virtual void Update(UEntity* Entity);

@@ -1,7 +1,10 @@
 #ifndef WORLD_H
 #define WORLD_H
 
+#include "Components/Component.h"
+
 #include <vector>
+
 
 class UEntity;
 class USystem;
@@ -15,6 +18,9 @@ public:
     static UWorld* GetWorld();
     static UWorld* World;
 
+    std::vector<UEntity*> GetAllEntitiesWithComponents(
+        const std::vector<EComponentClass> RequiredComponentClasses) const;
+
     template<typename T>
     T* CreateSystem();
 
@@ -27,10 +33,7 @@ public:
     void Finalize();
     void FinalizeSystem(USystem* System);
 
-    USystem* GetFirstSystem() const;
-
     UEntity* CreateEntity();
-    UEntity* GetFirstEntity() const;
 
     void DestroyEntity(UEntity* Entity);
 

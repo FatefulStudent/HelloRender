@@ -1,6 +1,9 @@
 #ifndef ENTITY_H
 #define ENTITY_H
 
+#include "Components/Component.h"
+
+#include <unordered_map>
 #include <vector>
 
 class UComponent;
@@ -10,18 +13,23 @@ public:
     UEntity();
     ~UEntity();
 
-    template<typename T, typename ... Args>
+    template <typename T, typename... Args>
     void AddComponent(Args... args);
 
-    template<typename T>
+    template <typename T>
     T* GetComponentOfClass() const;
+
+    UComponent* GetComponentOfClass(EComponentClass ComponentClassEnum) const;
 
     void Destroy();
 
 private:
     void DestroyImpl();
     friend class UWorld;
-	// TODO: smartpointers
+
+    std::unordered_map<EComponentClass, UComponent*> ComponentClassToComponent;
+
+    // TODO: smartpointers
     std::vector<UComponent*> Components;
     int ID;
 };
@@ -31,6 +39,8 @@ inline void UEntity::AddComponent(Args... args) {
     auto NewObject = new T(std::forward<Args>(args)...);
     auto NewObjectAsComponent = static_cast<UComponent*>(NewObject);
     Components.push_back(NewObjectAsComponent);
+    ComponentClassToComponent.emplace(
+        NewObjectAsComponent->GetComponentClass(), NewObjectAsComponent);
 }
 
 template <typename T>

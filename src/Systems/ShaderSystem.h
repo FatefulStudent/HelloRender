@@ -13,6 +13,7 @@ enum class EShaderType : uint8_t;
 
 class UShaderSystem : public USystem {
 public:
+    UShaderSystem();
     virtual void Initialize(UEntity* Entity);
     virtual void Update(UEntity* Entity);
     virtual void Finalize(UEntity* Entity);

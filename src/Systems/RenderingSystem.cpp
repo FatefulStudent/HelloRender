@@ -15,6 +15,11 @@
 
 std::vector<FTexture> URenderingSystem::CachedTextures = {};
 
+URenderingSystem::URenderingSystem() {
+    RequiredComponentClasses.push_back(EComponentClass::UModelComponent);
+    RequiredComponentClasses.push_back(EComponentClass::UShaderComponent);
+}
+
 void URenderingSystem::Initialize(UEntity* Entity) {
     if (!Entity) {
         assert(false);

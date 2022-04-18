@@ -67,13 +67,15 @@ void Arkanoid::Tick(float deltaTime) {
 
     // Should be in a separate system
     {
-        auto Entity = World->GetFirstEntity();
-        UShaderComponent* ShaderComponent =
-            Entity->GetComponentOfClass<UShaderComponent>();
+        auto Entities = World->GetAllEntitiesWithComponents({EComponentClass::UShaderComponent});
+        for each (UEntity* Entity in Entities) {
+            UShaderComponent* ShaderComponent =
+                Entity->GetComponentOfClass<UShaderComponent>();
 
-        ShaderComponent->Model = model;
-        ShaderComponent->View = m_camera->GetViewMatrix();
-        ShaderComponent->Projection = projection;
+            ShaderComponent->Model = model;
+            ShaderComponent->View = m_camera->GetViewMatrix();
+            ShaderComponent->Projection = projection;
+        }
     }
 
     World->Update();
