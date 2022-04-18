@@ -49,7 +49,6 @@ private:
                                      UShaderComponent* ShaderComponent);
    
     static void FinalizeModelComponent(UModelComponent* ModelComponent);
-    static void FinalizeMesh(const FMesh& Mesh);
 };
 
 #endif

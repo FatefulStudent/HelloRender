@@ -67,13 +67,15 @@ void URenderingSystem::ProcessNode(UModelComponent* ModelComponent,
         return;
     }
 
+    ModelComponent->Meshes.reserve(Node->mNumMeshes);
+    
     // process all the node's meshes (if any)
     for (size_t i = 0; i < Node->mNumMeshes; i++) {
         aiMesh* AssimpMesh = Scene->mMeshes[Node->mMeshes[i]];
         FMesh NewMesh;
         ConvertAssimpMesh(AssimpMesh, Scene, ModelComponent->DirectoryPath,
                           NewMesh);
-        ModelComponent->Meshes.push_back(NewMesh);
+        ModelComponent->Meshes.push_back(std::move(NewMesh));
     }
     // then do the same for each of its children
     for (size_t i = 0; i < Node->mNumChildren; i++) {
@@ -134,9 +136,9 @@ void URenderingSystem::ConvertAssimpMesh(aiMesh* AssimpMesh,
         return;
     }
 
-    std::vector<FVertex> Vertices;
-    std::vector<unsigned int> Indices;
-    std::vector<FTexture> Textures;
+    std::vector<FVertex>& Vertices = OutMesh.Vertices;
+    std::vector<unsigned int>& Indices = OutMesh.Indices;
+    std::vector<FTexture>& Textures = OutMesh.Textures;
 
     for (size_t i = 0; i < AssimpMesh->mNumVertices; i++) {
         const auto CurrentAiVertex = AssimpMesh->mVertices[i];
@@ -181,7 +183,6 @@ void URenderingSystem::ConvertAssimpMesh(aiMesh* AssimpMesh,
                         SpecularMaps.end());
     }
 
-    OutMesh = {Vertices, Indices, Textures};
     SetupMesh(OutMesh);
 }
 
@@ -326,8 +327,8 @@ void URenderingSystem::UpdateModelComponent(
         return;
     }
 
-    for (size_t i = 0; i < ModelComponent->Meshes.size(); i++)
-        DrawMesh(ModelComponent->Meshes[i], ShaderComponent);
+    for (const FMesh& Mesh : ModelComponent->Meshes)
+        DrawMesh(Mesh, ShaderComponent);
 }
 
 void URenderingSystem::Finalize(UEntity* Entity) {
@@ -351,14 +352,5 @@ void URenderingSystem::FinalizeModelComponent(
         assert(false);
         return;
     }
-    for each (const FMesh& Mesh in ModelComponent->Meshes) {
-        FinalizeMesh(Mesh);
-    }
     ModelComponent->Meshes.clear();
-}
-
-void URenderingSystem::FinalizeMesh(const FMesh& Mesh) {
-    glDeleteVertexArrays(1, &Mesh.VAO);
-    glDeleteBuffers(1, &Mesh.EBO);
-    glDeleteBuffers(1, &Mesh.VBO);
 }
