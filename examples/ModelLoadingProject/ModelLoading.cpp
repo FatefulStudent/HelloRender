@@ -1,12 +1,9 @@
 #include "ModelLoading.h"
 
 #include "Helper/Application.h"
-#include "Helper/VertexData.h"
 #include "Legacy/Camera3d.h"
-// #include "Legacy/shaderInstance.h"
 #include "Legacy/shaderProgram.h"
 
-#include "Legacy/Shader.h"
 #include "Legacy/Model.h"
 #include "Legacy/Mesh.h"
 
@@ -55,7 +52,8 @@ void ModelLoading::Initialize(GLFWwindow* window) {
 
     m_shaderProgramSun = CreateShaderProgramSun();
 
-    m_model = CreateModel("res/backpack/backpack.obj");
+    m_model = CreateModel("res/sun/sun.obj");
+    m_model2 = CreateModel("res/sun/sun.obj");
 }
 
 void ModelLoading::Tick(float deltaTime) {
@@ -74,7 +72,17 @@ void ModelLoading::Tick(float deltaTime) {
     m_shaderProgramSun->setMatrix("View", m_camera->GetViewMatrix());
     m_shaderProgramSun->setMatrix("Projection", projection);
 
+
+    model =
+        glm::translate(model, glm::vec3(5.0f, 5.0f, 5.0f));
+
+    m_shaderProgramSun->use();
+    m_shaderProgramSun->setMatrix("Model", model);
+    m_shaderProgramSun->setMatrix("View", m_camera->GetViewMatrix());
+    m_shaderProgramSun->setMatrix("Projection", projection);
+    
     m_model->Draw(nullptr);
+    m_model2->Draw(nullptr);
 }
 
 void ModelLoading::Finalize() {

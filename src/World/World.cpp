@@ -23,7 +23,7 @@ UWorld* UWorld::GetWorld() {
 }
 
 std::vector<UEntity*> UWorld::GetAllEntitiesWithComponents(
-    const std::vector<EComponentClass> RequiredClasses) const {
+    const std::vector<EComponentClass>& RequiredClasses) const {
     std::vector<UEntity*> Result{};
 
     for (UEntity* Entity : Entities) {

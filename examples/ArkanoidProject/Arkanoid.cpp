@@ -39,7 +39,7 @@ UEntity* CreateSun(UWorld* World) {
 
     const glm::vec3 Location{-5.0f, 0.0f, 0.0f};
     const glm::vec3 Rotation{0.0f, 0.0f, 0.0f};
-    const glm::vec3 Scale{4.f, 2.f, 2.f};
+    const glm::vec3 Scale{1.f, 1.f, 1.f};
     const std::string ModelPath("res/sun/sun.obj");
     const std::string VertShaderPath("shaders/shaderForSun.vert");
     const std::string FragShaderPath("shaders/shaderForSun.frag");
@@ -60,10 +60,10 @@ UEntity* CreateEarth(UWorld* World) {
         return nullptr;
     }
 
-    const glm::vec3 Location{20.0f, 0.0f, 0.0f};
-    const glm::vec3 Rotation{0.0f, 0.0f, 0.0f};
-    const glm::vec3 Scale{2.f, 4.f, 2.f};
-    const std::string ModelPath("res/sun/sun.obj");
+    const glm::vec3 Location{10.0f, 0.0f, 0.0f};
+    const glm::vec3 Rotation{0.0f, 180.0f, 0.0f};
+    const glm::vec3 Scale{1.f, 1.f, 1.f};
+    const std::string ModelPath("res/earth/earth.obj");
     const std::string VertShaderPath("shaders/shaderForSun.vert");
     const std::string FragShaderPath("shaders/shaderForSun.frag");
 
@@ -83,8 +83,8 @@ void Arkanoid::Initialize(GLFWwindow* window) {
     glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
     UWorld* World = UWorld::CreateWorld();
 
-    CreateSun(World);
     CreateEarth(World);
+    CreateSun(World);
 
     USystem* ShaderSystem = World->CreateSystem<UShaderSystem>();
     USystem* RenderingSystem = World->CreateSystem<URenderingSystem>();
@@ -111,6 +111,7 @@ void Arkanoid::Tick(float deltaTime) {
         auto Entities = World->GetAllEntitiesWithComponents(
             {EComponentClass::UShaderComponent,
              EComponentClass::UTransformComponent});
+
         for each (UEntity* Entity in Entities) {
             UShaderComponent* ShaderComponent =
                 Entity->GetComponentOfClass<UShaderComponent>();
@@ -129,7 +130,7 @@ void Arkanoid::Tick(float deltaTime) {
             glm::mat4 TransformMatrix(1.0f);
 
             {
-                /*
+                
                 TransformMatrix = glm::translate(
                     TransformMatrix, glm::vec3(TransformComponent->Position));
 
@@ -153,7 +154,6 @@ void Arkanoid::Tick(float deltaTime) {
                                 glm::radians(TransformComponent->Rotation.y),
                                 glm::vec3(0.0f, 0.f, 1.0f));
 
-                */
                 TransformMatrix =
                     glm::scale(TransformMatrix, TransformComponent->Scale);
             }

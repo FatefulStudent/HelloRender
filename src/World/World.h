@@ -19,7 +19,7 @@ public:
     static UWorld* World;
 
     std::vector<UEntity*> GetAllEntitiesWithComponents(
-        const std::vector<EComponentClass> RequiredComponentClasses) const;
+        const std::vector<EComponentClass>& RequiredComponentClasses) const;
 
     template<typename T>
     T* CreateSystem();

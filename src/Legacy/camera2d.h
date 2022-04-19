@@ -10,7 +10,7 @@ private:
     float m_fov = 45.0f;
 
     glm::mat4 m_view = {};
-    glm::vec3 m_cameraPos = {0.0f, 0.0f, 80.0f};
+    glm::vec3 m_cameraPos = {0.0f, 0.0f, 40.0f};
     glm::vec3 m_cameraUp = {0.0f, 1.0f, 0.0f};
     glm::vec3 m_cameraFront = {0.0f, 0.0f, -1.0f};
     float m_yaw = -90.0f;

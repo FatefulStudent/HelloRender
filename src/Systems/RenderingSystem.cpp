@@ -298,12 +298,18 @@ void URenderingSystem::Update(UEntity* Entity) {
 }
 
 void DrawMesh(const FMesh& Mesh, UShaderComponent* ShaderComponent) {
+    if (!ShaderComponent) {
+        assert(false);
+        return;
+    }
+    glUseProgram(ShaderComponent->ShaderProgramID);
+
     unsigned int diffuseNr = 1;
     unsigned int specularNr = 1;
     for (unsigned int i = 0; i < Mesh.Textures.size(); i++) {
         // activate proper texture unit before binding
         glActiveTexture(GL_TEXTURE0 + i);
-        
+
         // retrieve texture number (the N in diffuse_textureN)
         std::string number;
         std::string name = Mesh.Textures[i].Type;
@@ -328,6 +334,11 @@ void URenderingSystem::UpdateModelComponent(
     UModelComponent* ModelComponent,
     UShaderComponent* ShaderComponent) {
     if (!ModelComponent) {
+        assert(false);
+        return;
+    }
+
+    if (!ShaderComponent) {
         assert(false);
         return;
     }
