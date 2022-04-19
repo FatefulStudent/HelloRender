@@ -46,17 +46,18 @@ void UShaderSystem::InitializeShaderComponent(
     assert(FragmentShader.ShaderType == EShaderType::Fragment);
 
     // shader Program
-    ShaderComponent->ID = glCreateProgram();
-    glAttachShader(ShaderComponent->ID, VertexShader.ID);
-    glAttachShader(ShaderComponent->ID, FragmentShader.ID);
-    glLinkProgram(ShaderComponent->ID);
+    ShaderComponent->ShaderProgramID = glCreateProgram();
+    glAttachShader(ShaderComponent->ShaderProgramID, VertexShader.ID);
+    glAttachShader(ShaderComponent->ShaderProgramID, FragmentShader.ID);
+    glLinkProgram(ShaderComponent->ShaderProgramID);
 
     static int success;
     static char infoLog[512];
 
-    glGetProgramiv(ShaderComponent->ID, GL_LINK_STATUS, &success);
+    glGetProgramiv(ShaderComponent->ShaderProgramID, GL_LINK_STATUS, &success);
     if (!success) {
-        glGetProgramInfoLog(ShaderComponent->ID, 512, NULL, infoLog);
+        glGetProgramInfoLog(ShaderComponent->ShaderProgramID, 512, NULL,
+                            infoLog);
         std::cerr << "ERROR::UShaderSystem::InitializeShaderComponent::"
                      "LINKING_FAILED\n"
                   << infoLog << std::endl;
@@ -151,7 +152,7 @@ void UShaderSystem::UpdateShaderComponent(UShaderComponent* ShaderComponent) {
         return;
     }
 
-    glUseProgram(ShaderComponent->ID);
+    glUseProgram(ShaderComponent->ShaderProgramID);
 
     ShaderHelper::SetMatrix(ShaderComponent, "Model", ShaderComponent->Model);
     ShaderHelper::SetMatrix(ShaderComponent, "View", ShaderComponent->View);

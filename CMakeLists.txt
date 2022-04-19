@@ -51,9 +51,12 @@ set(HEADERS
 	
 	./src/Entity/Entity.h
 	./src/World/World.h
+	
 	./src/Components/Component.h
 	./src/Components/ModelComponent.h
 	./src/Components/ShaderComponent.h
+	./src/Components/TransformComponent.h
+
 	./src/Systems/System.h
 	./src/Systems/RenderingSystem.h
 	./src/Systems/ShaderSystem.h
@@ -74,9 +77,12 @@ set(SOURCES
 	
 	./src/Entity/Entity.cpp
 	./src/World/World.cpp
+
 	./src/Components/Component.cpp
 	./src/Components/ModelComponent.cpp
 	./src/Components/ShaderComponent.cpp
+	./src/Components/TransformComponent.cpp
+
 	./src/Systems/System.cpp
 	./src/Systems/RenderingSystem.cpp
 	./src/Systems/ShaderSystem.cpp

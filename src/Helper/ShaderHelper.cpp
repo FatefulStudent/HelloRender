@@ -13,7 +13,7 @@ void ShaderHelper::SetBool(UShaderComponent* ShaderComponent,
         return;
     }
 
-    glUniform1i(glGetUniformLocation(ShaderComponent->ID, name.c_str()),
+    glUniform1i(glGetUniformLocation(ShaderComponent->ShaderProgramID, name.c_str()),
                 (int)value);
 }
 
@@ -25,7 +25,8 @@ void ShaderHelper::SetInt(UShaderComponent* ShaderComponent,
         return;
     }
 
-    glUniform1i(glGetUniformLocation(ShaderComponent->ID, name.c_str()),
+    glUniform1i(
+        glGetUniformLocation(ShaderComponent->ShaderProgramID, name.c_str()),
                 value);
 }
 
@@ -37,7 +38,8 @@ void ShaderHelper::SetFloat(UShaderComponent* ShaderComponent,
         return;
     }
 
-    glUniform1f(glGetUniformLocation(ShaderComponent->ID, name.c_str()),
+    glUniform1f(
+        glGetUniformLocation(ShaderComponent->ShaderProgramID, name.c_str()),
                 value);
 }
 
@@ -49,9 +51,10 @@ void ShaderHelper::SetVec3(UShaderComponent* ShaderComponent,
         return;
     }
 
-    GLuint location = glGetUniformLocation(ShaderComponent->ID, name.c_str());
+    GLuint Location =
+        glGetUniformLocation(ShaderComponent->ShaderProgramID, name.c_str());
 
-    glUniform3fv(location, 1, glm::value_ptr(value));
+    glUniform3fv(Location, 1, glm::value_ptr(value));
 }
 
 void ShaderHelper::SetMatrix(UShaderComponent* ShaderComponent,
@@ -63,6 +66,6 @@ void ShaderHelper::SetMatrix(UShaderComponent* ShaderComponent,
     }
 
     unsigned int transformLoc =
-        glGetUniformLocation(ShaderComponent->ID, name.c_str());
+        glGetUniformLocation(ShaderComponent->ShaderProgramID, name.c_str());
     glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(value));
 }

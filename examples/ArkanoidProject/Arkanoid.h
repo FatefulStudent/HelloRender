@@ -8,7 +8,7 @@
 #include <vector>
 #include <string>
 
-class Camera3d;
+class Camera2d;
 
 class Arkanoid : public BaseExcercise {
 public:
@@ -20,7 +20,7 @@ public:
     virtual void Finalize() override;
 
 private:
-    std::shared_ptr<Camera3d> m_camera;
+    std::shared_ptr<Camera2d> m_camera;
 };
 
 

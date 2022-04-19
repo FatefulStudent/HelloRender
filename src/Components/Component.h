@@ -4,7 +4,8 @@
 enum class EComponentClass {
     Base,
     UModelComponent,
-    UShaderComponent
+    UShaderComponent,
+    UTransformComponent
 };
 
 class UComponent {
