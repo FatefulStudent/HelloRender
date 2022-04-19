@@ -154,9 +154,10 @@ void UShaderSystem::UpdateShaderComponent(UShaderComponent* ShaderComponent) {
 
     glUseProgram(ShaderComponent->ShaderProgramID);
 
-    ShaderHelper::SetMatrix(ShaderComponent, "Model", ShaderComponent->Model);
-    ShaderHelper::SetMatrix(ShaderComponent, "View", ShaderComponent->View);
-    ShaderHelper::SetMatrix(ShaderComponent, "Projection",
+    ShaderHelper::SetMatrix(ShaderComponent->ShaderProgramID, "Model", ShaderComponent->Model);
+    ShaderHelper::SetMatrix(ShaderComponent->ShaderProgramID, "View",
+                            ShaderComponent->View);
+    ShaderHelper::SetMatrix(ShaderComponent->ShaderProgramID, "Projection",
                             ShaderComponent->Projection);
 }
 

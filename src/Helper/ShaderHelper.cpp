@@ -5,67 +5,62 @@
 #include <GL/glew.h>
 #include <glm/gtc/type_ptr.hpp>
 
-void ShaderHelper::SetBool(UShaderComponent* ShaderComponent,
+void ShaderHelper::SetBool(unsigned ShaderProgramID,
                            const std::string& name,
                            bool value) {
-    if (!ShaderComponent) {
+    if (ShaderProgramID == 0) {
         assert(false);
         return;
     }
 
-    glUniform1i(glGetUniformLocation(ShaderComponent->ShaderProgramID, name.c_str()),
+    glUniform1i(glGetUniformLocation(ShaderProgramID, name.c_str()),
                 (int)value);
 }
 
-void ShaderHelper::SetInt(UShaderComponent* ShaderComponent,
+void ShaderHelper::SetInt(unsigned ShaderProgramID,
                           const std::string& name,
                           int value) {
-    if (!ShaderComponent) {
+    if (ShaderProgramID == 0) {
         assert(false);
         return;
     }
 
-    glUniform1i(
-        glGetUniformLocation(ShaderComponent->ShaderProgramID, name.c_str()),
-                value);
+    glUniform1i(glGetUniformLocation(ShaderProgramID, name.c_str()), value);
 }
 
-void ShaderHelper::SetFloat(UShaderComponent* ShaderComponent,
+void ShaderHelper::SetFloat(unsigned ShaderProgramID,
                             const std::string& name,
                             float value) {
-    if (!ShaderComponent) {
+    if (ShaderProgramID == 0) {
         assert(false);
         return;
     }
 
-    glUniform1f(
-        glGetUniformLocation(ShaderComponent->ShaderProgramID, name.c_str()),
-                value);
+    glUniform1f(glGetUniformLocation(ShaderProgramID, name.c_str()), value);
 }
 
-void ShaderHelper::SetVec3(UShaderComponent* ShaderComponent,
+void ShaderHelper::SetVec3(unsigned ShaderProgramID,
                            const std::string& name,
                            const glm::vec3& value) {
-    if (!ShaderComponent) {
+    if (ShaderProgramID == 0) {
         assert(false);
         return;
     }
 
-    GLuint Location =
-        glGetUniformLocation(ShaderComponent->ShaderProgramID, name.c_str());
+    GLuint Location = glGetUniformLocation(ShaderProgramID, name.c_str());
 
     glUniform3fv(Location, 1, glm::value_ptr(value));
 }
 
-void ShaderHelper::SetMatrix(UShaderComponent* ShaderComponent,
+void ShaderHelper::SetMatrix(unsigned ShaderProgramID,
                              const std::string& name,
                              const glm::mat4& value) {
-    if (!ShaderComponent) {
+    if (ShaderProgramID == 0) {
         assert(false);
         return;
     }
 
     unsigned int transformLoc =
-        glGetUniformLocation(ShaderComponent->ShaderProgramID, name.c_str());
+        glGetUniformLocation(ShaderProgramID, name.c_str());
     glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(value));
 }

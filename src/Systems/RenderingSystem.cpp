@@ -312,7 +312,7 @@ void DrawMesh(const FMesh& Mesh, UShaderComponent* ShaderComponent) {
         else if (name == "texture_specular")
             number = std::to_string(specularNr++);
 
-        ShaderHelper::SetFloat(ShaderComponent,
+        ShaderHelper::SetFloat(ShaderComponent->ShaderProgramID,
                                ("material." + name + number).c_str(), i);
         glBindTexture(GL_TEXTURE_2D, Mesh.Textures[i].ID);
     }
