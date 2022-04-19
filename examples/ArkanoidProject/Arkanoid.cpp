@@ -34,7 +34,7 @@ std::shared_ptr<Camera3d> CreateCamera(GLFWwindow* window) {
 
 void Arkanoid::Initialize(GLFWwindow* window) {
     BaseExcercise::Initialize(window);
-    glClearColor(1.0f, 1.0f, 0.0f, 1.0f);
+    glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
     auto World = UWorld::CreateWorld();
     
     UEntity* Entity = World->CreateEntity();
@@ -42,7 +42,7 @@ void Arkanoid::Initialize(GLFWwindow* window) {
     Entity->AddComponent<UComponent>();
     Entity->AddComponent<UShaderComponent>("shaders/shaderForSun.vert",
                                            "shaders/shaderForSun.frag");
-    Entity->AddComponent<UModelComponent>("res/backpack/backpack.obj");
+    Entity->AddComponent<UModelComponent>("res/sun/sun.obj");
 
     USystem* ShaderSystem = World->CreateSystem<UShaderSystem>();
     USystem* RenderingSystem = World->CreateSystem<URenderingSystem>();
