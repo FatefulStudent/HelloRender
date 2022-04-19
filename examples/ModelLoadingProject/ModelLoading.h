@@ -4,8 +4,6 @@
 #include "../../examples/BaseExcercise.h"
 #include "Excercise.h"
 
-#include "Helper/VertexData.h"
-
 #include <memory>
 #include <vector>
 #include <string>
@@ -35,7 +33,14 @@ private:
     std::shared_ptr<Camera3d> m_camera;
     std::shared_ptr<Model> m_model;
 
+    std::shared_ptr<Model> m_model2;
+
     std::shared_ptr<ShaderProgram> m_shaderProgramSun;
+    std::shared_ptr<ShaderProgram> m_shaderProgramSun2;
 };
+
+//std::shared_ptr<BaseExcercise> make() {
+//    return std::make_shared<ModelLoading>();
+//}
 
 #endif
