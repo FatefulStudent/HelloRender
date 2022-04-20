@@ -17,7 +17,6 @@ public:
     std::string VertexShaderPath{};
     std::string FragmentShaderPath{};
 
-    glm::mat4 Model{};
     glm::mat4 View{};
     glm::mat4 Projection{};
 

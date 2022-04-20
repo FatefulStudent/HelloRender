@@ -18,6 +18,8 @@ public:
     static UWorld* GetWorld();
     static UWorld* World;
 
+    static UEntity* LocalPlayer;
+
     std::vector<UEntity*> GetAllEntitiesWithComponents(
         const std::vector<EComponentClass>& RequiredComponentClasses) const;
 

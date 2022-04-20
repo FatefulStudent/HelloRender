@@ -88,6 +88,7 @@ UEntity* CreatePlayer(UWorld* World) {
     Entity->AddComponent<UTransformComponent>(Location, Rotation, Scale);
     Entity->AddComponent<UCameraComponent>();
 
+    World->LocalPlayer = Entity;
     return Entity;
 }
 
@@ -112,71 +113,7 @@ void Arkanoid::Initialize(GLFWwindow* window) {
 void Arkanoid::Tick(float deltaTime) {
     BaseExcercise::Tick(deltaTime);
 
-    
     auto World = UWorld::GetWorld();
-
-    auto CameraEntities = World->GetAllEntitiesWithComponents(
-        {EComponentClass::UCameraComponent});
-
-    auto Camera = CameraEntities[0]->GetComponentOfClass<UCameraComponent>();
-    // Should be in a separate system
-    {
-        auto Entities = World->GetAllEntitiesWithComponents(
-            {EComponentClass::UShaderComponent,
-             EComponentClass::UTransformComponent});
-
-        for each (UEntity* Entity in Entities) {
-            UShaderComponent* ShaderComponent =
-                Entity->GetComponentOfClass<UShaderComponent>();
-            if (!ShaderComponent) {
-                assert(false);
-                continue;
-            }
-
-            UTransformComponent* TransformComponent =
-                Entity->GetComponentOfClass<UTransformComponent>();
-            if (!TransformComponent) {
-                assert(false);
-                continue;
-            }
-
-            glm::mat4 TransformMatrix(1.0f);
-
-            {
-                
-                TransformMatrix = glm::translate(
-                    TransformMatrix, glm::vec3(TransformComponent->Position));
-
-                float RotationAroundItself = glfwGetTime() * 10.0f;
-
-                // pitch
-                TransformMatrix =
-                    glm::rotate(TransformMatrix,
-                                glm::radians(TransformComponent->Rotation.z),
-                                glm::vec3(1.0f, 0.f, 0.0f));
-
-                // yaw
-                TransformMatrix =
-                    glm::rotate(TransformMatrix,
-                                glm::radians(TransformComponent->Rotation.x),
-                                glm::vec3(0.0f, 1.f, 0.0f));
-
-                // roll
-                TransformMatrix =
-                    glm::rotate(TransformMatrix,
-                                glm::radians(TransformComponent->Rotation.y),
-                                glm::vec3(0.0f, 0.f, 1.0f));
-
-                TransformMatrix =
-                    glm::scale(TransformMatrix, TransformComponent->Scale);
-            }
-
-            ShaderComponent->Model = TransformMatrix;
-            ShaderComponent->View = Camera->View;
-            ShaderComponent->Projection = Camera->Projection;
-        }
-    }
-
     World->Update();
 }
 

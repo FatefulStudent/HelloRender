@@ -1,17 +1,26 @@
 #include "ShaderSystem.h"
 #include "Components/ShaderComponent.h"
+#include "Components/TransformComponent.h"
+#include "Components/CameraComponent.h"
 #include "Entity/Entity.h"
 #include "Helper/FileHelper.h"
 #include "Helper/ShaderData.h"
 #include "Helper/ShaderHelper.h"
 
+#include "World/World.h"
+
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/glm.hpp>
 #include <iostream>
 
+namespace
+{
+
+}
 
 UShaderSystem::UShaderSystem() {
     RequiredComponentClasses.push_back(EComponentClass::UShaderComponent);
+    RequiredComponentClasses.push_back(EComponentClass::UTransformComponent);
 }
 
 void UShaderSystem::Initialize(UEntity* Entity) {
@@ -140,25 +149,49 @@ void UShaderSystem::Update(UEntity* Entity) {
 
     UShaderComponent* ShaderComponent =
         Entity->GetComponentOfClass<UShaderComponent>();
-    assert(ShaderComponent);
-    if (!ShaderComponent)
-        return;
-    UpdateShaderComponent(ShaderComponent);
-}
-
-void UShaderSystem::UpdateShaderComponent(UShaderComponent* ShaderComponent) {
     if (!ShaderComponent) {
         assert(false);
         return;
     }
 
+    UTransformComponent* TransformComponent =
+        Entity->GetComponentOfClass<UTransformComponent>();
+    if (!TransformComponent) {
+        assert(false);
+        return;
+    }
+
+    UpdateShaderComponent(ShaderComponent, TransformComponent);
+}
+
+void UShaderSystem::UpdateShaderComponent(
+    UShaderComponent* ShaderComponent,
+    const UTransformComponent* TransformComponent) {
+    if (!ShaderComponent) {
+        assert(false);
+        return;
+    }
+
+    if (!TransformComponent) {
+        assert(false);
+        return;
+    }
+
+    
     glUseProgram(ShaderComponent->ShaderProgramID);
 
-    ShaderHelper::SetMatrix(ShaderComponent->ShaderProgramID, "Model", ShaderComponent->Model);
+    ShaderHelper::SetMatrix(ShaderComponent->ShaderProgramID, "Model",
+                            TransformComponent->ConstructTransformMatrix());
+
+    UWorld* World = UWorld::GetWorld();
+    UEntity* PlayerEntity = World->LocalPlayer;
+    UCameraComponent* PlayerCamera =
+        PlayerEntity->GetComponentOfClass<UCameraComponent>();
+
     ShaderHelper::SetMatrix(ShaderComponent->ShaderProgramID, "View",
-                            ShaderComponent->View);
+                            PlayerCamera->View);
     ShaderHelper::SetMatrix(ShaderComponent->ShaderProgramID, "Projection",
-                            ShaderComponent->Projection);
+                            PlayerCamera->Projection);
 }
 
 void UShaderSystem::Finalize(UEntity* Entity) {

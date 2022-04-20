@@ -8,6 +8,7 @@
 
 class UEntity;
 class UShaderComponent;
+class UTransformComponent;
 struct FShaderData;
 enum class EShaderType : uint8_t;
 
@@ -23,7 +24,9 @@ private:
     static void LoadShader(const std::string& Path, FShaderData& OutShader);
     static EShaderType GetShaderTypeFromPath(const std::string& ShaderPath);
 
-    static void UpdateShaderComponent(UShaderComponent* ShaderComponent);
+    static void UpdateShaderComponent(
+        UShaderComponent* ShaderComponent,
+        const UTransformComponent* TransformComponent);
     static void FinalizeShaderComponent(UShaderComponent* ShaderComponent);
 };
 

@@ -1,8 +1,9 @@
 #include "World.h"
-#include "../Entity/Entity.h"
-#include "../Systems/System.h"
+#include "Entity/Entity.h"
+#include "Systems/System.h"
 
 UWorld* UWorld::World = nullptr;
+UEntity* UWorld::LocalPlayer = nullptr;
 
 UWorld* UWorld::CreateWorld() {
     World = new UWorld();

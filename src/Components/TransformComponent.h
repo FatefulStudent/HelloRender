@@ -4,6 +4,7 @@
 #include "Component.h"
 
 #include <glm/vec3.hpp>
+#include <glm/matrix.hpp>
 
 class UTransformComponent : public UComponent {
 public:
@@ -16,6 +17,8 @@ public:
     // Pitch, Yaw, Roll
     glm::vec3 Rotation{};
     glm::vec3 Scale{};
+
+    glm::mat4 ConstructTransformMatrix() const;
 };
 
 #endif
