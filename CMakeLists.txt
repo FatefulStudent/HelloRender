@@ -63,10 +63,12 @@ set(HEADERS
 	./src/Components/ModelComponent.h
 	./src/Components/ShaderComponent.h
 	./src/Components/TransformComponent.h
+	./src/Components/CameraComponent.h
 
 	./src/Systems/System.h
 	./src/Systems/RenderingSystem.h
 	./src/Systems/ShaderSystem.h
+	./src/Systems/StaticCameraSystem.h
 )
 set(SOURCES 
 	./libs/stb/stb_image.cpp
@@ -96,10 +98,12 @@ set(SOURCES
 	./src/Components/ModelComponent.cpp
 	./src/Components/ShaderComponent.cpp
 	./src/Components/TransformComponent.cpp
+	./src/Components/CameraComponent.cpp
 
 	./src/Systems/System.cpp
 	./src/Systems/RenderingSystem.cpp
 	./src/Systems/ShaderSystem.cpp
+	./src/Systems/StaticCameraSystem.cpp
 )
 
 add_executable(${PROJECT_NAME} 

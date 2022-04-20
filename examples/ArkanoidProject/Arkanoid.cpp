@@ -1,18 +1,19 @@
 #include "Arkanoid.h"
 
 #include "Helper/Application.h"
-#include "Legacy/Camera2d.h"
 
 #include "Components/Component.h"
 #include "Components/ModelComponent.h"
 #include "Components/ShaderComponent.h"
 #include "Components/TransformComponent.h"
+#include "Components/CameraComponent.h"
 #include "Entity/Entity.h"
 #include "World/World.h"
 
 #include "Systems/RenderingSystem.h"
 #include "Systems/ShaderSystem.h"
 #include "Systems/System.h"
+#include "Systems/StaticCameraSystem.h"
 
 #include <GL/glew.h>
 #include <glm/glm.hpp>
@@ -26,10 +27,6 @@
 #include <string>
 
 namespace {
-
-std::shared_ptr<Camera2d> CreateCamera(GLFWwindow* window) {
-    return std::make_shared<Camera2d>();
-}
 
 UEntity* CreateSun(UWorld* World) {
     if (!World) {
@@ -76,6 +73,24 @@ UEntity* CreateEarth(UWorld* World) {
     return Entity;
 }
 
+UEntity* CreatePlayer(UWorld* World) {
+    if (!World) {
+        assert(false);
+        return nullptr;
+    }
+
+    const glm::vec3 Location{0.0f, 0.0f, 40.0f};
+    const glm::vec3 Rotation{-90.0f, 0.0f, 0.0f};
+    const glm::vec3 Scale{1.f, 1.f, 1.f};
+
+    UEntity* Entity = World->CreateEntity();
+
+    Entity->AddComponent<UTransformComponent>(Location, Rotation, Scale);
+    Entity->AddComponent<UCameraComponent>();
+
+    return Entity;
+}
+
 }  // namespace
 
 void Arkanoid::Initialize(GLFWwindow* window) {
@@ -85,27 +100,25 @@ void Arkanoid::Initialize(GLFWwindow* window) {
 
     CreateEarth(World);
     CreateSun(World);
+    CreatePlayer(World);
 
     USystem* ShaderSystem = World->CreateSystem<UShaderSystem>();
     USystem* RenderingSystem = World->CreateSystem<URenderingSystem>();
-    
+    USystem* StaticCameraSystem = World->CreateSystem<UStaticCameraSystem>();
 
     World->Initialize();
-
-    m_camera = CreateCamera(window);
 }
 
 void Arkanoid::Tick(float deltaTime) {
     BaseExcercise::Tick(deltaTime);
 
-    m_camera->Tick(deltaTime);
-
-    glm::mat4 projection = glm::mat4(1.0f);
-    projection =
-        glm::perspective(glm::radians(m_camera->GetFov()), 1.0f, 0.1f, 500.0f);
-
+    
     auto World = UWorld::GetWorld();
 
+    auto CameraEntities = World->GetAllEntitiesWithComponents(
+        {EComponentClass::UCameraComponent});
+
+    auto Camera = CameraEntities[0]->GetComponentOfClass<UCameraComponent>();
     // Should be in a separate system
     {
         auto Entities = World->GetAllEntitiesWithComponents(
@@ -159,8 +172,8 @@ void Arkanoid::Tick(float deltaTime) {
             }
 
             ShaderComponent->Model = TransformMatrix;
-            ShaderComponent->View = m_camera->GetViewMatrix();
-            ShaderComponent->Projection = projection;
+            ShaderComponent->View = Camera->View;
+            ShaderComponent->Projection = Camera->Projection;
         }
     }
 

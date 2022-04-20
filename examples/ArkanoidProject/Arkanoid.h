@@ -8,8 +8,6 @@
 #include <vector>
 #include <string>
 
-class Camera2d;
-
 class Arkanoid : public BaseExcercise {
 public:
     Arkanoid(){};
@@ -18,9 +16,6 @@ public:
     virtual void Initialize(GLFWwindow* window) override;
     virtual void Tick(float deltaTime) override;
     virtual void Finalize() override;
-
-private:
-    std::shared_ptr<Camera2d> m_camera;
 };
 
 

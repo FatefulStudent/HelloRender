@@ -5,7 +5,8 @@ enum class EComponentClass {
     Base,
     UModelComponent,
     UShaderComponent,
-    UTransformComponent
+    UTransformComponent,
+    UCameraComponent,
 };
 
 class UComponent {
