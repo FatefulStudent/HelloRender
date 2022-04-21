@@ -17,9 +17,9 @@ Application::Application() {
         throw -1;
     }
 
-    m_window = CreateWindow();
+    Window = CreateWindow();
 
-    if (!m_window) {
+    if (!Window) {
         Finalize();
         throw -1;
     }
@@ -37,7 +37,7 @@ Application::~Application() {
 }
 
 void Application::Tick(float deltaTime) {
-    glfwSwapBuffers(m_window);
+    glfwSwapBuffers(Window);
     glfwPollEvents();
 }
 
@@ -70,8 +70,8 @@ GLFWwindow* Application::CreateWindow() const {
 }
 
 bool Application::ShouldCloseWindow() const {
-    return glfwGetKey(m_window, GLFW_KEY_ESCAPE) == GLFW_PRESS ||
-           glfwWindowShouldClose(m_window) == 1;
+    return glfwGetKey(Window, GLFW_KEY_ESCAPE) == GLFW_PRESS ||
+           glfwWindowShouldClose(Window) == 1;
 }
 
 float Application::GetWidthPx() {

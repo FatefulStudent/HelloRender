@@ -23,7 +23,7 @@ private:
     float m_yaw = -90.0f;
     float m_pitch = 0.0f;
     float m_cameraSpeed = 5.f;
-    GLFWwindow* m_window;
+    GLFWwindow* Window;
 
 public:
     Camera3d(GLFWwindow* window);

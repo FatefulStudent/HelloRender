@@ -80,7 +80,7 @@ void UStaticCameraSystem::InitializeCameraComponent(
         CameraComponent->MinDistance, CameraComponent->MaxDistance);*/
 }
 
-void UStaticCameraSystem::Update(UEntity* Entity) {
+void UStaticCameraSystem::Update(float DeltaTime, UEntity* Entity) {
     if (!Entity) {
         assert(false);
         return;

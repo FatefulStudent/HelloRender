@@ -274,7 +274,7 @@ unsigned int URenderingSystem::TextureFromFile(const std::string& Path,
     return TextureID;
 }
 
-void URenderingSystem::Update(UEntity* Entity) {
+void URenderingSystem::Update(float DeltaTime, UEntity* Entity) {
     if (!Entity) {
         assert(false);
         return;

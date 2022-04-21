@@ -68,13 +68,13 @@ void UWorld::InitializeSystem(USystem* System) {
     }
 }
 
-void UWorld::Update() {
+void UWorld::Update(float DeltaTime) {
     for (USystem* System : Systems) {
-        UpdateSystem(System);
+        UpdateSystem(DeltaTime, System);
     }
 }
 
-void UWorld::UpdateSystem(USystem* System) {
+void UWorld::UpdateSystem(float DeltaTime, USystem* System) {
     if (!System)
         return;
 
@@ -82,7 +82,7 @@ void UWorld::UpdateSystem(USystem* System) {
         GetAllEntitiesWithComponents(System->GetComponentClasses());
 
     for each (UEntity* Entity in ValidEntities) {
-        System->Update(Entity);
+        System->Update(DeltaTime, Entity);
     }
 }
 

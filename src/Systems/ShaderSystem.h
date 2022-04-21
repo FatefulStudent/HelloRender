@@ -15,9 +15,9 @@ enum class EShaderType : uint8_t;
 class UShaderSystem : public USystem {
 public:
     UShaderSystem();
-    virtual void Initialize(UEntity* Entity);
-    virtual void Update(UEntity* Entity);
-    virtual void Finalize(UEntity* Entity);
+    virtual void Initialize(UEntity* Entity) override;
+    virtual void Update(float DeltaTime, UEntity* Entity) override;
+    virtual void Finalize(UEntity* Entity) override;
 
 private:
     static void InitializeShaderComponent(UShaderComponent* ShaderComponent);

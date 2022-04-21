@@ -29,8 +29,8 @@ public:
     void Initialize();
     void InitializeSystem(USystem* System);
 
-    void Update();
-    void UpdateSystem(USystem* System);
+    void Update(float DeltaTime);
+    void UpdateSystem(float DeltaTime, USystem* System);
 
     void Finalize();
     void FinalizeSystem(USystem* System);

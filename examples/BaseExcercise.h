@@ -8,18 +8,18 @@ class GLFWwindow;
 class BaseExcercise {
 public:
     BaseExcercise() {}
-    virtual void Initialize(GLFWwindow* window);
+    virtual void Initialize(GLFWwindow* InWindow);
 
-    virtual void ProcessInput(float deltaTime){};
-    virtual void PreTick(float deltaTime);
-    virtual void Tick(float deltaTime) {}
-    virtual void PostTick(float deltaTime);
+    virtual void ProcessInput(float DeltaTime){};
+    virtual void PreTick(float DeltaTime);
+    virtual void Tick(float DeltaTime) {}
+    virtual void PostTick(float DeltaTime);
 
     virtual void Finalize() {}
 
     virtual ~BaseExcercise() {}
 
 protected:
-    GLFWwindow* m_window = nullptr;
+    GLFWwindow* Window = nullptr;
 };
 #endif

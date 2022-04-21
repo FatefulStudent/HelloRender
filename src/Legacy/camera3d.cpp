@@ -9,15 +9,15 @@
 Camera3d* Camera3d::m_camera = nullptr;
 
 void Camera3d::SetupInput() {
-    glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    glfwSetInputMode(Window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
-    glfwSetScrollCallback(m_window, ScrollCallback);
+    glfwSetScrollCallback(Window, ScrollCallback);
 
     int windowWidth, windowHeight;
-    glfwGetWindowSize(m_window, &windowWidth, &windowHeight);
-    glfwSetCursorPos(m_window, windowWidth / 2, windowHeight / 2);
+    glfwGetWindowSize(Window, &windowWidth, &windowHeight);
+    glfwSetCursorPos(Window, windowWidth / 2, windowHeight / 2);
     double cursorPosX, cursorPosY;
-    glfwGetCursorPos(m_window, &cursorPosX, &cursorPosY);
+    glfwGetCursorPos(Window, &cursorPosX, &cursorPosY);
     m_cachedCursorPos = {cursorPosX, cursorPosY};
 }
 
@@ -33,7 +33,7 @@ void Camera3d::ScrollCallback(GLFWwindow* window,
 
 Camera3d::Camera3d(GLFWwindow* window) {
     m_camera = this;
-    m_window = window;
+    Window = window;
     SetupInput();
 }
 
@@ -46,19 +46,19 @@ void Camera3d::Tick(float deltaTime) {
 
         glm::vec3 moveDirection = {0.0f, 0.0f, 0.0f};
 
-        if (glfwGetKey(m_window, GLFW_KEY_W) == GLFW_PRESS)
+        if (glfwGetKey(Window, GLFW_KEY_W) == GLFW_PRESS)
             moveDirection += m_cameraFront;
-        if (glfwGetKey(m_window, GLFW_KEY_S) == GLFW_PRESS)
+        if (glfwGetKey(Window, GLFW_KEY_S) == GLFW_PRESS)
             moveDirection -= m_cameraFront;
-        if (glfwGetKey(m_window, GLFW_KEY_A) == GLFW_PRESS)
+        if (glfwGetKey(Window, GLFW_KEY_A) == GLFW_PRESS)
             moveDirection -=
                 glm::normalize(glm::cross(m_cameraFront, m_cameraUp));
-        if (glfwGetKey(m_window, GLFW_KEY_D) == GLFW_PRESS)
+        if (glfwGetKey(Window, GLFW_KEY_D) == GLFW_PRESS)
             moveDirection +=
                 glm::normalize(glm::cross(m_cameraFront, m_cameraUp));
-        if (glfwGetKey(m_window, GLFW_KEY_E) == GLFW_PRESS)
+        if (glfwGetKey(Window, GLFW_KEY_E) == GLFW_PRESS)
             m_cameraSpeed *= 1.05f;
-        if (glfwGetKey(m_window, GLFW_KEY_Q) == GLFW_PRESS)
+        if (glfwGetKey(Window, GLFW_KEY_Q) == GLFW_PRESS)
             m_cameraSpeed /= 1.05f;
 
         // if (moveDirection != glm::vec3(0.0f, 0.0f, 0.0f))
@@ -71,7 +71,7 @@ void Camera3d::Tick(float deltaTime) {
     // process camera rotation
     {
         double cursorPosX, cursorPosY;
-        glfwGetCursorPos(m_window, &cursorPosX, &cursorPosY);
+        glfwGetCursorPos(Window, &cursorPosX, &cursorPosY);
 
         float xOffset = cursorPosX - m_cachedCursorPos.x;
         float yOffset = m_cachedCursorPos.y - cursorPosY;

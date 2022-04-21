@@ -10,9 +10,9 @@ class UEntity;
 
 class USystem {
 public:
-    virtual void Initialize(UEntity* Entity) = 0;
-    virtual void Update(UEntity* Entity) = 0;
-    virtual void Finalize(UEntity* Entity) = 0;
+    virtual void Initialize(UEntity* Entity){};
+    virtual void Update(float DeltaTime, UEntity* Entity){};
+    virtual void Finalize(UEntity* Entity){};
 
     const std::vector<EComponentClass>& GetComponentClasses() const {
         return RequiredComponentClasses;

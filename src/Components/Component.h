@@ -7,6 +7,7 @@ enum class EComponentClass {
     UShaderComponent,
     UTransformComponent,
     UCameraComponent,
+    UMovementComponent,
 };
 
 class UComponent {

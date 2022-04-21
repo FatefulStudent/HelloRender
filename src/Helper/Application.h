@@ -14,7 +14,7 @@ public:
 
     void Tick(float deltaTime);
     bool ShouldCloseWindow() const;
-    GLFWwindow* GetWindow() const { return m_window; }
+    GLFWwindow* GetWindow() const { return Window; }
 
     static float GetWidthPx();
     static float GetHeightPx();
@@ -26,7 +26,7 @@ public:
     static float GetBottomBorder();
 
 private:
-    GLFWwindow* m_window = nullptr;
+    GLFWwindow* Window = nullptr;
     GLFWwindow* CreateWindow() const;
 
     void Finalize();

@@ -13,9 +13,9 @@ class UTransformComponent;
 class UStaticCameraSystem : public USystem {
 public:
     UStaticCameraSystem();
-    virtual void Initialize(UEntity* Entity);
-    virtual void Update(UEntity* Entity);
-    virtual void Finalize(UEntity* Entity);
+    virtual void Initialize(UEntity* Entity) override;
+    virtual void Update(float DeltaTime, UEntity* Entity) override;
+    virtual void Finalize(UEntity* Entity) override;
 
 protected:
     void InitializeCameraComponent(UCameraComponent* CameraComponent,

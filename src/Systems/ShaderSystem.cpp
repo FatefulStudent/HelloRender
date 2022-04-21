@@ -141,7 +141,7 @@ EShaderType UShaderSystem::GetShaderTypeFromPath(
         return MatchingShaderType->second;
 }
 
-void UShaderSystem::Update(UEntity* Entity) {
+void UShaderSystem::Update(float DeltaTime, UEntity* Entity) {
     if (!Entity) {
         assert(false);
         return;
