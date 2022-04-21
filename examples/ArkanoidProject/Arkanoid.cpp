@@ -35,9 +35,9 @@ UEntity* CreateSun(UWorld* World) {
     }
 
     const glm::vec3 Location{-5.0f, 0.0f, 0.0f};
-    const glm::vec3 Rotation{0.0f, 0.0f, 0.0f};
+    const glm::vec3 Rotation{-90.0f, 0.0f, 0.0f};
     const glm::vec3 Scale{1.f, 1.f, 1.f};
-    const std::string ModelPath("res/sun/sun.obj");
+    const std::string ModelPath("res/platform/platform.obj");
     const std::string VertShaderPath("shaders/shaderForSun.vert");
     const std::string FragShaderPath("shaders/shaderForSun.frag");
 
@@ -79,7 +79,7 @@ UEntity* CreatePlayer(UWorld* World) {
         return nullptr;
     }
 
-    const glm::vec3 Location{0.0f, 0.0f, 40.0f};
+    const glm::vec3 Location{0.0f, 0.0f, 1.0f};
     const glm::vec3 Rotation{-90.0f, 0.0f, 0.0f};
     const glm::vec3 Scale{1.f, 1.f, 1.f};
 

@@ -2,6 +2,7 @@
 #include "Components/CameraComponent.h"
 #include "Components/TransformComponent.h"
 #include "Entity/Entity.h"
+#include "Helper/Application.h"
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -70,9 +71,13 @@ void UStaticCameraSystem::InitializeCameraComponent(
     CameraComponent->View =
         glm::lookAt(CameraPosition, CameraTarget, UpVector);
 
-    CameraComponent->Projection = glm::perspective(
+    CameraComponent->Projection =
+        glm::ortho(Application::GetLeftBorder(), Application::GetRightBorder(),
+                   Application::GetBottomBorder(), Application::GetUpBorder());
+
+    /*CameraComponent->Projection = glm::perspective(
         glm::radians(CameraComponent->FOV), CameraComponent->AspectRatio,
-        CameraComponent->MinDistance, CameraComponent->MaxDistance);
+        CameraComponent->MinDistance, CameraComponent->MaxDistance);*/
 }
 
 void UStaticCameraSystem::Update(UEntity* Entity) {

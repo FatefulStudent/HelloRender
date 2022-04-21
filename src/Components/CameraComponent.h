@@ -11,7 +11,6 @@ public:
     virtual ~UCameraComponent() {}
 
     float FOV = 45.0f;
-    float AspectRatio = 1.0f;
     float MinDistance = 0.1f;
     float MaxDistance = 500.f;
     glm::mat4 View{1.0f};

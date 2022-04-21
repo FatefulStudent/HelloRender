@@ -4,6 +4,13 @@
 
 #include <iostream>
 
+
+float Application::WidthPx = 1280.0f;
+float Application::HeightPx = 720.0f;
+
+float Application::TargetHalfHeight = 20.0f;
+
+
 Application::Application() {
     if (!glfwInit()) {
         std::cerr << "Failed to initialize GLFW." << std::endl;
@@ -40,17 +47,16 @@ void Application::Finalize() {
 
 GLFWwindow* Application::CreateWindow() const {
     GLFWwindow* window = nullptr;
-    const int InitialWindowWidth = 1080;
-    const int InitialWindowHeight = 1080;
 
     glfwWindowHint(GLFW_SAMPLES, 4);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+    glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
 
     glfwSetErrorCallback(error_callback);
 
-    window = glfwCreateWindow(InitialWindowWidth, InitialWindowHeight,
+    window = glfwCreateWindow(WidthPx, HeightPx,
                               "Hello Render!", NULL, NULL);
     if (window == NULL) {
         std::cerr << "Failed to init GLFW window." << std::endl;
@@ -68,10 +74,38 @@ bool Application::ShouldCloseWindow() const {
            glfwWindowShouldClose(m_window) == 1;
 }
 
+float Application::GetWidthPx() {
+    return WidthPx;
+}
+
+float Application::GetHeightPx() {
+    return HeightPx;
+}
+
+float Application::GetAspectRatio() {
+    return WidthPx / HeightPx;
+}
+
+float Application::GetLeftBorder() {
+    return -TargetHalfHeight * Application::GetAspectRatio();
+}
+
+float Application::GetRightBorder() {
+    return TargetHalfHeight * Application::GetAspectRatio();    
+}
+
+float Application::GetUpBorder() {
+    return TargetHalfHeight;
+}
+
+float Application::GetBottomBorder() {
+    return -TargetHalfHeight;
+}
+
 void Application::framebuffer_size_callback(GLFWwindow* window,
                                             int width,
                                             int height) {
-    glViewport(0, 0, width, height);
+    //glViewport(0, 0, width, height);
 }
 
 void Application::error_callback(int error, const char* description) {
