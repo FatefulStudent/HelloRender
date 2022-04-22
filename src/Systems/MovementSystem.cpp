@@ -35,27 +35,7 @@ void UMovementSystem::Update(float DeltaTime, UEntity* Entity) {
         return;
     }
 
-    UpdateMovementComponent(MovementComponent, TransformComponent);
     UpdateTransformComponent(DeltaTime, MovementComponent, TransformComponent);
-}
-
-void UMovementSystem::UpdateMovementComponent(
-    UMovementComponent* MovementComponent,
-    const UTransformComponent* TransformComponent) {
-    if (!TransformComponent || !MovementComponent) {
-        assert(false);
-        return;
-    }
-
-    glm::vec3& VelocityDir = MovementComponent->VelocityDir;
-    const glm::vec3& Position = TransformComponent->Position;
-
-    if (Position.x < Application::GetLeftBorder() ||
-        Position.x > Application::GetRightBorder())
-        VelocityDir.x *= -1.0f;
-    else if (Position.y < Application::GetBottomBorder() ||
-             Position.y > Application::GetUpBorder())
-        VelocityDir.y *= -1.0f;
 }
 
 void UMovementSystem::UpdateTransformComponent(
