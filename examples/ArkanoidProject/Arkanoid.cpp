@@ -53,7 +53,7 @@ UEntity* CreatePlatform(UWorld* World) {
     const float Width = 5.0f;
     const float Height = 1.f;
 
-    UEntity* Entity = World->CreateEntity();
+    UEntity* Entity = World->CreateEntity(std::string("Platform"));
 
     Entity->AddComponent<UShaderComponent>(VertShaderPath, 
                                            FragShaderPath);
@@ -85,7 +85,7 @@ UEntity* CreateEarth(UWorld* World) {
     const ECollisionShape CollisionShape = ECollisionShape::Circle;
     const float CircleRadius = 1.0f;
 
-    UEntity* Entity = World->CreateEntity();
+    UEntity* Entity = World->CreateEntity(std::string("EarthBall"));
 
     Entity->AddComponent<UShaderComponent>(VertShaderPath, FragShaderPath);
     Entity->AddComponent<UModelComponent>(ModelPath);
@@ -107,7 +107,7 @@ UEntity* CreatePlayer(UWorld* World) {
     const glm::vec3 Rotation{-90.0f, 0.0f, 0.0f};
     const glm::vec3 Scale{1.f, 1.f, 1.f};
 
-    UEntity* Entity = World->CreateEntity();
+    UEntity* Entity = World->CreateEntity(std::string("Player"));
 
     Entity->AddComponent<UTransformComponent>(Location, Rotation, Scale);
     Entity->AddComponent<UCameraComponent>();

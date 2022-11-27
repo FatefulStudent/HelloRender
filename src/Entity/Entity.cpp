@@ -3,16 +3,18 @@
 #include "World/World.h"
 
 #include <iostream>
+#include <utility>
 
-UEntity::UEntity() {
-    static long GlobalID = 0;
-    ID = GlobalID++;
+static long GlobalID = 0;
 
-    std::cout << "Entity #" << ID << " created!" << std::endl;
+UEntity::UEntity(const std::string& InEntityName)
+    : ID(GlobalID++),
+      Name(InEntityName + std::string("_") + std::to_string(ID)) {
+    std::cout << "Entity `" << Name << "` created!" << std::endl;
 }
 
 UEntity::~UEntity() {
-    std::cout << "Entity #" << ID << " destroyed!" << std::endl;
+    std::cout << "Entity `" << Name << "` destroyed!" << std::endl;
 }
 
 UComponent* UEntity::GetComponentOfClass(
@@ -32,9 +34,7 @@ void UEntity::Destroy() {
 
 void UEntity::DestroyImpl() {
     for (UComponent* Component : Components) {
-        if (Component) {
-            delete Component;
-        }
+        delete Component;
     }
 
     Components.clear();

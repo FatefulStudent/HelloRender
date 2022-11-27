@@ -7,12 +7,11 @@
 
 #include <string>
 
-
 class UShaderComponent : public UComponent {
 public:
-    UShaderComponent(const std::string& InVertexShaderPath,
-                     const std::string& InFragmentShaderPath);
-    virtual ~UShaderComponent(){};
+    UShaderComponent(std::string InVertexShaderPath,
+                     std::string InFragmentShaderPath);
+    virtual ~UShaderComponent() = default;
 
     std::string VertexShaderPath{};
     std::string FragmentShaderPath{};

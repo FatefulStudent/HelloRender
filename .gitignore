@@ -3,6 +3,7 @@
 !.clang-format
 
 build/*
+cmake-build-debug
 out/build/*
 
 *.zip

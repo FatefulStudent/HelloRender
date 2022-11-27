@@ -3,6 +3,7 @@
 
 #include "Components/Component.h"
 
+#include <string>
 #include <unordered_map>
 #include <vector>
 
@@ -10,7 +11,7 @@ class UComponent;
 
 class UEntity {
 public:
-    UEntity();
+    explicit UEntity(const std::string& InEntityName);
     ~UEntity();
 
     template <typename T, typename... Args>
@@ -23,6 +24,9 @@ public:
 
     void Destroy();
 
+    const int ID;
+    const std::string Name;
+
 private:
     void DestroyImpl();
     friend class UWorld;
@@ -31,7 +35,6 @@ private:
 
     // TODO: smartpointers
     std::vector<UComponent*> Components;
-    int ID;
 };
 
 template <typename T, typename... Args>

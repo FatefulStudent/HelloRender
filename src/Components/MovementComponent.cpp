@@ -2,8 +2,11 @@
 
 #include "glm/glm.hpp"
 
-UMovementComponent::UMovementComponent(const glm::vec3& InVelocityDir, float InSpeed)
-    : VelocityDir(glm::normalize(InVelocityDir)), Speed(InSpeed) {
+UMovementComponent::UMovementComponent(const glm::vec3& InVelocityDir,
+                                       float InSpeed)
+    : UComponent(std::string("MovementComponent")),
+      VelocityDir(glm::normalize(InVelocityDir)),
+      Speed(InSpeed) {
     ComponentClass = EComponentClass::UMovementComponent;
 }
 

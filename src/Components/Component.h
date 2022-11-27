@@ -1,6 +1,7 @@
 #ifndef COMPONENT_H
 #define COMPONENT_H
 
+#include <string>
 enum class EComponentClass {
     Base,
     UModelComponent,
@@ -12,18 +13,17 @@ enum class EComponentClass {
 };
 
 class UComponent {
-
 public:
-    UComponent();
+    explicit UComponent(const std::string& InComponentName);
     virtual ~UComponent();
 
     EComponentClass GetComponentClass() const { return ComponentClass; }
 
+    const long ID;
+    const std::string Name;
+
 protected:
     EComponentClass ComponentClass = EComponentClass::Base;
-
-private:
-    long ID;
 };
 
 #endif

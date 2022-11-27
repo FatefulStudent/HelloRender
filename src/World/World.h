@@ -26,16 +26,16 @@ public:
     template<typename T>
     T* CreateSystem();
 
-    void Initialize();
-    void InitializeSystem(USystem* System);
+    void Initialize() const;
+    void InitializeSystem(USystem* System) const;
 
-    void Update(float DeltaTime);
-    void UpdateSystem(float DeltaTime, USystem* System);
+    void Update(float DeltaTime) const;
+    void UpdateSystem(float DeltaTime, USystem* System) const;
 
-    void Finalize();
-    void FinalizeSystem(USystem* System);
+    void Finalize() const;
+    void FinalizeSystem(USystem* System) const;
 
-    UEntity* CreateEntity();
+    UEntity* CreateEntity(const std::string& InEntityName);
 
     void DestroyEntity(UEntity* Entity);
 

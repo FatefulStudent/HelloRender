@@ -11,14 +11,14 @@ enum class ECollisionShape {
     Rectangle,
 };
 
-
 class USimpleCollisionComponent : public UComponent {
 public:
-    USimpleCollisionComponent(ECollisionShape InCollisionShape, float InCircleRadius);
+    USimpleCollisionComponent(ECollisionShape InCollisionShape,
+                              float InCircleRadius);
     USimpleCollisionComponent(ECollisionShape InCollisionShape,
                               float InWidth,
                               float InHeight);
-    virtual ~USimpleCollisionComponent() {}
+    virtual ~USimpleCollisionComponent() = default;
 
     float GetLeftBorderRelativeOffset() const;
     float GetRightBorderRelativeOffset() const;

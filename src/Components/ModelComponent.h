@@ -9,7 +9,7 @@
 
 class UModelComponent : public UComponent {
 public:
-    UModelComponent(const std::string& InPath);
+    explicit UModelComponent(std::string InPath);
     virtual ~UModelComponent() = default;
 
     std::string Path{};

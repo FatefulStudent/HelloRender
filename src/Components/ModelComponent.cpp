@@ -1,6 +1,8 @@
 #include "ModelComponent.h"
 
-UModelComponent::UModelComponent(const std::string& InPath) 
-	: Path(InPath) {
+#include <utility>
+
+UModelComponent::UModelComponent(std::string InPath)
+    : UComponent(std::string("ModelComponent")), Path(std::move(InPath)) {
     ComponentClass = EComponentClass::UModelComponent;
 }

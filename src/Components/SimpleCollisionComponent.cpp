@@ -3,7 +3,9 @@
 USimpleCollisionComponent::USimpleCollisionComponent(
     ECollisionShape InCollisionShape,
     float InCircleRadius)
-    : CollisionShape(InCollisionShape), CircleRadius(InCircleRadius) {
+    : UComponent(std::string("SimpleCollisionComponent")),
+      CollisionShape(InCollisionShape),
+      CircleRadius(InCircleRadius) {
     assert(CollisionShape == ECollisionShape::Circle);
     ComponentClass = EComponentClass::USimpleCollisionComponent;
 }
@@ -12,7 +14,10 @@ USimpleCollisionComponent::USimpleCollisionComponent(
     ECollisionShape InCollisionShape,
     float InWidth,
     float InHeight)
-    : CollisionShape(InCollisionShape), Width(InWidth), Height(InHeight) {
+    : UComponent(std::string("SimpleCollisionComponent")),
+      CollisionShape(InCollisionShape),
+      Width(InWidth),
+      Height(InHeight) {
     assert(CollisionShape == ECollisionShape::Rectangle);
     ComponentClass = EComponentClass::USimpleCollisionComponent;
 }

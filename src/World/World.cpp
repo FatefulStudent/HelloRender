@@ -2,6 +2,8 @@
 #include "Entity/Entity.h"
 #include "Systems/System.h"
 
+#include <algorithm>
+
 UWorld* UWorld::World = nullptr;
 UEntity* UWorld::LocalPlayer = nullptr;
 
@@ -33,7 +35,7 @@ std::vector<UEntity*> UWorld::GetAllEntitiesWithComponents(
                 ClassesToComponents = Entity->ComponentClassToComponent;
 
             bool bHasAllClasses = true;
-            for each (EComponentClass ComponentClass in RequiredClasses) {
+            for (EComponentClass ComponentClass : RequiredClasses) {
                 const bool bContains =
                     ClassesToComponents.find(ComponentClass) !=
                     ClassesToComponents.end();
@@ -51,61 +53,61 @@ std::vector<UEntity*> UWorld::GetAllEntitiesWithComponents(
     return Result;
 }
 
-void UWorld::Initialize() {
+void UWorld::Initialize() const {
     for (USystem* System : Systems) {
         InitializeSystem(System);
     }
 }
 
-void UWorld::InitializeSystem(USystem* System) {
+void UWorld::InitializeSystem(USystem* System) const {
     if (!System)
         return;
     const std::vector<UEntity*> ValidEntities =
         GetAllEntitiesWithComponents(System->GetComponentClasses());
 
-    for each (UEntity* Entity in ValidEntities) {
+    for (UEntity* Entity : ValidEntities) {
         System->Initialize(Entity);
     }
 }
 
-void UWorld::Update(float DeltaTime) {
+void UWorld::Update(float DeltaTime) const{
     for (USystem* System : Systems) {
         UpdateSystem(DeltaTime, System);
     }
 }
 
-void UWorld::UpdateSystem(float DeltaTime, USystem* System) {
+void UWorld::UpdateSystem(float DeltaTime, USystem* System) const {
     if (!System)
         return;
 
     const std::vector<UEntity*> ValidEntities =
         GetAllEntitiesWithComponents(System->GetComponentClasses());
 
-    for each (UEntity* Entity in ValidEntities) {
+    for (UEntity* Entity : ValidEntities) {
         System->Update(DeltaTime, Entity);
     }
 }
 
-void UWorld::Finalize() {
+void UWorld::Finalize() const {
     for (USystem* System : Systems) {
         FinalizeSystem(System);
     }
 }
 
-void UWorld::FinalizeSystem(USystem* System) {
+void UWorld::FinalizeSystem(USystem* System) const {
     if (!System)
         return;
     const std::vector<UEntity*> ValidEntities =
         GetAllEntitiesWithComponents(System->GetComponentClasses());
 
-    for each (UEntity* Entity in ValidEntities) {
+    for (UEntity* Entity : ValidEntities) {
         System->Finalize(Entity);
     }
 }
 
 
-UEntity* UWorld::CreateEntity() {
-    UEntity* NewEntity = new UEntity();
+UEntity* UWorld::CreateEntity(const std::string& InEntityName) {
+    auto* NewEntity = new UEntity(InEntityName);
     Entities.push_back(NewEntity);
     return NewEntity;
 }
@@ -132,9 +134,7 @@ void UWorld::Destroy() {
     Entities.clear();
 
     for (USystem* System : Systems) {
-        if (System) {
-            delete System;
-        }
+        delete System;
     }
     Systems.clear();
 }

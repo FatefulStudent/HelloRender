@@ -8,7 +8,7 @@
 class UCameraComponent : public UComponent {
 public:
     UCameraComponent();
-    virtual ~UCameraComponent() {}
+    virtual ~UCameraComponent() = default;
 
     float FOV = 45.0f;
     float MinDistance = 0.1f;

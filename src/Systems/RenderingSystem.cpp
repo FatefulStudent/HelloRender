@@ -240,7 +240,7 @@ unsigned int URenderingSystem::TextureFromFile(const std::string& Path,
     unsigned char* Data =
         stbi_load(Filename.c_str(), &Width, &Height, &NumberOfComponents, 0);
     if (Data) {
-        GLenum Format = NULL;
+        GLenum Format = 0;
         if (NumberOfComponents == 1)
             Format = GL_RED;
         else if (NumberOfComponents == 3)

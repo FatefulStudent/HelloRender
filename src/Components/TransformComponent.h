@@ -3,15 +3,15 @@
 
 #include "Component.h"
 
-#include <glm/vec3.hpp>
 #include <glm/matrix.hpp>
+#include <glm/vec3.hpp>
 
 class UTransformComponent : public UComponent {
 public:
     UTransformComponent(const glm::vec3& InPosition,
                         const glm::vec3& InRotation,
                         const glm::vec3& InScale);
-    virtual ~UTransformComponent(){}
+    virtual ~UTransformComponent() = default;
 
     glm::vec3 Position{};
     // Pitch, Yaw, Roll

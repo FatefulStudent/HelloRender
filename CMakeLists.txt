@@ -102,6 +102,8 @@ add_executable(${PROJECT_NAME}
 )
 target_link_libraries(${PROJECT_NAME} ${OPENGL_LIBRARIES} assimp glew glfw)
 
+add_compile_definitions(__cpp_lib_format=201907L)
+
 if( MSVC )
     set_property( DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT ${PROJECT_NAME} )
 endif()
