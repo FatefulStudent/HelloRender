@@ -12,7 +12,7 @@ std::string FileHelper::ReadFile(const std::string& Path) {
         Input.open(Path);
         StringStream << Input.rdbuf();
         Input.close();
-    } catch (std::ifstream::failure e) {
+    } catch (std::ifstream::failure& e) {
         std::cerr << "ERROR::FileHelper::FILE_NOT_SUCCESFULLY_READ: \"" << Path
                   << "\":" << e.what() << std::endl;
         throw -1;

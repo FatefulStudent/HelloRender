@@ -112,7 +112,7 @@ UEntity* CreatePlayer(UWorld* World) {
     Entity->AddComponent<UTransformComponent>(Location, Rotation, Scale);
     Entity->AddComponent<UCameraComponent>();
 
-    World->LocalPlayer = Entity;
+    UWorld::LocalPlayer = Entity;
     return Entity;
 }
 
@@ -147,5 +147,5 @@ void Arkanoid::Finalize() {
     auto World = UWorld::GetWorld();
     World->Finalize();
 
-    World->DestroyWorld();
+    UWorld::DestroyWorld();
 }
