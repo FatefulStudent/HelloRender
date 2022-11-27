@@ -42,8 +42,8 @@ UEntity* CreatePlatform(UWorld* World) {
     const glm::vec3 Rotation{-90.0f, 0.0f, 0.0f};
     const glm::vec3 Scale{1.f, 1.f, 1.f};
     const std::string ModelPath("res/platform/platform.obj");
-    const std::string VertShaderPath("shaders/shaderForSun.vert");
-    const std::string FragShaderPath("shaders/shaderForSun.frag");
+    const std::string VertShaderPath("shaders/simpleShader.vert");
+    const std::string FragShaderPath("shaders/simpleShader.frag");
 
     
     const glm::vec3 VelocityDir{-1.0f, 2.0f, 0.0f};
@@ -79,8 +79,8 @@ UEntity* CreateEarth(UWorld* World) {
     const glm::vec3 VelocityDir{1.0f, 2.0f, 0.0f};
     const float Speed = 20.0f;
     const std::string ModelPath("res/earth/earth.obj");
-    const std::string VertShaderPath("shaders/shaderForSun.vert");
-    const std::string FragShaderPath("shaders/shaderForSun.frag");
+    const std::string VertShaderPath("shaders/simpleShader.vert");
+    const std::string FragShaderPath("shaders/simpleShader.frag");
 
     const ECollisionShape CollisionShape = ECollisionShape::Circle;
     const float CircleRadius = 1.0f;
