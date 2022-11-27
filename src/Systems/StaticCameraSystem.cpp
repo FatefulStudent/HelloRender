@@ -54,12 +54,12 @@ void UStaticCameraSystem::InitializeCameraComponent(
         return;
     }
 
-    const glm::vec3& CameraRotation = TransformComponent->Rotation;
+    const glm::vec3& CameraRotation = TransformComponent->GetRotation();
     const float Yaw = CameraRotation.x;
     const float Pitch = CameraRotation.y;
     // NB: we ignore Roll for camera
 
-    const glm::vec3& CameraPosition = TransformComponent->Position;
+    const glm::vec3& CameraPosition = TransformComponent->GetLocation();
 
     glm::vec3 Direction{};
     Direction.x = cos(glm::radians(Yaw)) * cos(glm::radians(Pitch));

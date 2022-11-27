@@ -12,6 +12,7 @@ int main(void) {
     while (!application.ShouldCloseWindow()) {
         float currentFrame = glfwGetTime();
         deltaTime = currentFrame - lastFrame;
+        std::cout << 1.0f / deltaTime << std::endl;
         lastFrame = currentFrame;
 
         test->ProcessInput(deltaTime);

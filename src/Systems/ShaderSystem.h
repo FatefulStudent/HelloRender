@@ -26,7 +26,7 @@ private:
 
     static void UpdateShaderComponent(
         UShaderComponent* ShaderComponent,
-        const UTransformComponent* TransformComponent);
+        UTransformComponent* TransformComponent);
     static void FinalizeShaderComponent(UShaderComponent* ShaderComponent);
 };
 

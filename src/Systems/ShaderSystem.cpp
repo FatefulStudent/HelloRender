@@ -166,7 +166,7 @@ void UShaderSystem::Update(float DeltaTime, UEntity* Entity) {
 
 void UShaderSystem::UpdateShaderComponent(
     UShaderComponent* ShaderComponent,
-    const UTransformComponent* TransformComponent) {
+    UTransformComponent* TransformComponent) {
     if (!ShaderComponent) {
         assert(false);
         return;
@@ -181,7 +181,7 @@ void UShaderSystem::UpdateShaderComponent(
     glUseProgram(ShaderComponent->ShaderProgramID);
 
     ShaderHelper::SetMatrix(ShaderComponent->ShaderProgramID, "Model",
-                            TransformComponent->ConstructTransformMatrix());
+                            TransformComponent->GetTransformMatrix());
 
     UWorld* World = UWorld::GetWorld();
     UEntity* PlayerEntity = World->LocalPlayer;

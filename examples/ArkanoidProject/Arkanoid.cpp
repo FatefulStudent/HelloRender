@@ -41,6 +41,7 @@ UEntity* CreatePlatform(UWorld* World) {
     const glm::vec3 Location{-5.0f, 0.0f, 0.0f};
     const glm::vec3 Rotation{-90.0f, 0.0f, 0.0f};
     const glm::vec3 Scale{1.f, 1.f, 1.f};
+    const FTransform Transform {Location, Rotation, Scale};
     const std::string ModelPath("res/platform/platform.obj");
     const std::string VertShaderPath("shaders/simpleShader.vert");
     const std::string FragShaderPath("shaders/simpleShader.frag");
@@ -58,7 +59,7 @@ UEntity* CreatePlatform(UWorld* World) {
     Entity->AddComponent<UShaderComponent>(VertShaderPath, 
                                            FragShaderPath);
     Entity->AddComponent<UModelComponent>(ModelPath);
-    Entity->AddComponent<UTransformComponent>(Location, Rotation, Scale);
+    Entity->AddComponent<UTransformComponent>(Transform);
     Entity->AddComponent<UMovementComponent>(VelocityDir, Speed);
     Entity->AddComponent<USimpleCollisionComponent>(CollisionShape, Width,
                                                     Height);
@@ -75,6 +76,7 @@ UEntity* CreateEarth(UWorld* World) {
     const glm::vec3 Location{10.0f, 0.0f, 0.0f};
     const glm::vec3 Rotation{0.0f, 180.0f, 0.0f};
     const glm::vec3 Scale{1.f, 1.f, 1.f};
+    const FTransform Transform {Location, Rotation, Scale};
 
     const glm::vec3 VelocityDir{1.0f, 2.0f, 0.0f};
     const float Speed = 20.0f;
@@ -89,7 +91,7 @@ UEntity* CreateEarth(UWorld* World) {
 
     Entity->AddComponent<UShaderComponent>(VertShaderPath, FragShaderPath);
     Entity->AddComponent<UModelComponent>(ModelPath);
-    Entity->AddComponent<UTransformComponent>(Location, Rotation, Scale);
+    Entity->AddComponent<UTransformComponent>(Transform);
     Entity->AddComponent<UMovementComponent>(VelocityDir, Speed);
     Entity->AddComponent<USimpleCollisionComponent>(CollisionShape,
                                                     CircleRadius);
@@ -106,10 +108,11 @@ UEntity* CreatePlayer(UWorld* World) {
     const glm::vec3 Location{0.0f, 0.0f, 1.0f};
     const glm::vec3 Rotation{-90.0f, 0.0f, 0.0f};
     const glm::vec3 Scale{1.f, 1.f, 1.f};
+    const FTransform Transform {Location, Rotation, Scale};
 
     UEntity* Entity = World->CreateEntity(std::string("Player"));
 
-    Entity->AddComponent<UTransformComponent>(Location, Rotation, Scale);
+    Entity->AddComponent<UTransformComponent>(Transform);
     Entity->AddComponent<UCameraComponent>();
 
     UWorld::LocalPlayer = Entity;

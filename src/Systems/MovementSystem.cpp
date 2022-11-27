@@ -47,6 +47,13 @@ void UMovementSystem::UpdateTransformComponent(
         return;
     }
 
-    TransformComponent->Position +=
+    const glm::vec3 LocationDelta =
         MovementComponent->GetVelocityScaled() * DeltaTime;
+
+    if (glm::dot(LocationDelta, LocationDelta) < 0.000001)
+        return;
+
+    const glm::vec3 PreviousPosition = TransformComponent->GetLocation();
+
+    TransformComponent->SetPosition(PreviousPosition + LocationDelta);
 }

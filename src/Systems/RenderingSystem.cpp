@@ -149,7 +149,7 @@ void URenderingSystem::ConvertAssimpMesh(aiMesh* AssimpMesh,
         const auto CurrentAiVertex = AssimpMesh->mVertices[i];
         FVertex Vertex = {};
         // process vertex positions, normals and texture coordinates
-        Vertex.Position = {AssimpMesh->mVertices[i].x,
+        Vertex.Location = {AssimpMesh->mVertices[i].x,
                            AssimpMesh->mVertices[i].y,
                            AssimpMesh->mVertices[i].z};
         if (AssimpMesh->HasNormals())

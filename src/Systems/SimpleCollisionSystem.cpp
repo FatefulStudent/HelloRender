@@ -60,16 +60,16 @@ void USimpleCollisionSystem::CheckBorders(
     }
 
     glm::vec3& VelocityDir = MovementComponent->VelocityDir;
-    const glm::vec3& Position = TransformComponent->Position;
+    const glm::vec3& Location = TransformComponent->GetLocation();
 
     const float LeftSideOfCollision =
-        Position.x + CollisionComponent->GetLeftBorderRelativeOffset();
+        Location.x + CollisionComponent->GetLeftBorderRelativeOffset();
     const float RightSideOfCollision =
-        Position.x + CollisionComponent->GetRightBorderRelativeOffset();
+        Location.x + CollisionComponent->GetRightBorderRelativeOffset();
     const float UpSideOfCollision =
-        Position.y + CollisionComponent->GetUpBorderRelativeOffset();
+        Location.y + CollisionComponent->GetUpBorderRelativeOffset();
     const float BottomSideOfCollision =
-        Position.y + CollisionComponent->GetBottomBorderRelativeOffset();
+        Location.y + CollisionComponent->GetBottomBorderRelativeOffset();
 
     if (LeftSideOfCollision < Application::GetLeftBorder() ||
         RightSideOfCollision > Application::GetRightBorder())

@@ -7,11 +7,8 @@
 #include <vector>
 
 struct FVertex {
-    // position
-    glm::vec3 Position;
-    // normal
+    glm::vec3 Location;
     glm::vec3 Normal;
-    // texCoords
     glm::vec2 TexCoords;
 };
 

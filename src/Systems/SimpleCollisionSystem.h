@@ -17,7 +17,7 @@ public:
     virtual void Update(float DeltaTime, UEntity* Entity) override;
 
 protected:
-    void CheckBorders(const USimpleCollisionComponent* CollisionComponent,
+    static void CheckBorders(const USimpleCollisionComponent* CollisionComponent,
                       UMovementComponent* MovementComponent,
                       const UTransformComponent* TransformComponent);
 };

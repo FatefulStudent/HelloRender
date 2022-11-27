@@ -16,7 +16,7 @@ public:
     virtual void Update(float DeltaTime, UEntity* Entity) override;
 
 protected: 
-    void UpdateTransformComponent(
+    static void UpdateTransformComponent(
         float DeltaTime,
         const UMovementComponent* MovementComponent,
         UTransformComponent* TransformComponent);
