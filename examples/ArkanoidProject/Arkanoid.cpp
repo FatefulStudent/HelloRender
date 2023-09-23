@@ -139,7 +139,7 @@ void Arkanoid::Initialize(GLFWwindow* window) {
     World->Initialize();
 }
 
-void Arkanoid::Tick(float DeltaTime) {
+void Arkanoid::Tick(double DeltaTime) {
     BaseExcercise::Tick(DeltaTime);
 
     auto World = UWorld::GetWorld();

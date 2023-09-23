@@ -6,13 +6,13 @@ int main(void) {
     std::shared_ptr<BaseExcercise> test = make();
     test->Initialize(application.GetWindow());
 
-    float deltaTime = 0.0f;  // Time between current frame and last frame
-    float lastFrame = 0.0f;  // Time of last frame
+    double deltaTime = 0.0f;  // Time between current frame and last frame
+    double lastFrame = 0.0f;  // Time of last frame
 
     while (!application.ShouldCloseWindow()) {
-        float currentFrame = glfwGetTime();
+        const double currentFrame = glfwGetTime();
         deltaTime = currentFrame - lastFrame;
-        std::cout << 1.0f / deltaTime << std::endl;
+        std::cout << "fps:" << 1.0f / deltaTime << std::endl;
         lastFrame = currentFrame;
 
         test->ProcessInput(deltaTime);

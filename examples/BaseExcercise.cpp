@@ -9,11 +9,11 @@ void BaseExcercise::Initialize(GLFWwindow* InWindow) {
     glEnable(GL_DEPTH_TEST);
 }
 
-void BaseExcercise::PreTick(float DeltaTime) {
+void BaseExcercise::PreTick(double DeltaTime) {
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-void BaseExcercise::PostTick(float DeltaTime) {
+void BaseExcercise::PostTick(double DeltaTime) {
     glBindVertexArray(0);
 }

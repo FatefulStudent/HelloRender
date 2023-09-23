@@ -12,7 +12,7 @@ public:
     Application();
     ~Application();
 
-    void Tick(float deltaTime);
+    void Tick(double deltaTime);
     bool ShouldCloseWindow() const;
     GLFWwindow* GetWindow() const { return Window; }
 

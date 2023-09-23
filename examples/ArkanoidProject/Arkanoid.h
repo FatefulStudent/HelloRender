@@ -14,7 +14,7 @@ public:
     virtual ~Arkanoid(){};
 
     virtual void Initialize(GLFWwindow* window) override;
-    virtual void Tick(float deltaTime) override;
+    virtual void Tick(double deltaTime) override;
     virtual void Finalize() override;
 };
 
