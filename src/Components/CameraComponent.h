@@ -5,16 +5,16 @@
 
 #include <glm/matrix.hpp>
 
-class UCameraComponent : public UComponent {
+class CameraComponent : public Component {
 public:
-    UCameraComponent();
-    virtual ~UCameraComponent() = default;
+    CameraComponent();
+    virtual ~CameraComponent() = default;
 
-    float FOV = 45.0f;
-    float MinDistance = 0.1f;
-    float MaxDistance = 500.f;
-    glm::mat4 View{1.0f};
-    glm::mat4 Projection{1.0f};
+    float fov = 45.0f;
+    float minDistance = 0.1f;
+    float maxDistance = 500.f;
+    glm::mat4 view{1.0f};
+    glm::mat4 projection{1.0f};
 };
 
 #endif

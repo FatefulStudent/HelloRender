@@ -8,28 +8,28 @@
 
 #include <string>
 
-class UEntity;
-class UComponent;
-class UModelComponent;
+class Entity;
+class Component;
+class ModelComponent;
 class UShaderComponent;
 class aiNode;
 class aiScene;
 class aiMesh;
 
-class URenderingSystem : public USystem {
+class RenderingSystem : public System {
 public:
-    URenderingSystem();
-    virtual void Initialize(UEntity* Entity) override;
+    RenderingSystem();
+    virtual void Initialize(Entity* Entity) override;
 
-    virtual void Update(float DeltaTime, UEntity* Entity) override;
-    virtual void Finalize(UEntity* Entity) override;
+    virtual void Update(double DeltaTime, Entity* Entity) override;
+    virtual void Finalize(Entity* Entity) override;
 
 private:
     static std::vector<FTexture> CachedTextures;
 
-    void InitializeModelComponent(UModelComponent* ModelComponent);
-    void LoadModel(UModelComponent* ModelComponent);
-    static void ProcessNode(UModelComponent* ModelComponent,
+    void InitializeModelComponent(ModelComponent* ModelComponent);
+    void LoadModel(ModelComponent* ModelComponent);
+    static void ProcessNode(ModelComponent* ModelComponent,
                             aiNode* Mode,
                             const aiScene* Scene);
     static void SetupMesh(FMesh& Mesh);
@@ -46,10 +46,10 @@ private:
     static unsigned int TextureFromFile(const std::string& Path,
                                         const std::string& Directory);
 
-    static void UpdateModelComponent(UModelComponent* ModelComponent,
-                                     UShaderComponent* ShaderComponent);
+    static void UpdateModelComponent(ModelComponent* modelComponent,
+                                     UShaderComponent* shaderComponent);
    
-    static void FinalizeModelComponent(UModelComponent* ModelComponent);
+    static void FinalizeModelComponent(ModelComponent* ModelComponent);
 };
 
 #endif

@@ -4,24 +4,22 @@
 #include "Helper/MeshData.h"
 #include "System.h"
 
-#include <string>
+class Entity;
+class CameraComponent;
+class TransformComponent;
 
-class UEntity;
-class UCameraComponent;
-class UTransformComponent;
-
-class UStaticCameraSystem : public USystem {
+class StaticCameraSystem : public System {
 public:
-    UStaticCameraSystem();
-    virtual void Initialize(UEntity* Entity) override;
-    virtual void Update(float DeltaTime, UEntity* Entity) override;
-    virtual void Finalize(UEntity* Entity) override;
+    StaticCameraSystem();
+    virtual void Initialize(Entity* entity) override;
+    virtual void Update(double deltaTime, Entity* entity) override;
+    virtual void Finalize(Entity* entity) override;
 
 protected:
-    void InitializeCameraComponent(UCameraComponent* CameraComponent,
-                                   UTransformComponent* TransformComponent);
-    void UpdateCameraComponent(UCameraComponent* CameraComponent);
-    void FinalizeCameraComponent(UCameraComponent* CameraComponent);
+    void InitializeCameraComponent(CameraComponent* cameraComponent,
+                                   TransformComponent* transformComponent);
+    void UpdateCameraComponent(CameraComponent* cameraComponent);
+    void FinalizeCameraComponent(CameraComponent* cameraComponent);
 };
 
 #endif

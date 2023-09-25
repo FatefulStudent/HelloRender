@@ -6,57 +6,57 @@
 #include <vector>
 
 
-class UEntity;
-class USystem;
+class Entity;
+class System;
 
-class UWorld 
+class World 
 {
 public:
-    static UWorld* CreateWorld();
+    static World* CreateWorld();
     static void DestroyWorld();
 
-    static UWorld* GetWorld();
-    static UWorld* World;
+    static World* GetWorld();
+    static World* world;
 
-    static UEntity* LocalPlayer;
+    static Entity* localPlayer;
 
-    std::vector<UEntity*> GetAllEntitiesWithComponents(
-        const std::vector<EComponentClass>& RequiredComponentClasses) const;
+    std::vector<Entity*> GetAllEntitiesWithComponents(
+        const std::vector<EComponentClass>& requiredComponentClasses) const;
 
     template<typename T>
     T* CreateSystem();
 
     void Initialize() const;
-    void InitializeSystem(USystem* System) const;
+    void InitializeSystem(System* System) const;
 
-    void Update(float DeltaTime) const;
-    void UpdateSystem(float DeltaTime, USystem* System) const;
+    void Update(double deltaTime) const;
+    void UpdateSystem(double deltaTime, System* system) const;
 
     void Finalize() const;
-    void FinalizeSystem(USystem* System) const;
+    void FinalizeSystem(System* system) const;
 
-    UEntity* CreateEntity(const std::string& InEntityName);
+    Entity* CreateEntity(const std::string& inEntityName);
 
-    void DestroyEntity(UEntity* Entity);
+    void DestroyEntity(Entity* entity);
 
 private:
     void Destroy();
-    void DestroyEntityImpl(UEntity* Entity);
+    void DestroyEntityImpl(Entity* entity);
 
     // TODO: move from raw pointers to new pointers
-    std::vector<UEntity*> Entities;
+    std::vector<Entity*> entities;
 
     // TODO: move from raw pointers to new pointers
-    std::vector<USystem*> Systems;
+    std::vector<System*> systems;
 };
 
 
 template <typename T>
-inline T* UWorld::CreateSystem() {
-    auto NewObject = new T();
-    auto NewObjectAsSystem = static_cast<USystem*>(NewObject);
-    Systems.push_back(NewObjectAsSystem);
-    return NewObject;
+inline T* World::CreateSystem() {
+    auto newObject = new T();
+    auto newObjectAsSystem = static_cast<System*>(newObject);
+    systems.push_back(newObjectAsSystem);
+    return newObject;
 }
 
 #endif

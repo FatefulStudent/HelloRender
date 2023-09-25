@@ -4,12 +4,12 @@
 
 static long GlobalID = 0;
 
-UComponent::UComponent(const std::string& InComponentName)
-    : ID(GlobalID++),
-      Name(InComponentName + std::string("_") + std::to_string(ID)) {
-    std::cout << "Component `" << Name << "` created!" << std::endl;
+Component::Component(const std::string& InComponentName)
+    : id(GlobalID++),
+      name(InComponentName + std::string("_") + std::to_string(id)) {
+    std::cout << "Component `" << name << "` created!" << std::endl;
 }
 
-UComponent::~UComponent() {
-    std::cout << "Component `" << Name << "` destroyed!" << std::endl;
+Component::~Component() {
+    std::cout << "Component `" << name << "` destroyed!" << std::endl;
 }

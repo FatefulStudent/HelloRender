@@ -10,71 +10,71 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <iostream>
 
-USimpleCollisionSystem::USimpleCollisionSystem() {
-    RequiredComponentClasses.push_back(
-        EComponentClass::USimpleCollisionComponent);
-    RequiredComponentClasses.push_back(EComponentClass::UMovementComponent);
+SimpleCollisionSystem::SimpleCollisionSystem() {
+    requiredComponentClasses.push_back(
+        EComponentClass::simpleCollisionComponent);
+    requiredComponentClasses.push_back(EComponentClass::movementComponent);
 }
 
-void USimpleCollisionSystem::Update(float DeltaTime, UEntity* Entity) {
+void SimpleCollisionSystem::Update(double DeltaTime, Entity* Entity) {
     if (!Entity) {
         assert(false);
         return;
     }
 
-    USimpleCollisionComponent* SimpleCollisionComponent =
-        Entity->GetComponentOfClass<USimpleCollisionComponent>();
+    SimpleCollisionComponent* simpleCollisionComponent =
+        Entity->GetComponentOfClass<SimpleCollisionComponent>();
 
-    if (!SimpleCollisionComponent) {
+    if (!simpleCollisionComponent) {
         assert(false);
         return;
     }
 
-    UMovementComponent* MovementComponent =
-        Entity->GetComponentOfClass<UMovementComponent>();
+    MovementComponent* movementComponent =
+        Entity->GetComponentOfClass<MovementComponent>();
 
-    if (!MovementComponent) {
+    if (!movementComponent) {
         assert(false);
         return;
     }
 
-    UTransformComponent* TransformComponent =
-        Entity->GetComponentOfClass<UTransformComponent>();
+    TransformComponent* transformComponent =
+        Entity->GetComponentOfClass<TransformComponent>();
 
-    if (!TransformComponent) {
+    if (!transformComponent) {
         assert(false);
         return;
     }
 
-    CheckBorders(SimpleCollisionComponent, MovementComponent,
-                 TransformComponent);
+    CheckBorders(simpleCollisionComponent, movementComponent,
+                 transformComponent);
 }
 
-void USimpleCollisionSystem::CheckBorders(
-    const USimpleCollisionComponent* CollisionComponent,
-    UMovementComponent* MovementComponent,
-    const UTransformComponent* TransformComponent) {
-    if (!CollisionComponent || !MovementComponent) {
+void SimpleCollisionSystem::CheckBorders(
+    const SimpleCollisionComponent* collisionComponent,
+    MovementComponent* movementComponent,
+    const TransformComponent* transformComponent) {
+    if (!collisionComponent || !movementComponent) {
         assert(false);
         return;
     }
 
-    glm::vec3& VelocityDir = MovementComponent->VelocityDir;
-    const glm::vec3& Location = TransformComponent->GetLocation();
+    glm::vec3& velocityDir = movementComponent->velocityDir;
+    const glm::vec3& location = transformComponent->GetLocation();
 
-    const float LeftSideOfCollision =
-        Location.x + CollisionComponent->GetLeftBorderRelativeOffset();
-    const float RightSideOfCollision =
-        Location.x + CollisionComponent->GetRightBorderRelativeOffset();
-    const float UpSideOfCollision =
-        Location.y + CollisionComponent->GetUpBorderRelativeOffset();
-    const float BottomSideOfCollision =
-        Location.y + CollisionComponent->GetBottomBorderRelativeOffset();
+    const float leftSideOfCollision =
+        location.x + collisionComponent->GetLeftBorderRelativeOffset();
+    const float rightSideOfCollision =
+        location.x + collisionComponent->GetRightBorderRelativeOffset();
+    const float upSideOfCollision =
+        location.y + collisionComponent->GetUpBorderRelativeOffset();
+    const float bottomSideOfCollision =
+        location.y + collisionComponent->GetBottomBorderRelativeOffset();
 
-    if (LeftSideOfCollision < Application::GetLeftBorder() ||
-        RightSideOfCollision > Application::GetRightBorder())
-        VelocityDir.x *= -1.0f;
-    else if (BottomSideOfCollision < Application::GetBottomBorder() ||
-             UpSideOfCollision > Application::GetUpBorder())
-        VelocityDir.y *= -1.0f;
+    if (leftSideOfCollision < Application::GetLeftBorder() ||
+        rightSideOfCollision > Application::GetRightBorder())
+        velocityDir.x *= -1.0f;
+    else if (bottomSideOfCollision < Application::GetBottomBorder() ||
+             upSideOfCollision > Application::GetUpBorder())
+        velocityDir.y *= -1.0f;
 }

@@ -2,7 +2,7 @@
 
 #include <utility>
 
-UModelComponent::UModelComponent(std::string InPath)
-    : UComponent(std::string("ModelComponent")), Path(std::move(InPath)) {
-    ComponentClass = EComponentClass::UModelComponent;
+ModelComponent::ModelComponent(std::string inPath)
+    : Component(std::string("ModelComponent")), path(std::move(inPath)) {
+    componentClass = EComponentClass::modelComponent;
 }

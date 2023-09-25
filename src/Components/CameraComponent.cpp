@@ -1,6 +1,6 @@
 #include "CameraComponent.h"
 
-UCameraComponent::UCameraComponent()
-    : UComponent(std::string("CameraComponent")) {
-    ComponentClass = EComponentClass::UCameraComponent;
+CameraComponent::CameraComponent()
+    : Component(std::string("CameraComponent")) {
+    componentClass = EComponentClass::cameraComponent;
 }

@@ -8,108 +8,108 @@
 bool VectorsAreEqual(const glm::vec3& vec1,
                      const glm::vec3& vec2,
                      float tol = SMALL_NUMBER) {
-    const glm::vec3 DiffVector = vec1 - vec2;
-    const float LengthSquared = glm::dot(DiffVector, DiffVector);
-    return LengthSquared < tol;
+    const glm::vec3 diffVector = vec1 - vec2;
+    const float lengthSquared = glm::dot(diffVector, diffVector);
+    return lengthSquared < tol;
 }
 
-bool TransformsAreEqual(const FTransform& Transform1,
-                        const FTransform& Transform2,
+bool TransformsAreEqual(const FTransform& transform1,
+                        const FTransform& transform2,
                         float tol = SMALL_NUMBER) {
-    return VectorsAreEqual(Transform1.Location, Transform2.Location, tol) &&
-           VectorsAreEqual(Transform1.Rotation, Transform2.Rotation, tol) &&
-           VectorsAreEqual(Transform1.Scale, Transform2.Scale, tol);
+    return VectorsAreEqual(transform1.location, transform2.location, tol) &&
+           VectorsAreEqual(transform1.rotation, transform2.rotation, tol) &&
+           VectorsAreEqual(transform1.scale, transform2.scale, tol);
 }
 
-UTransformComponent::UTransformComponent(const FTransform& InTransform)
-    : UComponent(std::string("TransformComponent")), Transform(InTransform) {
-    ComponentClass = EComponentClass::UTransformComponent;
+TransformComponent::TransformComponent(const FTransform& InTransform)
+    : Component(std::string("TransformComponent")), transform(InTransform) {
+    componentClass = EComponentClass::transformComponent;
     RecalculateTransformMatrix();
 }
 
-const FTransform& UTransformComponent::GetTransform() const {
-    return Transform;
+const FTransform& TransformComponent::GetTransform() const {
+    return transform;
 }
 
-const glm::mat4& UTransformComponent::GetTransformMatrix() {
+const glm::mat4& TransformComponent::GetTransformMatrix() {
     if (bRecalculationNeeded)
         RecalculateTransformMatrix();
 
-    return TransformMatrix;
+    return transformMatrix;
 }
 
-const glm::vec3& UTransformComponent::GetLocation() const {
-    return Transform.Location;
+const glm::vec3& TransformComponent::GetLocation() const {
+    return transform.location;
 }
 
-const glm::vec3& UTransformComponent::GetRotation() const {
-    return Transform.Rotation;
+const glm::vec3& TransformComponent::GetRotation() const {
+    return transform.rotation;
 }
 
-const glm::vec3& UTransformComponent::GetScale() const {
-    return Transform.Scale;
+const glm::vec3& TransformComponent::GetScale() const {
+    return transform.scale;
 }
 
-void UTransformComponent::SetPosition(const glm::vec3& InLocation) {
-    if (VectorsAreEqual(InLocation, Transform.Location))
+void TransformComponent::SetPosition(const glm::vec3& inLocation) {
+    if (VectorsAreEqual(inLocation, transform.location))
         return;
 
-    Transform.Location = InLocation;
+    transform.location = inLocation;
     bRecalculationNeeded = true;
 //    RecalculateTransformMatrix();
 }
 
-void UTransformComponent::SetRotation(const glm::vec3& InRotation) {
-    if (VectorsAreEqual(InRotation, Transform.Rotation))
+void TransformComponent::SetRotation(const glm::vec3& inRotation) {
+    if (VectorsAreEqual(inRotation, transform.rotation))
         return;
 
-    Transform.Rotation = InRotation;
+    transform.rotation = inRotation;
     bRecalculationNeeded = true;
 //    RecalculateTransformMatrix();
 }
 
-void UTransformComponent::SetScale(const glm::vec3& InScale) {
-    if (VectorsAreEqual(InScale, Transform.Scale))
+void TransformComponent::SetScale(const glm::vec3& inScale) {
+    if (VectorsAreEqual(inScale, transform.scale))
         return;
 
-    Transform.Scale = InScale;
+    transform.scale = inScale;
     bRecalculationNeeded = true;
 //    RecalculateTransformMatrix();
 }
 
-void UTransformComponent::SetTransform(const FTransform& InTransform) {
-    if (TransformsAreEqual(Transform, InTransform))
+void TransformComponent::SetTransform(const FTransform& inTransform) {
+    if (TransformsAreEqual(transform, inTransform))
         return;
 
-    Transform = InTransform;
+    transform = inTransform;
     bRecalculationNeeded = true;
 //    RecalculateTransformMatrix();
 }
 
-void UTransformComponent::RecalculateTransformMatrix() {
+void TransformComponent::RecalculateTransformMatrix() {
     if (!bRecalculationNeeded)
         return;
     bRecalculationNeeded = false;
 
-    TransformMatrix = glm::mat4(1.0f);
-    TransformMatrix =
-        glm::translate(TransformMatrix, glm::vec3(Transform.Location));
+    transformMatrix = glm::mat4(1.0f);
+    transformMatrix =
+        glm::translate(transformMatrix, glm::vec3(transform.location));
 
     // TODO: find a way to do it in single operation using quat
     // pitch
-    TransformMatrix =
-        glm::rotate(TransformMatrix, glm::radians(Transform.Rotation.z),
+    transformMatrix =
+        glm::rotate(transformMatrix, glm::radians(transform.rotation.z),
                     glm::vec3(1.0f, 0.f, 0.0f));
 
     // yaw
-    TransformMatrix =
-        glm::rotate(TransformMatrix, glm::radians(Transform.Rotation.x),
+    transformMatrix =
+        glm::rotate(transformMatrix, glm::radians(transform.rotation.x),
                     glm::vec3(0.0f, 1.f, 0.0f));
 
     // roll
-    TransformMatrix =
-        glm::rotate(TransformMatrix, glm::radians(Transform.Rotation.y),
+    transformMatrix =
+        glm::rotate(transformMatrix, glm::radians(transform.rotation.y),
                     glm::vec3(0.0f, 0.f, 1.0f));
 
-    TransformMatrix = glm::scale(TransformMatrix, Transform.Scale);
+    transformMatrix = glm::scale(transformMatrix, transform.scale);
 }

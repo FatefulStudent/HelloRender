@@ -4,8 +4,8 @@
 
 UShaderComponent::UShaderComponent(std::string InVertexShaderPath,
                                    std::string InFragmentShaderPath)
-    : UComponent(std::string("ShaderComponent")),
+    : Component(std::string("ShaderComponent")),
       VertexShaderPath(std::move(InVertexShaderPath)),
       FragmentShaderPath(std::move(InFragmentShaderPath)) {
-    ComponentClass = EComponentClass::UShaderComponent;
+    componentClass = EComponentClass::shaderComponent;
 }

@@ -31,10 +31,10 @@ private:
 
     void Finalize();
 
-    static float WidthPx;
-    static float HeightPx;
+    static float widthPx;
+    static float heightPx;
 
-    static float TargetHalfHeight;
+    static float targetHalfHeight;
 
     static void framebuffer_size_callback(GLFWwindow* window,
                                           int width,

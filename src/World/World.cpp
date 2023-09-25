@@ -4,41 +4,41 @@
 
 #include <algorithm>
 
-UWorld* UWorld::World = nullptr;
-UEntity* UWorld::LocalPlayer = nullptr;
+World* World::world = nullptr;
+Entity* World::localPlayer = nullptr;
 
-UWorld* UWorld::CreateWorld() {
-    World = new UWorld();
-    return World;
+World* World::CreateWorld() {
+    world = new World();
+    return world;
 }
 
-void UWorld::DestroyWorld() {
-    if (World) {
-        World->Destroy();
+void World::DestroyWorld() {
+    if (world) {
+        world->Destroy();
 
-        delete World;
-        World = nullptr;
+        delete world;
+        world = nullptr;
     }
 }
 
-UWorld* UWorld::GetWorld() {
-    return World;
+World* World::GetWorld() {
+    return world;
 }
 
-std::vector<UEntity*> UWorld::GetAllEntitiesWithComponents(
-    const std::vector<EComponentClass>& RequiredClasses) const {
-    std::vector<UEntity*> Result{};
+std::vector<Entity*> World::GetAllEntitiesWithComponents(
+    const std::vector<EComponentClass>& requiredComponentClasses) const {
+    std::vector<Entity*> Result{};
 
-    for (UEntity* Entity : Entities) {
-        if (Entity) {
-            const std::unordered_map<EComponentClass, UComponent*>&
-                ClassesToComponents = Entity->ComponentClassToComponent;
+    for (Entity* entity : entities) {
+        if (entity) {
+            const std::unordered_map<EComponentClass, Component*>&
+                classesToComponents = entity->componentClassToComponent;
 
             bool bHasAllClasses = true;
-            for (EComponentClass ComponentClass : RequiredClasses) {
+            for (EComponentClass ComponentClass : requiredComponentClasses) {
                 const bool bContains =
-                    ClassesToComponents.find(ComponentClass) !=
-                    ClassesToComponents.end();
+                    classesToComponents.find(ComponentClass) !=
+                    classesToComponents.end();
 
                 if (!bContains) {
                     bHasAllClasses = false;
@@ -47,101 +47,101 @@ std::vector<UEntity*> UWorld::GetAllEntitiesWithComponents(
             }
 
             if (bHasAllClasses)
-                Result.push_back(Entity);
+                Result.push_back(entity);
         }
     }
     return Result;
 }
 
-void UWorld::Initialize() const {
-    for (USystem* System : Systems) {
+void World::Initialize() const {
+    for (System* System : systems) {
         InitializeSystem(System);
     }
 }
 
-void UWorld::InitializeSystem(USystem* System) const {
+void World::InitializeSystem(System* System) const {
     if (!System)
         return;
-    const std::vector<UEntity*> ValidEntities =
+    const std::vector<Entity*> ValidEntities =
         GetAllEntitiesWithComponents(System->GetComponentClasses());
 
-    for (UEntity* Entity : ValidEntities) {
+    for (Entity* Entity : ValidEntities) {
         System->Initialize(Entity);
     }
 }
 
-void UWorld::Update(float DeltaTime) const{
-    for (USystem* System : Systems) {
-        UpdateSystem(DeltaTime, System);
+void World::Update(double deltaTime) const{
+    for (System* System : systems) {
+        UpdateSystem(deltaTime, System);
     }
 }
 
-void UWorld::UpdateSystem(float DeltaTime, USystem* System) const {
-    if (!System)
+void World::UpdateSystem(double deltaTime, System* system) const {
+    if (!system)
         return;
 
-    const std::vector<UEntity*> ValidEntities =
-        GetAllEntitiesWithComponents(System->GetComponentClasses());
+    const std::vector<Entity*> validEntities =
+        GetAllEntitiesWithComponents(system->GetComponentClasses());
 
-    for (UEntity* Entity : ValidEntities) {
-        System->Update(DeltaTime, Entity);
+    for (Entity* entity : validEntities) {
+        system->Update(deltaTime, entity);
     }
 }
 
-void UWorld::Finalize() const {
-    for (USystem* System : Systems) {
-        FinalizeSystem(System);
+void World::Finalize() const {
+    for (System* system : systems) {
+        FinalizeSystem(system);
     }
 }
 
-void UWorld::FinalizeSystem(USystem* System) const {
-    if (!System)
+void World::FinalizeSystem(System* system) const {
+    if (!system)
         return;
-    const std::vector<UEntity*> ValidEntities =
-        GetAllEntitiesWithComponents(System->GetComponentClasses());
+    const std::vector<Entity*> validEntities =
+        GetAllEntitiesWithComponents(system->GetComponentClasses());
 
-    for (UEntity* Entity : ValidEntities) {
-        System->Finalize(Entity);
+    for (Entity* entity : validEntities) {
+        system->Finalize(entity);
     }
 }
 
 
-UEntity* UWorld::CreateEntity(const std::string& InEntityName) {
-    auto* NewEntity = new UEntity(InEntityName);
-    Entities.push_back(NewEntity);
-    return NewEntity;
+Entity* World::CreateEntity(const std::string& inEntityName) {
+    auto* newEntity = new Entity(inEntityName);
+    entities.push_back(newEntity);
+    return newEntity;
 }
 
-void UWorld::DestroyEntity(UEntity* Entity) {
-    if (!Entity)
+void World::DestroyEntity(Entity* entity) {
+    if (!entity)
         return;
 
-    DestroyEntityImpl(Entity);
+    DestroyEntityImpl(entity);
 
-    auto EntityIter = std::find(Entities.begin(), Entities.end(), Entity);
-    if (EntityIter != Entities.end())
-        Entities.erase(EntityIter);
-    delete Entity;
+    auto entityIter = std::find(entities.begin(), entities.end(), entity);
+    if (entityIter != entities.end())
+        entities.erase(entityIter);
+    delete entity;
 }
 
-void UWorld::Destroy() {
-    for (UEntity* Entity : Entities) {
-        if (Entity) {
-            DestroyEntityImpl(Entity);
-            delete Entity;
+void World::Destroy() {
+    for (Entity* entity : entities) {
+        if (entity) {
+            DestroyEntityImpl(entity);
+            delete entity;
         }
     }
-    Entities.clear();
+    entities.clear();
 
-    for (USystem* System : Systems) {
-        delete System;
+    for (System* system : systems) {
+        delete system;
     }
-    Systems.clear();
+    systems.clear();
 }
 
-void UWorld::DestroyEntityImpl(UEntity* Entity) {
-    if (!Entity)
+void World::DestroyEntityImpl(Entity* entity) {
+    if (!entity)
         return;
 
-    Entity->DestroyImpl();
+    entity->DestroyImpl();
 }

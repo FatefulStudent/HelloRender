@@ -8,52 +8,52 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <iostream>
 
-UMovementSystem::UMovementSystem() {
-    RequiredComponentClasses.push_back(EComponentClass::UMovementComponent);
-    RequiredComponentClasses.push_back(EComponentClass::UTransformComponent);
+MovementSystem::MovementSystem() {
+    requiredComponentClasses.push_back(EComponentClass::movementComponent);
+    requiredComponentClasses.push_back(EComponentClass::transformComponent);
 }
 
-void UMovementSystem::Update(float DeltaTime, UEntity* Entity) {
-    if (!Entity) {
+void MovementSystem::Update(double deltaTime, Entity* entity) {
+    if (!entity) {
         assert(false);
         return;
     }
 
-    UMovementComponent* MovementComponent =
-        Entity->GetComponentOfClass<UMovementComponent>();
+    MovementComponent* movementComponent =
+        entity->GetComponentOfClass<MovementComponent>();
 
-    if (!MovementComponent) {
+    if (!movementComponent) {
         assert(false);
         return;
     }
 
-    UTransformComponent* TransformComponent =
-        Entity->GetComponentOfClass<UTransformComponent>();
+    TransformComponent* transformComponent =
+        entity->GetComponentOfClass<TransformComponent>();
 
-    if (!TransformComponent) {
+    if (!transformComponent) {
         assert(false);
         return;
     }
 
-    UpdateTransformComponent(DeltaTime, MovementComponent, TransformComponent);
+    UpdateTransformComponent(deltaTime, movementComponent, transformComponent);
 }
 
-void UMovementSystem::UpdateTransformComponent(
-    float DeltaTime,
-    const UMovementComponent* MovementComponent,
-    UTransformComponent* TransformComponent) {
-    if (!TransformComponent || !MovementComponent) {
+void MovementSystem::UpdateTransformComponent(
+    double deltaTime,
+    const MovementComponent* movementComponent,
+    TransformComponent* transformComponent) {
+    if (!transformComponent || !movementComponent) {
         assert(false);
         return;
     }
 
     const glm::vec3 LocationDelta =
-        MovementComponent->GetVelocityScaled() * DeltaTime;
+        movementComponent->GetVelocityScaled() * (float)deltaTime;
 
     if (glm::dot(LocationDelta, LocationDelta) < 0.000001)
         return;
 
-    const glm::vec3 PreviousPosition = TransformComponent->GetLocation();
+    const glm::vec3 PreviousPosition = transformComponent->GetLocation();
 
-    TransformComponent->SetPosition(PreviousPosition + LocationDelta);
+    transformComponent->SetPosition(PreviousPosition + LocationDelta);
 }

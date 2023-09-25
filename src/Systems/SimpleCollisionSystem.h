@@ -6,20 +6,20 @@
 
 #include <string>
 
-class UEntity;
-class USimpleCollisionComponent;
-class UMovementComponent;
-class UTransformComponent;
+class Entity;
+class SimpleCollisionComponent;
+class MovementComponent;
+class TransformComponent;
 
-class USimpleCollisionSystem : public USystem {
+class SimpleCollisionSystem : public System {
 public:
-    USimpleCollisionSystem();
-    virtual void Update(float DeltaTime, UEntity* Entity) override;
+    SimpleCollisionSystem();
+    virtual void Update(double DeltaTime, Entity* Entity) override;
 
 protected:
-    static void CheckBorders(const USimpleCollisionComponent* CollisionComponent,
-                      UMovementComponent* MovementComponent,
-                      const UTransformComponent* TransformComponent);
+    static void CheckBorders(const SimpleCollisionComponent* collisionComponent,
+                      MovementComponent* movementComponent,
+                      const TransformComponent* transformComponent);
 };
 
 #endif

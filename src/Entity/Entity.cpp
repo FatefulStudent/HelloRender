@@ -7,36 +7,36 @@
 
 static long GlobalID = 0;
 
-UEntity::UEntity(const std::string& InEntityName)
-    : ID(GlobalID++),
-      Name(InEntityName + std::string("_") + std::to_string(ID)) {
-    std::cout << "Entity `" << Name << "` created!" << std::endl;
+Entity::Entity(const std::string& InEntityName)
+    : id(GlobalID++),
+      name(InEntityName + std::string("_") + std::to_string(id)) {
+    std::cout << "Entity `" << name << "` created!" << std::endl;
 }
 
-UEntity::~UEntity() {
-    std::cout << "Entity `" << Name << "` destroyed!" << std::endl;
+Entity::~Entity() {
+    std::cout << "Entity `" << name << "` destroyed!" << std::endl;
 }
 
-UComponent* UEntity::GetComponentOfClass(
+Component* Entity::GetComponentOfClass(
     EComponentClass ComponentClassEnum) const {
-    auto Iter = ComponentClassToComponent.find(ComponentClassEnum);
-    if (Iter != ComponentClassToComponent.end())
+    auto Iter = componentClassToComponent.find(ComponentClassEnum);
+    if (Iter != componentClassToComponent.end())
         return (*Iter).second;
     else
         return nullptr;
 }
 
-void UEntity::Destroy() {
-    auto World = UWorld::GetWorld();
+void Entity::Destroy() {
+    auto World = World::GetWorld();
     if (World)
         World->DestroyEntity(this);
 }
 
-void UEntity::DestroyImpl() {
-    for (UComponent* Component : Components) {
+void Entity::DestroyImpl() {
+    for (Component* Component : components) {
         delete Component;
     }
 
-    Components.clear();
-    ComponentClassToComponent.clear();
+    components.clear();
+    componentClassToComponent.clear();
 }

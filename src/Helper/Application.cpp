@@ -5,10 +5,10 @@
 #include <iostream>
 
 
-float Application::WidthPx = 1280.0f;
-float Application::HeightPx = 720.0f;
+float Application::widthPx = 1280.0f;
+float Application::heightPx = 720.0f;
 
-float Application::TargetHalfHeight = 20.0f;
+float Application::targetHalfHeight = 20.0f;
 
 
 Application::Application() {
@@ -56,7 +56,7 @@ GLFWwindow* Application::CreateWindow() const {
 
     glfwSetErrorCallback(error_callback);
 
-    window = glfwCreateWindow(WidthPx, HeightPx,
+    window = glfwCreateWindow(widthPx, heightPx,
                               "Hello Render!", NULL, NULL);
     if (window == NULL) {
         std::cerr << "Failed to init GLFW window." << std::endl;
@@ -75,31 +75,31 @@ bool Application::ShouldCloseWindow() const {
 }
 
 float Application::GetWidthPx() {
-    return WidthPx;
+    return widthPx;
 }
 
 float Application::GetHeightPx() {
-    return HeightPx;
+    return heightPx;
 }
 
 float Application::GetAspectRatio() {
-    return WidthPx / HeightPx;
+    return widthPx / heightPx;
 }
 
 float Application::GetLeftBorder() {
-    return -TargetHalfHeight * Application::GetAspectRatio();
+    return -targetHalfHeight * Application::GetAspectRatio();
 }
 
 float Application::GetRightBorder() {
-    return TargetHalfHeight * Application::GetAspectRatio();    
+    return targetHalfHeight * Application::GetAspectRatio();    
 }
 
 float Application::GetUpBorder() {
-    return TargetHalfHeight;
+    return targetHalfHeight;
 }
 
 float Application::GetBottomBorder() {
-    return -TargetHalfHeight;
+    return -targetHalfHeight;
 }
 
 void Application::framebuffer_size_callback(GLFWwindow* window,

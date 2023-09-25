@@ -9,57 +9,57 @@
 #include <iostream>
 
 namespace {
-constexpr glm::vec3 UpVector{0.0f, 1.0f, 0.0f};
+constexpr glm::vec3 upVector{0.0f, 1.0f, 0.0f};
 }
 
-UStaticCameraSystem::UStaticCameraSystem() {
-    RequiredComponentClasses.push_back(EComponentClass::UCameraComponent);
-    RequiredComponentClasses.push_back(EComponentClass::UTransformComponent);
+StaticCameraSystem::StaticCameraSystem() {
+    requiredComponentClasses.push_back(EComponentClass::cameraComponent);
+    requiredComponentClasses.push_back(EComponentClass::transformComponent);
 }
 
-void UStaticCameraSystem::Initialize(UEntity* Entity) {
-    if (!Entity) {
+void StaticCameraSystem::Initialize(Entity* entity) {
+    if (!entity) {
         assert(false);
         return;
     }
 
-    UCameraComponent* CameraComponent =
-        Entity->GetComponentOfClass<UCameraComponent>();
+    CameraComponent* cameraComponent =
+        entity->GetComponentOfClass<CameraComponent>();
 
-    if (!CameraComponent) {
+    if (!cameraComponent) {
         assert(false);
         return;
     }
 
-    UTransformComponent* TransformComponent =
-        Entity->GetComponentOfClass<UTransformComponent>();
+    TransformComponent* transformComponent =
+        entity->GetComponentOfClass<TransformComponent>();
 
-    if (!TransformComponent) {
+    if (!transformComponent) {
         assert(false);
         return;
     }
-    InitializeCameraComponent(CameraComponent, TransformComponent);
+    InitializeCameraComponent(cameraComponent, transformComponent);
 }
 
-void UStaticCameraSystem::InitializeCameraComponent(
-    UCameraComponent* CameraComponent,
-    UTransformComponent* TransformComponent) {
-    if (!CameraComponent) {
+void StaticCameraSystem::InitializeCameraComponent(
+    CameraComponent* cameraComponent,
+    TransformComponent* transformComponent) {
+    if (!cameraComponent) {
         assert(false);
         return;
     }
 
-    if (!TransformComponent) {
+    if (!transformComponent) {
         assert(false);
         return;
     }
 
-    const glm::vec3& CameraRotation = TransformComponent->GetRotation();
+    const glm::vec3& CameraRotation = transformComponent->GetRotation();
     const float Yaw = CameraRotation.x;
     const float Pitch = CameraRotation.y;
     // NB: we ignore Roll for camera
 
-    const glm::vec3& CameraPosition = TransformComponent->GetLocation();
+    const glm::vec3& CameraPosition = transformComponent->GetLocation();
 
     glm::vec3 Direction{};
     Direction.x = cos(glm::radians(Yaw)) * cos(glm::radians(Pitch));
@@ -68,10 +68,10 @@ void UStaticCameraSystem::InitializeCameraComponent(
 
     glm::vec3 CameraTarget = CameraPosition + Direction;
 
-    CameraComponent->View =
-        glm::lookAt(CameraPosition, CameraTarget, UpVector);
+    cameraComponent->view =
+        glm::lookAt(CameraPosition, CameraTarget, upVector);
 
-    CameraComponent->Projection =
+    cameraComponent->projection =
         glm::ortho(Application::GetLeftBorder(), Application::GetRightBorder(),
                    Application::GetBottomBorder(), Application::GetUpBorder());
 
@@ -80,48 +80,48 @@ void UStaticCameraSystem::InitializeCameraComponent(
         CameraComponent->MinDistance, CameraComponent->MaxDistance);*/
 }
 
-void UStaticCameraSystem::Update(float DeltaTime, UEntity* Entity) {
-    if (!Entity) {
+void StaticCameraSystem::Update(double deltaTime, Entity* entity) {
+    if (!entity) {
         assert(false);
         return;
     }
 
-    UCameraComponent* CameraComponent =
-        Entity->GetComponentOfClass<UCameraComponent>();
+    CameraComponent* cameraComponent =
+        entity->GetComponentOfClass<CameraComponent>();
 
-    if (!CameraComponent) {
-        assert(false);
-        return;
-    }
-}
-
-void UStaticCameraSystem::UpdateCameraComponent(
-    UCameraComponent* CameraComponent) {
-    if (!CameraComponent) {
+    if (!cameraComponent) {
         assert(false);
         return;
     }
 }
 
-void UStaticCameraSystem::Finalize(UEntity* Entity) {
-    if (!Entity) {
+void StaticCameraSystem::UpdateCameraComponent(
+    CameraComponent* cameraComponent) {
+    if (!cameraComponent) {
         assert(false);
         return;
     }
-
-    UCameraComponent* CameraComponent =
-        Entity->GetComponentOfClass<UCameraComponent>();
-
-    if (!CameraComponent) {
-        assert(false);
-        return;
-    }
-    FinalizeCameraComponent(CameraComponent);
 }
 
-void UStaticCameraSystem::FinalizeCameraComponent(
-    UCameraComponent* CameraComponent) {
-    if (!CameraComponent) {
+void StaticCameraSystem::Finalize(Entity* entity) {
+    if (!entity) {
+        assert(false);
+        return;
+    }
+
+    CameraComponent* cameraComponent =
+        entity->GetComponentOfClass<CameraComponent>();
+
+    if (!cameraComponent) {
+        assert(false);
+        return;
+    }
+    FinalizeCameraComponent(cameraComponent);
+}
+
+void StaticCameraSystem::FinalizeCameraComponent(
+    CameraComponent* cameraComponent) {
+    if (!cameraComponent) {
         assert(false);
         return;
     }

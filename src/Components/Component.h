@@ -3,27 +3,27 @@
 
 #include <string>
 enum class EComponentClass {
-    Base,
-    UModelComponent,
-    UShaderComponent,
-    UTransformComponent,
-    UCameraComponent,
-    UMovementComponent,
-    USimpleCollisionComponent,
+    base,
+    modelComponent,
+    shaderComponent,
+    transformComponent,
+    cameraComponent,
+    movementComponent,
+    simpleCollisionComponent,
 };
 
-class UComponent {
+class Component {
 public:
-    explicit UComponent(const std::string& InComponentName);
-    virtual ~UComponent();
+    explicit Component(const std::string& InComponentName);
+    virtual ~Component();
 
-    EComponentClass GetComponentClass() const { return ComponentClass; }
+    EComponentClass GetComponentClass() const { return componentClass; }
 
-    const long ID;
-    const std::string Name;
+    const long id;
+    const std::string name;
 
 protected:
-    EComponentClass ComponentClass = EComponentClass::Base;
+    EComponentClass componentClass = EComponentClass::base;
 };
 
 #endif

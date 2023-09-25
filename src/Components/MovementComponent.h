@@ -5,15 +5,15 @@
 
 #include <glm/vec3.hpp>
 
-class UMovementComponent : public UComponent {
+class MovementComponent : public Component {
 public:
-    UMovementComponent(const glm::vec3& InVelocityDir, float InSpeed);
-    virtual ~UMovementComponent() = default;
+    MovementComponent(const glm::vec3& inVelocityDir, float inSpeed);
+    virtual ~MovementComponent() = default;
 
     glm::vec3 GetVelocityScaled() const;
 
-    glm::vec3 VelocityDir = glm::vec3(0);
-    float Speed = 0.0f;
+    glm::vec3 velocityDir = glm::vec3(0);
+    float speed = 0.0f;
 };
 
 #endif

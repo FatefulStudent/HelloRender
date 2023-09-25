@@ -7,7 +7,7 @@
 
 #include <string>
 
-class UShaderComponent : public UComponent {
+class UShaderComponent : public Component {
 public:
     UShaderComponent(std::string InVertexShaderPath,
                      std::string InFragmentShaderPath);

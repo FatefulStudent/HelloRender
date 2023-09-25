@@ -6,20 +6,20 @@
 
 #include <string>
 
-class UEntity;
-class UMovementComponent;
-class UTransformComponent;
+class Entity;
+class MovementComponent;
+class TransformComponent;
 
-class UMovementSystem : public USystem {
+class MovementSystem : public System {
 public:
-    UMovementSystem();
-    virtual void Update(float DeltaTime, UEntity* Entity) override;
+    MovementSystem();
+    virtual void Update(double deltaTime, Entity* entity) override;
 
 protected: 
     static void UpdateTransformComponent(
-        float DeltaTime,
-        const UMovementComponent* MovementComponent,
-        UTransformComponent* TransformComponent);
+        double deltaTime,
+        const MovementComponent* movementComponent,
+        TransformComponent* transformComponent);
 };
 
 #endif

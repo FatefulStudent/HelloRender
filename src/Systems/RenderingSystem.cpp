@@ -13,37 +13,37 @@
 #include <assimp/scene.h>
 #include <assimp/Importer.hpp>
 
-std::vector<FTexture> URenderingSystem::CachedTextures = {};
+std::vector<FTexture> RenderingSystem::CachedTextures = {};
 
-URenderingSystem::URenderingSystem() {
-    RequiredComponentClasses.push_back(EComponentClass::UModelComponent);
-    RequiredComponentClasses.push_back(EComponentClass::UShaderComponent);
+RenderingSystem::RenderingSystem() {
+    requiredComponentClasses.push_back(EComponentClass::modelComponent);
+    requiredComponentClasses.push_back(EComponentClass::shaderComponent);
 }
 
-void URenderingSystem::Initialize(UEntity* Entity) {
+void RenderingSystem::Initialize(Entity* Entity) {
     if (!Entity) {
         assert(false);
         return;
     }
 
-    UModelComponent* ModelComponent =
-        Entity->GetComponentOfClass<UModelComponent>();
-    assert(ModelComponent);
-    if (!ModelComponent)
+    ModelComponent* modelComponent =
+        Entity->GetComponentOfClass<ModelComponent>();
+    assert(modelComponent);
+    if (!modelComponent)
         return;
-    InitializeModelComponent(ModelComponent);
+    InitializeModelComponent(modelComponent);
 }
 
-void URenderingSystem::InitializeModelComponent(
-    UModelComponent* ModelComponent) {
-    if (!ModelComponent) {
+void RenderingSystem::InitializeModelComponent(
+    ModelComponent* modelComponent) {
+    if (!modelComponent) {
         assert(false);
         return;
     }
-    LoadModel(ModelComponent);
+    LoadModel(modelComponent);
 }
 
-void URenderingSystem::LoadModel(UModelComponent* ModelComponent) {
+void RenderingSystem::LoadModel(ModelComponent* ModelComponent) {
     if (!ModelComponent) {
         assert(false);
         return;
@@ -51,20 +51,20 @@ void URenderingSystem::LoadModel(UModelComponent* ModelComponent) {
     stbi_set_flip_vertically_on_load(true);
     Assimp::Importer import;
     const aiScene* scene = import.ReadFile(
-        ModelComponent->Path, aiProcess_Triangulate | aiProcess_FlipUVs);
+        ModelComponent->path, aiProcess_Triangulate | aiProcess_FlipUVs);
 
     if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE ||
         !scene->mRootNode) {
         std::cerr << "ERROR::ASSIMP::" << import.GetErrorString() << std::endl;
         return;
     }
-    ModelComponent->DirectoryPath =
-        ModelComponent->Path.substr(0, ModelComponent->Path.find_last_of('/'));
+    ModelComponent->directoryPath =
+        ModelComponent->path.substr(0, ModelComponent->path.find_last_of('/'));
 
     ProcessNode(ModelComponent, scene->mRootNode, scene);
 }
 
-void URenderingSystem::ProcessNode(UModelComponent* ModelComponent,
+void RenderingSystem::ProcessNode(ModelComponent* ModelComponent,
                                    aiNode* Node,
                                    const aiScene* Scene) {
     if (!ModelComponent || !Node || !Scene) {
@@ -72,15 +72,15 @@ void URenderingSystem::ProcessNode(UModelComponent* ModelComponent,
         return;
     }
 
-    ModelComponent->Meshes.reserve(Node->mNumMeshes);
+    ModelComponent->meshes.reserve(Node->mNumMeshes);
     
     // process all the node's meshes (if any)
     for (size_t i = 0; i < Node->mNumMeshes; i++) {
         aiMesh* AssimpMesh = Scene->mMeshes[Node->mMeshes[i]];
         FMesh NewMesh;
-        ConvertAssimpMesh(AssimpMesh, Scene, ModelComponent->DirectoryPath,
+        ConvertAssimpMesh(AssimpMesh, Scene, ModelComponent->directoryPath,
                           NewMesh);
-        ModelComponent->Meshes.push_back(std::move(NewMesh));
+        ModelComponent->meshes.push_back(std::move(NewMesh));
     }
     // then do the same for each of its children
     for (size_t i = 0; i < Node->mNumChildren; i++) {
@@ -88,7 +88,7 @@ void URenderingSystem::ProcessNode(UModelComponent* ModelComponent,
     }
 }
 
-void URenderingSystem::SetupMesh(FMesh& Mesh) {
+void RenderingSystem::SetupMesh(FMesh& Mesh) {
     if (Mesh.bMeshIsSetup) {
         assert(false);
         return;
@@ -132,7 +132,7 @@ void URenderingSystem::SetupMesh(FMesh& Mesh) {
     Mesh.bMeshIsSetup = true;
 }
 
-void URenderingSystem::ConvertAssimpMesh(aiMesh* AssimpMesh,
+void RenderingSystem::ConvertAssimpMesh(aiMesh* AssimpMesh,
                                          const aiScene* Scene,
                                          const std::string& DirectoryPath,
                                          FMesh& OutMesh) {
@@ -191,7 +191,7 @@ void URenderingSystem::ConvertAssimpMesh(aiMesh* AssimpMesh,
     SetupMesh(OutMesh);
 }
 
-void URenderingSystem::LoadMaterialTextures(
+void RenderingSystem::LoadMaterialTextures(
     aiMaterial* Material,
     aiTextureType TextureType,
     const std::string& TypeName,
@@ -228,7 +228,7 @@ void URenderingSystem::LoadMaterialTextures(
     }
 }
 
-unsigned int URenderingSystem::TextureFromFile(const std::string& Path,
+unsigned int RenderingSystem::TextureFromFile(const std::string& Path,
                                                const std::string& Directory) {
     stbi_set_flip_vertically_on_load(true);
     std::string Filename = Directory + '/' + Path;
@@ -274,7 +274,7 @@ unsigned int URenderingSystem::TextureFromFile(const std::string& Path,
     return TextureID;
 }
 
-void URenderingSystem::Update(float DeltaTime, UEntity* Entity) {
+void RenderingSystem::Update(double DeltaTime, Entity* Entity) {
     if (!Entity) {
         assert(false);
         return;
@@ -287,14 +287,14 @@ void URenderingSystem::Update(float DeltaTime, UEntity* Entity) {
         return;
     }
 
-    UModelComponent* ModelComponent =
-        Entity->GetComponentOfClass<UModelComponent>();
-    if (!ModelComponent) {
+    ModelComponent* modelComponent =
+        Entity->GetComponentOfClass<ModelComponent>();
+    if (!modelComponent) {
         assert(false);
         return;
     }
 
-    UpdateModelComponent(ModelComponent, ShaderComponent);
+    UpdateModelComponent(modelComponent, ShaderComponent);
 }
 
 void DrawMesh(const FMesh& Mesh, UShaderComponent* ShaderComponent) {
@@ -330,43 +330,43 @@ void DrawMesh(const FMesh& Mesh, UShaderComponent* ShaderComponent) {
     glBindVertexArray(0);
 }
 
-void URenderingSystem::UpdateModelComponent(
-    UModelComponent* ModelComponent,
-    UShaderComponent* ShaderComponent) {
-    if (!ModelComponent) {
+void RenderingSystem::UpdateModelComponent(
+    ModelComponent* modelComponent,
+    UShaderComponent* shaderComponent) {
+    if (!modelComponent) {
         assert(false);
         return;
     }
 
-    if (!ShaderComponent) {
+    if (!shaderComponent) {
         assert(false);
         return;
     }
 
-    for (const FMesh& Mesh : ModelComponent->Meshes)
-        DrawMesh(Mesh, ShaderComponent);
+    for (const FMesh& mesh : modelComponent->meshes)
+        DrawMesh(mesh, shaderComponent);
 }
 
-void URenderingSystem::Finalize(UEntity* Entity) {
+void RenderingSystem::Finalize(Entity* Entity) {
     if (!Entity) {
         assert(false);
         return;
     }
 
-    UModelComponent* ModelComponent =
-        Entity->GetComponentOfClass<UModelComponent>();
-    if (!ModelComponent) {
+    ModelComponent* modelComponent =
+        Entity->GetComponentOfClass<ModelComponent>();
+    if (!modelComponent) {
         assert(false);
         return;
     }
-    FinalizeModelComponent(ModelComponent);
+    FinalizeModelComponent(modelComponent);
 }
 
-void URenderingSystem::FinalizeModelComponent(
-    UModelComponent* ModelComponent) {
+void RenderingSystem::FinalizeModelComponent(
+    ModelComponent* ModelComponent) {
     if (!ModelComponent) {
         assert(false);
         return;
     }
-    ModelComponent->Meshes.clear();
+    ModelComponent->meshes.clear();
 }

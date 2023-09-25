@@ -7,12 +7,12 @@
 #include <unordered_map>
 #include <vector>
 
-class UComponent;
+class Component;
 
-class UEntity {
+class Entity {
 public:
-    explicit UEntity(const std::string& InEntityName);
-    ~UEntity();
+    explicit Entity(const std::string& InEntityName);
+    ~Entity();
 
     template <typename T, typename... Args>
     void AddComponent(Args... args);
@@ -20,38 +20,38 @@ public:
     template <typename T>
     T* GetComponentOfClass() const;
 
-    UComponent* GetComponentOfClass(EComponentClass ComponentClassEnum) const;
+    Component* GetComponentOfClass(EComponentClass ComponentClassEnum) const;
 
     void Destroy();
 
-    const int ID;
-    const std::string Name;
+    const int id;
+    const std::string name;
 
 private:
     void DestroyImpl();
-    friend class UWorld;
+    friend class World;
 
-    std::unordered_map<EComponentClass, UComponent*> ComponentClassToComponent;
+    std::unordered_map<EComponentClass, Component*> componentClassToComponent;
 
     // TODO: smartpointers
-    std::vector<UComponent*> Components;
+    std::vector<Component*> components;
 };
 
 template <typename T, typename... Args>
-inline void UEntity::AddComponent(Args... args) {
-    auto NewObject = new T(std::forward<Args>(args)...);
-    auto NewObjectAsComponent = static_cast<UComponent*>(NewObject);
-    Components.push_back(NewObjectAsComponent);
-    ComponentClassToComponent.emplace(
-        NewObjectAsComponent->GetComponentClass(), NewObjectAsComponent);
+inline void Entity::AddComponent(Args... args) {
+    auto newObject = new T(std::forward<Args>(args)...);
+    auto newObjectAsComponent = static_cast<Component*>(newObject);
+    components.push_back(newObjectAsComponent);
+    componentClassToComponent.emplace(
+        newObjectAsComponent->GetComponentClass(), newObjectAsComponent);
 }
 
 template <typename T>
-inline T* UEntity::GetComponentOfClass() const {
-    for (UComponent* Component : Components) {
-        T* ComponentCasted = dynamic_cast<T*>(Component);
-        if (ComponentCasted)
-            return ComponentCasted;
+inline T* Entity::GetComponentOfClass() const {
+    for (Component* component : components) {
+        T* componentCasted = dynamic_cast<T*>(component);
+        if (componentCasted)
+            return componentCasted;
     }
     return nullptr;
 }

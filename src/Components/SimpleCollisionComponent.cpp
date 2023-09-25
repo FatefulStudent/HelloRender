@@ -1,69 +1,69 @@
 #include "SimpleCollisionComponent.h"
 
-USimpleCollisionComponent::USimpleCollisionComponent(
-    ECollisionShape InCollisionShape,
-    float InCircleRadius)
-    : UComponent(std::string("SimpleCollisionComponent")),
-      CollisionShape(InCollisionShape),
-      CircleRadius(InCircleRadius) {
-    assert(CollisionShape == ECollisionShape::Circle);
-    ComponentClass = EComponentClass::USimpleCollisionComponent;
+SimpleCollisionComponent::SimpleCollisionComponent(
+    ECollisionShape inCollisionShape,
+    float inCircleRadius)
+    : Component(std::string("SimpleCollisionComponent")),
+      collisionShape(inCollisionShape),
+      circleRadius(inCircleRadius) {
+    assert(collisionShape == ECollisionShape::Circle);
+    componentClass = EComponentClass::simpleCollisionComponent;
 }
 
-USimpleCollisionComponent::USimpleCollisionComponent(
-    ECollisionShape InCollisionShape,
-    float InWidth,
-    float InHeight)
-    : UComponent(std::string("SimpleCollisionComponent")),
-      CollisionShape(InCollisionShape),
-      Width(InWidth),
-      Height(InHeight) {
-    assert(CollisionShape == ECollisionShape::Rectangle);
-    ComponentClass = EComponentClass::USimpleCollisionComponent;
+SimpleCollisionComponent::SimpleCollisionComponent(
+    ECollisionShape inCollisionShape,
+    float inWidth,
+    float inHeight)
+    : Component(std::string("SimpleCollisionComponent")),
+      collisionShape(inCollisionShape),
+      width(inWidth),
+      height(inHeight) {
+    assert(collisionShape == ECollisionShape::Rectangle);
+    componentClass = EComponentClass::simpleCollisionComponent;
 }
 
-float USimpleCollisionComponent::GetLeftBorderRelativeOffset() const {
-    switch (CollisionShape) {
+float SimpleCollisionComponent::GetLeftBorderRelativeOffset() const {
+    switch (collisionShape) {
         case ECollisionShape::Circle:
-            return -CircleRadius;
+            return -circleRadius;
         case ECollisionShape::Rectangle:
-            return -Width;
+            return -width;
         default:
             assert(false);
     }
     return 0.0f;
 }
 
-float USimpleCollisionComponent::GetRightBorderRelativeOffset() const {
-    switch (CollisionShape) {
+float SimpleCollisionComponent::GetRightBorderRelativeOffset() const {
+    switch (collisionShape) {
         case ECollisionShape::Circle:
-            return CircleRadius;
+            return circleRadius;
         case ECollisionShape::Rectangle:
-            return Width;
+            return width;
         default:
             assert(false);
     }
     return 0.0f;
 }
 
-float USimpleCollisionComponent::GetUpBorderRelativeOffset() const {
-    switch (CollisionShape) {
+float SimpleCollisionComponent::GetUpBorderRelativeOffset() const {
+    switch (collisionShape) {
         case ECollisionShape::Circle:
-            return CircleRadius;
+            return circleRadius;
         case ECollisionShape::Rectangle:
-            return Height;
+            return height;
         default:
             assert(false);
     }
     return 0.0f;
 }
 
-float USimpleCollisionComponent::GetBottomBorderRelativeOffset() const {
-    switch (CollisionShape) {
+float SimpleCollisionComponent::GetBottomBorderRelativeOffset() const {
+    switch (collisionShape) {
         case ECollisionShape::Circle:
-            return -CircleRadius;
+            return -circleRadius;
         case ECollisionShape::Rectangle:
-            return -Height;
+            return -height;
         default:
             assert(false);
     }

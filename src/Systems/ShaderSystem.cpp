@@ -18,12 +18,12 @@ namespace
 
 }
 
-UShaderSystem::UShaderSystem() {
-    RequiredComponentClasses.push_back(EComponentClass::UShaderComponent);
-    RequiredComponentClasses.push_back(EComponentClass::UTransformComponent);
+ShaderSystem::ShaderSystem() {
+    requiredComponentClasses.push_back(EComponentClass::shaderComponent);
+    requiredComponentClasses.push_back(EComponentClass::transformComponent);
 }
 
-void UShaderSystem::Initialize(UEntity* Entity) {
+void ShaderSystem::Initialize(Entity* Entity) {
     if (!Entity) {
         assert(false);
         return;
@@ -39,7 +39,7 @@ void UShaderSystem::Initialize(UEntity* Entity) {
     InitializeShaderComponent(ShaderComponent);
 }
 
-void UShaderSystem::InitializeShaderComponent(
+void ShaderSystem::InitializeShaderComponent(
     UShaderComponent* ShaderComponent) {
     if (!ShaderComponent) {
         assert(false);
@@ -74,7 +74,7 @@ void UShaderSystem::InitializeShaderComponent(
     }
 }
 
-void UShaderSystem::LoadShader(const std::string& Path,
+void ShaderSystem::LoadShader(const std::string& Path,
                                FShaderData& OutShader) {
     static char infoLog[512];
 
@@ -127,7 +127,7 @@ void UShaderSystem::LoadShader(const std::string& Path,
     }
 }
 
-EShaderType UShaderSystem::GetShaderTypeFromPath(
+EShaderType ShaderSystem::GetShaderTypeFromPath(
     const std::string& ShaderPath) {
     const std::string FileExtension =
         FileHelper::GetExtensionFromFileName(ShaderPath);
@@ -141,7 +141,7 @@ EShaderType UShaderSystem::GetShaderTypeFromPath(
         return MatchingShaderType->second;
 }
 
-void UShaderSystem::Update(float DeltaTime, UEntity* Entity) {
+void ShaderSystem::Update(double DeltaTime, Entity* Entity) {
     if (!Entity) {
         assert(false);
         return;
@@ -154,47 +154,47 @@ void UShaderSystem::Update(float DeltaTime, UEntity* Entity) {
         return;
     }
 
-    UTransformComponent* TransformComponent =
-        Entity->GetComponentOfClass<UTransformComponent>();
-    if (!TransformComponent) {
+    TransformComponent* transformComponent =
+        Entity->GetComponentOfClass<TransformComponent>();
+    if (!transformComponent) {
         assert(false);
         return;
     }
 
-    UpdateShaderComponent(ShaderComponent, TransformComponent);
+    UpdateShaderComponent(ShaderComponent, transformComponent);
 }
 
-void UShaderSystem::UpdateShaderComponent(
-    UShaderComponent* ShaderComponent,
-    UTransformComponent* TransformComponent) {
-    if (!ShaderComponent) {
+void ShaderSystem::UpdateShaderComponent(
+    UShaderComponent* shaderComponent,
+    TransformComponent* transformComponent) {
+    if (!shaderComponent) {
         assert(false);
         return;
     }
 
-    if (!TransformComponent) {
+    if (!transformComponent) {
         assert(false);
         return;
     }
 
     
-    glUseProgram(ShaderComponent->ShaderProgramID);
+    glUseProgram(shaderComponent->ShaderProgramID);
 
-    ShaderHelper::SetMatrix(ShaderComponent->ShaderProgramID, "Model",
-                            TransformComponent->GetTransformMatrix());
+    ShaderHelper::SetMatrix(shaderComponent->ShaderProgramID, "Model",
+                            transformComponent->GetTransformMatrix());
 
-    UWorld* World = UWorld::GetWorld();
-    UEntity* PlayerEntity = World->LocalPlayer;
-    UCameraComponent* PlayerCamera =
-        PlayerEntity->GetComponentOfClass<UCameraComponent>();
+    World* world = World::GetWorld();
+    Entity* playerEntity = world->localPlayer;
+    CameraComponent* playerCamera =
+        playerEntity->GetComponentOfClass<CameraComponent>();
 
-    ShaderHelper::SetMatrix(ShaderComponent->ShaderProgramID, "View",
-                            PlayerCamera->View);
-    ShaderHelper::SetMatrix(ShaderComponent->ShaderProgramID, "Projection",
-                            PlayerCamera->Projection);
+    ShaderHelper::SetMatrix(shaderComponent->ShaderProgramID, "View",
+                            playerCamera->view);
+    ShaderHelper::SetMatrix(shaderComponent->ShaderProgramID, "Projection",
+                            playerCamera->projection);
 }
 
-void UShaderSystem::Finalize(UEntity* Entity) {
+void ShaderSystem::Finalize(Entity* Entity) {
     if (!Entity) {
         assert(false);
         return;
@@ -208,7 +208,7 @@ void UShaderSystem::Finalize(UEntity* Entity) {
     FinalizeShaderComponent(ShaderComponent);
 }
 
-void UShaderSystem::FinalizeShaderComponent(
+void ShaderSystem::FinalizeShaderComponent(
     UShaderComponent* ShaderComponent) {
     if (!ShaderComponent) {
         assert(false);

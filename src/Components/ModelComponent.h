@@ -7,15 +7,15 @@
 #include <string>
 #include <vector>
 
-class UModelComponent : public UComponent {
+class ModelComponent : public Component {
 public:
-    explicit UModelComponent(std::string InPath);
-    virtual ~UModelComponent() = default;
+    explicit ModelComponent(std::string inPath);
+    virtual ~ModelComponent() = default;
 
-    std::string Path{};
-    std::string DirectoryPath{};
-    std::vector<FTexture> CachedTextures{};
-    std::vector<FMesh> Meshes{};
+    std::string path{};
+    std::string directoryPath{};
+    std::vector<FTexture> cachedTextures{};
+    std::vector<FMesh> meshes{};
 };
 
 #endif

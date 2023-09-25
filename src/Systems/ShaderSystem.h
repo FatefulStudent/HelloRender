@@ -6,18 +6,18 @@
 
 #include <string>
 
-class UEntity;
+class Entity;
 class UShaderComponent;
-class UTransformComponent;
+class TransformComponent;
 struct FShaderData;
 enum class EShaderType : uint8_t;
 
-class UShaderSystem : public USystem {
+class ShaderSystem : public System {
 public:
-    UShaderSystem();
-    virtual void Initialize(UEntity* Entity) override;
-    virtual void Update(float DeltaTime, UEntity* Entity) override;
-    virtual void Finalize(UEntity* Entity) override;
+    ShaderSystem();
+    virtual void Initialize(Entity* Entity) override;
+    virtual void Update(double DeltaTime, Entity* Entity) override;
+    virtual void Finalize(Entity* Entity) override;
 
 private:
     static void InitializeShaderComponent(UShaderComponent* ShaderComponent);
@@ -25,8 +25,8 @@ private:
     static EShaderType GetShaderTypeFromPath(const std::string& ShaderPath);
 
     static void UpdateShaderComponent(
-        UShaderComponent* ShaderComponent,
-        UTransformComponent* TransformComponent);
+        UShaderComponent* shaderComponent,
+        TransformComponent* TransformComponent);
     static void FinalizeShaderComponent(UShaderComponent* ShaderComponent);
 };
 

@@ -11,29 +11,29 @@ enum class ECollisionShape {
     Rectangle,
 };
 
-class USimpleCollisionComponent : public UComponent {
+class SimpleCollisionComponent : public Component {
 public:
-    USimpleCollisionComponent(ECollisionShape InCollisionShape,
-                              float InCircleRadius);
-    USimpleCollisionComponent(ECollisionShape InCollisionShape,
-                              float InWidth,
-                              float InHeight);
-    virtual ~USimpleCollisionComponent() = default;
+    SimpleCollisionComponent(ECollisionShape inCollisionShape,
+        float inCircleRadius);
+    SimpleCollisionComponent(ECollisionShape inCollisionShape,
+        float inWidth,
+        float inHeight);
+    virtual ~SimpleCollisionComponent() = default;
 
     float GetLeftBorderRelativeOffset() const;
     float GetRightBorderRelativeOffset() const;
     float GetUpBorderRelativeOffset() const;
     float GetBottomBorderRelativeOffset() const;
 
-    ECollisionShape CollisionShape = ECollisionShape::Undefined;
+    ECollisionShape collisionShape = ECollisionShape::Undefined;
 
     // Circle
-    float CircleRadius = 1.0f;
+    float circleRadius = 1.0f;
     // ~Circle
 
     // Rectangle
-    float Width = 1.0f;
-    float Height = 1.0f;
+    float width = 1.0f;
+    float height = 1.0f;
     // ~Rectangle
 };
 

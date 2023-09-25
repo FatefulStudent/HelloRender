@@ -32,74 +32,74 @@
 
 namespace {
 
-UEntity* CreatePlatform(UWorld* World) {
+Entity* CreatePlatform(World* World) {
     if (!World) {
         assert(false);
         return nullptr;
     }
 
-    const glm::vec3 Location{-5.0f, 0.0f, 0.0f};
-    const glm::vec3 Rotation{-90.0f, 0.0f, 0.0f};
-    const glm::vec3 Scale{1.f, 1.f, 1.f};
-    const FTransform Transform {Location, Rotation, Scale};
-    const std::string ModelPath("res/platform/platform.obj");
-    const std::string VertShaderPath("shaders/simpleShader.vert");
-    const std::string FragShaderPath("shaders/simpleShader.frag");
+    const glm::vec3 location{-5.0f, 0.0f, 0.0f};
+    const glm::vec3 rotation{-90.0f, 0.0f, 0.0f};
+    const glm::vec3 scale{1.f, 1.f, 1.f};
+    const FTransform transform {location, rotation, scale};
+    const std::string modelPath("res/platform/platform.obj");
+    const std::string vertShaderPath("shaders/simpleShader.vert");
+    const std::string fragShaderPath("shaders/simpleShader.frag");
 
     
-    const glm::vec3 VelocityDir{-1.0f, 2.0f, 0.0f};
-    const float Speed = 20.0f;
+    const glm::vec3 velocityDir{-1.0f, 2.0f, 0.0f};
+    const float speed = 20.0f;
     
-    const ECollisionShape CollisionShape = ECollisionShape::Rectangle;
-    const float Width = 5.0f;
-    const float Height = 1.f;
+    const ECollisionShape collisionShape = ECollisionShape::Rectangle;
+    const float width = 5.0f;
+    const float height = 1.f;
 
-    UEntity* Entity = World->CreateEntity(std::string("Platform"));
+    Entity* Entity = World->CreateEntity(std::string("Platform"));
 
-    Entity->AddComponent<UShaderComponent>(VertShaderPath, 
-                                           FragShaderPath);
-    Entity->AddComponent<UModelComponent>(ModelPath);
-    Entity->AddComponent<UTransformComponent>(Transform);
-    Entity->AddComponent<UMovementComponent>(VelocityDir, Speed);
-    Entity->AddComponent<USimpleCollisionComponent>(CollisionShape, Width,
-                                                    Height);
+    Entity->AddComponent<UShaderComponent>(vertShaderPath, 
+                                           fragShaderPath);
+    Entity->AddComponent<ModelComponent>(modelPath);
+    Entity->AddComponent<TransformComponent>(transform);
+    Entity->AddComponent<MovementComponent>(velocityDir, speed);
+    Entity->AddComponent<SimpleCollisionComponent>(collisionShape, width,
+                                                    height);
 
     return Entity;
 }
 
-UEntity* CreateEarth(UWorld* World) {
+Entity* CreateEarth(World* World) {
     if (!World) {
         assert(false);
         return nullptr;
     }
 
-    const glm::vec3 Location{10.0f, 0.0f, 0.0f};
-    const glm::vec3 Rotation{0.0f, 180.0f, 0.0f};
-    const glm::vec3 Scale{1.f, 1.f, 1.f};
-    const FTransform Transform {Location, Rotation, Scale};
+    const glm::vec3 location{10.0f, 0.0f, 0.0f};
+    const glm::vec3 rotation{0.0f, 180.0f, 0.0f};
+    const glm::vec3 scale{1.f, 1.f, 1.f};
+    const FTransform transform {location, rotation, scale};
 
-    const glm::vec3 VelocityDir{1.0f, 2.0f, 0.0f};
-    const float Speed = 20.0f;
-    const std::string ModelPath("res/earth/earth.obj");
-    const std::string VertShaderPath("shaders/simpleShader.vert");
-    const std::string FragShaderPath("shaders/simpleShader.frag");
+    const glm::vec3 velocityDir{1.0f, 2.0f, 0.0f};
+    const float speed = 20.0f;
+    const std::string modelPath("res/earth/earth.obj");
+    const std::string vertShaderPath("shaders/simpleShader.vert");
+    const std::string fragShaderPath("shaders/simpleShader.frag");
 
-    const ECollisionShape CollisionShape = ECollisionShape::Circle;
-    const float CircleRadius = 1.0f;
+    const ECollisionShape shape = ECollisionShape::Circle;
+    const float circleRadius = 1.0f;
 
-    UEntity* Entity = World->CreateEntity(std::string("EarthBall"));
+    Entity* entity = World->CreateEntity(std::string("EarthBall"));
 
-    Entity->AddComponent<UShaderComponent>(VertShaderPath, FragShaderPath);
-    Entity->AddComponent<UModelComponent>(ModelPath);
-    Entity->AddComponent<UTransformComponent>(Transform);
-    Entity->AddComponent<UMovementComponent>(VelocityDir, Speed);
-    Entity->AddComponent<USimpleCollisionComponent>(CollisionShape,
-                                                    CircleRadius);
+    entity->AddComponent<UShaderComponent>(vertShaderPath, fragShaderPath);
+    entity->AddComponent<ModelComponent>(modelPath);
+    entity->AddComponent<TransformComponent>(transform);
+    entity->AddComponent<MovementComponent>(velocityDir, speed);
+    entity->AddComponent<SimpleCollisionComponent>(shape,
+                                                    circleRadius);
 
-    return Entity;
+    return entity;
 }
 
-UEntity* CreatePlayer(UWorld* World) {
+Entity* CreatePlayer(World* World) {
     if (!World) {
         assert(false);
         return nullptr;
@@ -110,12 +110,12 @@ UEntity* CreatePlayer(UWorld* World) {
     const glm::vec3 Scale{1.f, 1.f, 1.f};
     const FTransform Transform {Location, Rotation, Scale};
 
-    UEntity* Entity = World->CreateEntity(std::string("Player"));
+    Entity* Entity = World->CreateEntity(std::string("Player"));
 
-    Entity->AddComponent<UTransformComponent>(Transform);
-    Entity->AddComponent<UCameraComponent>();
+    Entity->AddComponent<TransformComponent>(Transform);
+    Entity->AddComponent<CameraComponent>();
 
-    UWorld::LocalPlayer = Entity;
+    World::localPlayer = Entity;
     return Entity;
 }
 
@@ -124,31 +124,31 @@ UEntity* CreatePlayer(UWorld* World) {
 void Arkanoid::Initialize(GLFWwindow* window) {
     BaseExcercise::Initialize(window);
     glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
-    UWorld* World = UWorld::CreateWorld();
+    World* World = World::CreateWorld();
 
     CreateEarth(World);
     CreatePlatform(World);
     CreatePlayer(World);
 
-    USystem* CollisionSystem = World->CreateSystem<USimpleCollisionSystem>();
-    USystem* MovementSystem = World->CreateSystem<UMovementSystem>();
-    USystem* ShaderSystem = World->CreateSystem<UShaderSystem>();
-    USystem* RenderingSystem = World->CreateSystem<URenderingSystem>();
-    USystem* StaticCameraSystem = World->CreateSystem<UStaticCameraSystem>();
+    World->CreateSystem<SimpleCollisionSystem>();
+    World->CreateSystem<MovementSystem>();
+    World->CreateSystem<ShaderSystem>();
+    World->CreateSystem<RenderingSystem>();
+    World->CreateSystem<StaticCameraSystem>();
 
     World->Initialize();
 }
 
-void Arkanoid::Tick(double DeltaTime) {
-    BaseExcercise::Tick(DeltaTime);
+void Arkanoid::Tick(double deltaTime) {
+    BaseExcercise::Tick(deltaTime);
 
-    auto World = UWorld::GetWorld();
-    World->Update(DeltaTime);
+    auto World = World::GetWorld();
+    World->Update(deltaTime);
 }
 
 void Arkanoid::Finalize() {
-    auto World = UWorld::GetWorld();
+    auto World = World::GetWorld();
     World->Finalize();
 
-    UWorld::DestroyWorld();
+    World::DestroyWorld();
 }

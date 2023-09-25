@@ -5,21 +5,23 @@
 
 #include <vector>
 
-class UComponent;
-class UEntity;
+class Component;
+class Entity;
 
-class USystem {
+class System {
 public:
-    virtual void Initialize(UEntity* Entity){};
-    virtual void Update(float DeltaTime, UEntity* Entity){};
-    virtual void Finalize(UEntity* Entity){};
+    virtual void Initialize(Entity* entity){}
+    virtual void Update(double deltaTime, Entity* entity){}
+    virtual void Finalize(Entity* entity){}
 
+    virtual ~System() = default;
+    
     const std::vector<EComponentClass>& GetComponentClasses() const {
-        return RequiredComponentClasses;
-    };
+        return requiredComponentClasses;
+    }
 
 protected:
-    std::vector<EComponentClass> RequiredComponentClasses{};
+    std::vector<EComponentClass> requiredComponentClasses{};
 };
 
 #endif
