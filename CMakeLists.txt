@@ -95,6 +95,13 @@ set(SOURCES
 	./src/Systems/SimpleCollisionSystem.cpp
 )
 
+source_group("ShaderFiles" FILES ${CMAKE_CURRENT_SOURCE_DIR}/shaders/*)
+
+file(GLOB SHADERS_FILES ${CMAKE_CURRENT_SOURCE_DIR}/shaders/*)
+
+add_custom_target(ShaderFiles SOURCES ${SHADERS_FILES})
+
+
 add_executable(${PROJECT_NAME} 
 	${HEADERS}
 	${SOURCES}

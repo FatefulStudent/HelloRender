@@ -56,6 +56,7 @@ void RenderingSystem::LoadModel(ModelComponent* ModelComponent) {
     if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE ||
         !scene->mRootNode) {
         std::cerr << "ERROR::ASSIMP::" << import.GetErrorString() << std::endl;
+        assert(false);
         return;
     }
     ModelComponent->directoryPath =
@@ -159,6 +160,8 @@ void RenderingSystem::ConvertAssimpMesh(aiMesh* AssimpMesh,
         if (AssimpMesh->mTextureCoords[0])
             Vertex.TexCoords = {AssimpMesh->mTextureCoords[0][i].x,
                                 AssimpMesh->mTextureCoords[0][i].y};
+        else
+            Vertex.TexCoords = glm::vec2(0.0f, 0.0f);
         Vertices.push_back(Vertex);
     }
 
@@ -178,14 +181,18 @@ void RenderingSystem::ConvertAssimpMesh(aiMesh* AssimpMesh,
         std::vector<FTexture> DiffuseMaps;
         LoadMaterialTextures(Material, aiTextureType_DIFFUSE,
                              "texture_diffuse", DirectoryPath, DiffuseMaps);
-        Textures.insert(Textures.end(), DiffuseMaps.begin(),
-                        DiffuseMaps.end());
+        if (!DiffuseMaps.empty()) {
+            Textures.insert(Textures.end(), DiffuseMaps.begin(),
+                           DiffuseMaps.end());
+        }
 
         std::vector<FTexture> SpecularMaps;
         LoadMaterialTextures(Material, aiTextureType_SPECULAR,
                              "texture_specular", DirectoryPath, SpecularMaps);
-        Textures.insert(Textures.end(), SpecularMaps.begin(),
-                        SpecularMaps.end());
+        if (!SpecularMaps.empty()) {
+            Textures.insert(Textures.end(), SpecularMaps.begin(),
+                            SpecularMaps.end());
+        }
     }
 
     SetupMesh(OutMesh);
@@ -306,6 +313,10 @@ void DrawMesh(const FMesh& Mesh, UShaderComponent* ShaderComponent) {
 
     unsigned int diffuseNr = 1;
     unsigned int specularNr = 1;
+
+    if (Mesh.Textures.empty()) {
+        glBindTexture(GL_TEXTURE_2D, 0);
+    }
     for (unsigned int i = 0; i < Mesh.Textures.size(); i++) {
         // activate proper texture unit before binding
         glActiveTexture(GL_TEXTURE0 + i);

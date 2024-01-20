@@ -12,7 +12,8 @@ int main(void) {
     while (!application.ShouldCloseWindow()) {
         const double currentFrame = glfwGetTime();
         deltaTime = currentFrame - lastFrame;
-        std::cout << "fps:" << 1.0f / deltaTime << std::endl;
+        printf("frame %.2f ms\n", deltaTime * 1000.0f);
+        // std::cout << "fps:" << 1.0f / deltaTime << std::endl;
         lastFrame = currentFrame;
 
         test->ProcessInput(deltaTime);

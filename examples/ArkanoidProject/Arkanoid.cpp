@@ -30,6 +30,24 @@
 #include <vector>
 #include <string>
 
+int MAX_BALL_NUMBER = 100;
+
+float GetRandNumber01() {
+    return (float)rand() / RAND_MAX;
+}
+
+float GetRandNumberInRange(float min, float max) {
+    float random01 = GetRandNumber01();
+
+    return min + (max - min) * random01;
+}
+
+int GetRandomNumberInRange(int min, int max) {
+    float randomFloat = GetRandNumberInRange(min, max);
+
+    return int(randomFloat);
+}
+
 namespace {
 
 Entity* CreatePlatform(World* World) {
@@ -48,7 +66,7 @@ Entity* CreatePlatform(World* World) {
 
     
     const glm::vec3 velocityDir{-1.0f, 2.0f, 0.0f};
-    const float speed = 20.0f;
+    const float speed = 10.0f;
     
     const ECollisionShape collisionShape = ECollisionShape::Rectangle;
     const float width = 5.0f;
@@ -73,13 +91,13 @@ Entity* CreateEarth(World* World) {
         return nullptr;
     }
 
-    const glm::vec3 location{10.0f, 0.0f, 0.0f};
+    const glm::vec3 location{-5.0f, 0.0f, 0.0f};
     const glm::vec3 rotation{0.0f, 180.0f, 0.0f};
     const glm::vec3 scale{1.f, 1.f, 1.f};
     const FTransform transform {location, rotation, scale};
 
     const glm::vec3 velocityDir{1.0f, 2.0f, 0.0f};
-    const float speed = 20.0f;
+    const float speed = 10.0f;
     const std::string modelPath("res/earth/earth.obj");
     const std::string vertShaderPath("shaders/simpleShader.vert");
     const std::string fragShaderPath("shaders/simpleShader.frag");
@@ -95,6 +113,31 @@ Entity* CreateEarth(World* World) {
     entity->AddComponent<MovementComponent>(velocityDir, speed);
     entity->AddComponent<SimpleCollisionComponent>(shape,
                                                     circleRadius);
+
+    return entity;
+}
+
+Entity* CreateBall(World* World, const FTransform& transform, const glm::vec3& velocityDir) {
+    if (!World) {
+        assert(false);
+        return nullptr;
+    }
+
+    const float speed = 10.0f;
+    const std::string modelPath("res/low_poly_ball/low_poly_ball.obj");
+    const std::string vertShaderPath("shaders/noTexture.vert");
+    const std::string fragShaderPath("shaders/noTexture.frag");
+
+    const ECollisionShape shape = ECollisionShape::Circle;
+    const float circleRadius = 1.0f;
+
+    Entity* entity = World->CreateEntity(std::string("SimpleBall"));
+
+    entity->AddComponent<UShaderComponent>(vertShaderPath, fragShaderPath);
+    entity->AddComponent<ModelComponent>(modelPath);
+    entity->AddComponent<TransformComponent>(transform);
+    entity->AddComponent<MovementComponent>(velocityDir, speed);
+    entity->AddComponent<SimpleCollisionComponent>(shape, circleRadius);
 
     return entity;
 }
@@ -122,11 +165,34 @@ Entity* CreatePlayer(World* World) {
 }  // namespace
 
 void Arkanoid::Initialize(GLFWwindow* window) {
+    // Seed the random number generator with the current time
+    srand(time(NULL));
+
+    // Generate and print 5 random numbers
+    for (int i = 0; i < 5; ++i) {
+        int random_number = rand();
+        printf("Random Number %d: %d\n", i + 1, random_number);
+    }
+    
     BaseExcercise::Initialize(window);
     glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
     World* World = World::CreateWorld();
 
-    CreateEarth(World);
+    for (int i = 0; i < MAX_BALL_NUMBER; ++i) {
+
+        int xLoc = GetRandNumberInRange(-10, 10);
+        const glm::vec3 location{xLoc, 0.0f, 0.0f};
+        const glm::vec3 rotation{0.0f, 0.0f, 0.0f};
+        const glm::vec3 scale{1.f, 1.f, 1.f};
+        const FTransform transform {location, rotation, scale};
+
+
+        float xDir = GetRandNumberInRange(-1.0f, 1.0f);
+        float yDir = GetRandNumberInRange(-1.0f, 1.0f);
+        const glm::vec3 velocityDir{xDir, yDir, 0.0f};
+        CreateBall(World, transform, velocityDir);
+    }
+    
     CreatePlatform(World);
     CreatePlayer(World);
 
