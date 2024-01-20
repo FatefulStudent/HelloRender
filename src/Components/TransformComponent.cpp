@@ -1,6 +1,9 @@
 #include "TransformComponent.h"
 
+#include <algorithm>
 #include <glm/gtc/matrix_transform.hpp>
+
+#include "Helper/Application.h"
 
 #define SMALL_NUMBER 0.000001
 
@@ -54,7 +57,12 @@ void TransformComponent::SetPosition(const glm::vec3& inLocation) {
     if (VectorsAreEqual(inLocation, transform.location))
         return;
 
-    transform.location = inLocation;
+    const float xClamped = std::clamp(inLocation.x,
+        Application::GetLeftBorder(), Application::GetRightBorder());
+    const float yClamped = std::clamp(inLocation.y,
+        Application::GetBottomBorder(), Application::GetUpBorder());
+    transform.location = glm::vec3(xClamped, yClamped, inLocation.z);
+    
     bRecalculationNeeded = true;
 //    RecalculateTransformMatrix();
 }

@@ -30,7 +30,7 @@
 #include <vector>
 #include <string>
 
-int MAX_BALL_NUMBER = 100;
+int MAX_BALL_NUMBER = 200;
 
 float GetRandNumber01() {
     return (float)rand() / RAND_MAX;
@@ -40,12 +40,6 @@ float GetRandNumberInRange(float min, float max) {
     float random01 = GetRandNumber01();
 
     return min + (max - min) * random01;
-}
-
-int GetRandomNumberInRange(int min, int max) {
-    float randomFloat = GetRandNumberInRange(min, max);
-
-    return int(randomFloat);
 }
 
 namespace {
@@ -66,7 +60,7 @@ Entity* CreatePlatform(World* World) {
 
     
     const glm::vec3 velocityDir{-1.0f, 2.0f, 0.0f};
-    const float speed = 10.0f;
+    const float speed = 200.0f;
     
     const ECollisionShape collisionShape = ECollisionShape::Rectangle;
     const float width = 5.0f;
@@ -123,13 +117,13 @@ Entity* CreateBall(World* World, const FTransform& transform, const glm::vec3& v
         return nullptr;
     }
 
-    const float speed = 10.0f;
+    const float speed = 20.0f;
     const std::string modelPath("res/low_poly_ball/low_poly_ball.obj");
     const std::string vertShaderPath("shaders/noTexture.vert");
     const std::string fragShaderPath("shaders/noTexture.frag");
 
     const ECollisionShape shape = ECollisionShape::Circle;
-    const float circleRadius = 1.0f;
+    const float circleRadius = 0.3f;
 
     Entity* entity = World->CreateEntity(std::string("SimpleBall"));
 
@@ -167,12 +161,6 @@ Entity* CreatePlayer(World* World) {
 void Arkanoid::Initialize(GLFWwindow* window) {
     // Seed the random number generator with the current time
     srand(time(NULL));
-
-    // Generate and print 5 random numbers
-    for (int i = 0; i < 5; ++i) {
-        int random_number = rand();
-        printf("Random Number %d: %d\n", i + 1, random_number);
-    }
     
     BaseExcercise::Initialize(window);
     glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
@@ -180,15 +168,15 @@ void Arkanoid::Initialize(GLFWwindow* window) {
 
     for (int i = 0; i < MAX_BALL_NUMBER; ++i) {
 
-        int xLoc = GetRandNumberInRange(-10, 10);
-        const glm::vec3 location{xLoc, 0.0f, 0.0f};
+        const float xLoc = GetRandNumberInRange(Application::GetLeftBorder(), Application::GetRightBorder());
+        const float yLoc = GetRandNumberInRange(Application::GetBottomBorder(), Application::GetUpBorder());
+        const glm::vec3 location{xLoc, yLoc, 0.0f};
         const glm::vec3 rotation{0.0f, 0.0f, 0.0f};
         const glm::vec3 scale{1.f, 1.f, 1.f};
         const FTransform transform {location, rotation, scale};
-
-
-        float xDir = GetRandNumberInRange(-1.0f, 1.0f);
-        float yDir = GetRandNumberInRange(-1.0f, 1.0f);
+        
+        const float xDir = GetRandNumberInRange(-1.0f, 1.0f);
+        const float yDir = GetRandNumberInRange(-1.0f, 1.0f);
         const glm::vec3 velocityDir{xDir, yDir, 0.0f};
         CreateBall(World, transform, velocityDir);
     }

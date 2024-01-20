@@ -71,10 +71,13 @@ void SimpleCollisionSystem::CheckBorders(
     const float bottomSideOfCollision =
         location.y + collisionComponent->GetBottomBorderRelativeOffset();
 
-    if (leftSideOfCollision < Application::GetLeftBorder() ||
-        rightSideOfCollision > Application::GetRightBorder())
-        velocityDir.x *= -1.0f;
-    else if (bottomSideOfCollision < Application::GetBottomBorder() ||
-             upSideOfCollision > Application::GetUpBorder())
-        velocityDir.y *= -1.0f;
+    if (leftSideOfCollision <= Application::GetLeftBorder())
+        velocityDir.x = abs(velocityDir.x);
+    else if (rightSideOfCollision >= Application::GetRightBorder())
+        velocityDir.x = -1.0f * abs(velocityDir.x);
+    
+    if (bottomSideOfCollision <= Application::GetBottomBorder())
+        velocityDir.y = abs(velocityDir.y);
+    else if (upSideOfCollision >= Application::GetUpBorder())
+        velocityDir.y = -1.0f * abs(velocityDir.y);
 }
